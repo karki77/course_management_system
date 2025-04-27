@@ -25,18 +25,10 @@ export const loginUserSchema = z.object({
   password: z.string().min(8, { message: "Password must be at least 8 characters long" }),
 });
 
-export const updateUserSchema = z.object({
-  username: z
-    .string()
-    .min(3, { message: "Username must be at least 3 characters" })
-    .max(20, { message: "Username must be at most 20 characters" })
-    .regex(/^[a-zA-Z0-9_]+$/, {
-      message: "Username can only contain letters, numbers, and underscores",
-    }),
-  role: z.nativeEnum(UserRole).optional()
+export const changePasswordSchema = z.object({
+  oldPassword: z.string().min(8, { message: "Old password must be at least 8 characters long" }),
 });
-
 
 export type IRegisterSchema = z.infer<typeof registerUserSchema>;
 export type ILoginSchema = z.infer<typeof loginUserSchema>;
-export type IUpdateSchema = z.infer<typeof updateUserSchema>;
+export type IChangePassword = z.infer<typeof changePasswordSchema>;

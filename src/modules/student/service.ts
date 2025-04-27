@@ -2,8 +2,10 @@ import { PrismaClient } from "@prisma/client";
 import HttpException from "../../utils/api/httpException";
 import { generateToken} from "../../middleware/authMiddleware";
 import { hashPassword, verifyPassword } from "../../utils/password/hash";
+import { PasswordChange}  from '../../interfaces/passwordInterface';
+import { passwordStrengthRegex } from "../../constants/regex";
 
-import type { IRegisterSchema, ILoginSchema, IUpdateSchema} from "../../utils/validators/validation";
+import type { IRegisterSchema, ILoginSchema, } from "../../utils/validators/validation";
 export const prisma = new PrismaClient();
 
 export const registerUserService = async (data: IRegisterSchema) => {
@@ -78,27 +80,36 @@ const token = generateToken({
 };
 
 
-export const updateUserService = async (userId: string, data: IUpdateSchema) => {
-    const existingUser = await prisma.user.findUnique({ where: { id: userId } });
-  
-     
-    if (!existingUser) {
-      throw new HttpException(404, "User not found");
-    }
-    // If password is being updated, hash it
-    
-    const updatedUser = await prisma.user.update({
-      where: { id: userId },
-      data
-    });
-  
-    return {
-      user: {
-        username: updatedUser.username,
-        role: updatedUser.role
-      }
-    };
-};
+
+
+export function changePassword(user: PasswordChange): string {
+  const { oldPassword, newPassword, confirmPassword } = user;
+
+  // Function to validate password strength using the regex from passwordRegex.ts
+  function isPasswordStrong(password: string): boolean {
+    return passwordStrengthRegex.test(password);
+  }
+
+  // 1. Check if the old password is correct (just an example)
+  const storedOldPassword = "correctOldPassword"; // Simulate fetching this from DB
+
+  if (oldPassword !== storedOldPassword) {
+    return "Old password is incorrect.";
+  }
+
+  // 2. Check if the new password matches the confirmation
+  if (newPassword !== confirmPassword) {
+    return "New passwords do not match.";
+  }
+
+  // 3. Check if the new password is strong
+  if (!isPasswordStrong(newPassword)) {
+    return "New password is not strong enough. Must be at least 8 characters, include a number, and a special character.";
+  }
+
+
+  return "Password changed successfully!";
+}
 
   export const deleteUserService = async (userId: string) => {
     const existingUser = await prisma.user.findUnique({ where: { id: userId } });
