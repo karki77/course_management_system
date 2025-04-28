@@ -1,19 +1,27 @@
 import {Router} from "express";
-import { registerUserSchema, loginUserSchema,changePasswordSchema } from "../utils/validators/validation";
-import { loginUser,registerUser, changePasswordController,deleteUser} from "../modules/student/controller";
+import { UserRole } from "@prisma/client";
+
 import bodyValidator from "../utils/validators/bodyValidator";
+import { registerUserSchema, loginUserSchema, changePasswordSchema} from "../utils/validators/validation";
+
 import { authMiddleware } from "../middleware/authMiddleware";
 import { roleMiddleware } from "../middleware/rolemiddleware";
-import { UserRole } from "@prisma/client";
-import { changePassword } from "../modules/student/service";   
+
+import { loginUser, registerUser, changePasssword} from "../modules/student/controller";
+
+import { sendEmail } from "../../mailSend";
+/**
+ * Student Router
+ */
 
 const studentRouter = Router();
 
-studentRouter.post('/register', bodyValidator(registerUserSchema),registerUser);
 studentRouter.post('/login', bodyValidator(loginUserSchema), loginUser);
-studentRouter.patch('/change', authMiddleware, bodyValidator(changePasswordSchema), changePasswordController);
 
-studentRouter.delete('/deactivate', deleteUser);
+studentRouter.post('/register', bodyValidator(registerUserSchema), registerUser);
+
+studentRouter.patch('/change-password', authMiddleware, bodyValidator(changePasswordSchema), changePasssword);
+
 studentRouter.get('/student', authMiddleware, roleMiddleware([UserRole.STUDENT]), async (req, res) => {
    res.json({message:"Hello from student router"});
 })
@@ -23,4 +31,5 @@ studentRouter.get('/instructor', authMiddleware, roleMiddleware([UserRole.INSTRU
 })
 
 
+//
 export default studentRouter;

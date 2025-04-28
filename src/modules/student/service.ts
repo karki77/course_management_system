@@ -1,12 +1,10 @@
-import { PrismaClient } from "@prisma/client";
+
+import { prisma } from "../../config";
 import HttpException from "../../utils/api/httpException";
 import { generateToken} from "../../middleware/authMiddleware";
 import { hashPassword, verifyPassword } from "../../utils/password/hash";
-import { PasswordChange}  from '../../interfaces/passwordInterface';
-import { passwordStrengthRegex } from "../../constants/regex";
+import type { IRegisterSchema, ILoginSchema, IChangePassword, } from "../../utils/validators/validation";
 
-import type { IRegisterSchema, ILoginSchema, } from "../../utils/validators/validation";
-export const prisma = new PrismaClient();
 
 export const registerUserService = async (data: IRegisterSchema) => {
   const existingUser = await prisma.user.findFirst({
@@ -18,18 +16,13 @@ export const registerUserService = async (data: IRegisterSchema) => {
     }
   });
 
-  if (existingUser) {
-    if (existingUser.email === data.email) {
-      throw new HttpException(400, "Email already exists");
-    }
-    if (existingUser.username === data.username) {
-      throw new HttpException(400, "Username already exists");
-    }
+  // 
+  if(existingUser){
+    throw new HttpException(400, "Email or username already exist");
   }
 
   const hashedPassword = await hashPassword(data.password);
-
-  return await prisma.user.create({
+  const user=  await prisma.user.create({
     data: {
       username: data.username,
       email: data.email,
@@ -37,13 +30,16 @@ export const registerUserService = async (data: IRegisterSchema) => {
       role: data.role
     }
   });
+
+  //
+  return user
 };
 
-export const getAllUsersService = async () => {
-  return await prisma.user.findMany({ include: { profile: true, courses: true } });
-};
+// export const getAllUsersService = async () => {
+//   return await prisma.user.findMany({ include: { profile: true, courses: true } });
+// };
 
-// here i need to  add the login service
+
 export const loginUserService = async (data: ILoginSchema) => {
   const user = await prisma.user.findUnique({
     where: { email: data.email },
@@ -53,21 +49,12 @@ export const loginUserService = async (data: ILoginSchema) => {
     throw new HttpException(401, "Invalid credentials");
   }
 
-  // Compare password using Argon2
-  const isPasswordValid = await verifyPassword(data.password, user.password);
-  
+  const isPasswordValid = await verifyPassword(user.password, data.password);
   if (!isPasswordValid) {
-    throw new HttpException(401, "Invalid credentials");
+    throw new HttpException(401, "Invalid credentialsssss");
   }
 
-// Generate JWT token
-const token = generateToken({
-  id: user.id,
-  email: user.email,
-  role: user.role
-});
-
-    // Return user (without password) and token
+  const {accessToken, refreshToken}= generateToken(user)
   return {
     user: {
       id: user.id,
@@ -75,55 +62,63 @@ const token = generateToken({
       username: user.username,
       role: user.role
     },
-    token
+    accessToken,
+    refreshToken
   };
 };
 
 
 
 
-export function changePassword(user: PasswordChange): string {
-  const { oldPassword, newPassword, confirmPassword } = user;
+export const changePasswordService = async (userId: string, data: IChangePassword) => {
+   const user = await prisma.user.findUnique({
+    where:{id: userId}
+   });
 
-  // Function to validate password strength using the regex from passwordRegex.ts
-  function isPasswordStrong(password: string): boolean {
-    return passwordStrengthRegex.test(password);
+   // !USER THROW -> HTTPEXCEPTION
+   if(!user){
+    throw new HttpException(404, "User not found");
+   }
+
+   // user.password, data.oldPassword -> check compare.
+   const isOldPassordValid = await verifyPassword(user.password, data.oldPassword); 
+
+   if(!isOldPassordValid){
+    throw new HttpException(400, "Old password is incorrect");
+   }
+
+   // Check if oldPassword and newPassword are same
+  if (data.oldPassword === data.newPassword) {
+    throw new HttpException(400, "New password cannot be the same as the old password");
   }
 
-  // 1. Check if the old password is correct (just an example)
-  const storedOldPassword = "correctOldPassword"; // Simulate fetching this from DB
-
-  if (oldPassword !== storedOldPassword) {
-    return "Old password is incorrect.";
-  }
-
-  // 2. Check if the new password matches the confirmation
-  if (newPassword !== confirmPassword) {
-    return "New passwords do not match.";
-  }
-
-  // 3. Check if the new password is strong
-  if (!isPasswordStrong(newPassword)) {
-    return "New password is not strong enough. Must be at least 8 characters, include a number, and a special character.";
-  }
-
-
-  return "Password changed successfully!";
+  // user password -> update with hash.
+  const hashedPassword = await hashPassword(data.newPassword);
+   
+  // update password in db
+  await prisma.user.update({
+    where: { id: userId },
+    data: {
+      password: hashedPassword,
+    }
+  });
 }
 
-  export const deleteUserService = async (userId: string) => {
-    const existingUser = await prisma.user.findUnique({ where: { id: userId } });
+
+
+  // export const deleteUserService = async (userId: string) => {
+  //   const existingUser = await prisma.user.findUnique({ where: { id: userId } });
   
-    if (!existingUser) {
-      throw new HttpException(404, "User not found");
-    }
+  //   if (!existingUser) {
+  //     throw new HttpException(404, "User not found");
+  //   }
   
-    await prisma.user.delete({ where: { id: userId } });
+  //   await prisma.user.delete({ where: { id: userId } });
   
-    return {
-      message: "User deleted successfully",
-      userId
-    };
-  };
+  //   return {
+  //     message: "User deleted successfully",
+  //     userId
+  //   };
+  // };
   
   

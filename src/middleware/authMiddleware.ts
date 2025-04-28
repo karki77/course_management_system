@@ -19,15 +19,22 @@ declare global {
   }
 }
 
+export type ITokenType= "REFRESH_TOKEN" | "ACCESS_TOKEN"
+
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    
+    console.log("token1");
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer')) {
       throw new HttpException(401, 'Authentication required');
     }
+
+    console.log("token2");
   const token = authHeader.split(' ')[1];
+  console.log(token, "check token")
   // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as IUser;
+    const decoded =  jwt.verify(token, process.env.JWT_SECRET_ACCESS as string) as IUser;
     
   // Add user to request object
     req.user = decoded;
@@ -43,13 +50,22 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
 };
 
 // Generate JWT token
-export const generateToken = (payload: IUser): string => {
-  return jwt.sign(
-    payload,
-    process.env.JWT_SECRET as string,
-    { expiresIn: '24h' }
-  );
+export const generateToken = (user: IUser) => {
+  const payload = {
+    id: user.id,
+    email: user.email,
+    role: user.role
+  };
+
+ const accessToken= jwt.sign({...payload}, process.env.JWT_SECRET_ACCESS as string, {expiresIn:'15min'}); 
+ const refreshToken = jwt.sign({...payload}, process.env.JWT_SECRET_REFRESH as string,{expiresIn:'7d'});
+
+ //
+ return{accessToken,refreshToken};
 };
+
+
+
 
 export const verifyToken = (token: string): IUser => {
   try {
