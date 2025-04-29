@@ -7,9 +7,8 @@ import { registerUserSchema, loginUserSchema, changePasswordSchema} from "../uti
 import { authMiddleware } from "../middleware/authMiddleware";
 import { roleMiddleware } from "../middleware/rolemiddleware";
 
-import { loginUser, registerUser, changePasssword} from "../modules/student/controller";
+import { registerUser, loginUser, changePasssword} from "../modules/student/controller";
 
-import { sendEmail } from "../../mailSend";
 /**
  * Student Router
  */
@@ -30,6 +29,4 @@ studentRouter.get('/instructor', authMiddleware, roleMiddleware([UserRole.INSTRU
    res.json({message:"Hello from instructor router"});
 })
 
-
-//
 export default studentRouter;

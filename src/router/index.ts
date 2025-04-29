@@ -4,6 +4,8 @@ import emailRouter from "./emailRouter";
 
 const router = Router();
 
-router.use('/', studentRouter);
-router.use('/', emailRouter)
+router.use('/student', studentRouter);
+router.use('/email', emailRouter)
+
+//
 export default router;

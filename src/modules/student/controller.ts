@@ -1,15 +1,16 @@
 import { Request, Response, NextFunction } from "express";
 import {HttpResponse} from "../../utils/api/httpResponse";
 import type { IRegisterSchema} from "../../utils/validators/validation";
-import {changePasswordService, loginUserService, registerUserService } from "./service";
 import HttpException from "../../utils/api/httpException";
+
+import studentService from "./service"
 
 /**
  * Register User
  */
 export const registerUser = async (req: Request<unknown, unknown, IRegisterSchema>, res: Response, next: NextFunction) => {
   try {
-   const data = await registerUserService(req.body);
+   const data = await studentService.register(req.body);
    res.send(new HttpResponse({
       message:"User registered successfully",
       data
@@ -19,18 +20,13 @@ export const registerUser = async (req: Request<unknown, unknown, IRegisterSchem
   }
 };
 
-// export const getAllUsers = async (_req: Request, res: Response, next: NextFunction) => {
-//   try {
-//     const users = await getAllUsersService();
-//     res.status(200).json({ success: true, data: users });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+/**
+ * Login User
+ */
 
 export const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const data = await loginUserService(req.body);
+    const data = await studentService.login(req.body);
     res.send(new HttpResponse({
       message:"User login successfully",
       data
@@ -39,8 +35,10 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
     next(error);
   }
 };
-    // src/controllers/passwordController.ts
 
+/**
+ * Change User Password
+ */
 
 export const changePasssword = async (req: Request, res: Response, next: NextFunction) => {
       try{
@@ -51,7 +49,7 @@ export const changePasssword = async (req: Request, res: Response, next: NextFun
         }
         console.log("hi");
         
-        await changePasswordService(req.user.id, req.body);
+        await studentService.changePassword(req.user.id, req.body);
         res.send(new HttpResponse({
           message:"Password changed successfully",
         }))

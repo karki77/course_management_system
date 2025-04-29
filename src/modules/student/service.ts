@@ -6,41 +6,34 @@ import { hashPassword, verifyPassword } from "../../utils/password/hash";
 import type { IRegisterSchema, ILoginSchema, IChangePassword, } from "../../utils/validators/validation";
 
 
-export const registerUserService = async (data: IRegisterSchema) => {
-  const existingUser = await prisma.user.findFirst({
-    where: {
-      OR: [
-        { email: data.email },
-        { username: data.username }
-      ]
+class StudentService {
+   async register(data: IRegisterSchema) {
+    const existingUser = await prisma.user.findFirst({
+      where: {
+        OR: [
+          { email: data.email },
+          { username: data.username }
+        ]
+      }
+    });
+
+    if(existingUser){
+      throw new HttpException(400, "Email or username already exist");
     }
-  });
+  
+    const hashedPassword = await hashPassword(data.password);
+    const user=  await prisma.user.create({
+      data: {
+        username: data.username,
+        email: data.email,
+        password: hashedPassword,
+        role: data.role
+      }
+    });
+    return user
+   }
 
-  // 
-  if(existingUser){
-    throw new HttpException(400, "Email or username already exist");
-  }
-
-  const hashedPassword = await hashPassword(data.password);
-  const user=  await prisma.user.create({
-    data: {
-      username: data.username,
-      email: data.email,
-      password: hashedPassword,
-      role: data.role
-    }
-  });
-
-  //
-  return user
-};
-
-// export const getAllUsersService = async () => {
-//   return await prisma.user.findMany({ include: { profile: true, courses: true } });
-// };
-
-
-export const loginUserService = async (data: ILoginSchema) => {
+ async login(data:ILoginSchema){
   const user = await prisma.user.findUnique({
     where: { email: data.email },
   });
@@ -67,11 +60,8 @@ export const loginUserService = async (data: ILoginSchema) => {
   };
 };
 
-
-
-
-export const changePasswordService = async (userId: string, data: IChangePassword) => {
-   const user = await prisma.user.findUnique({
+async changePassword(userId:string,data:IChangePassword){
+  const user = await prisma.user.findUnique({
     where:{id: userId}
    });
 
@@ -102,23 +92,12 @@ export const changePasswordService = async (userId: string, data: IChangePasswor
       password: hashedPassword,
     }
   });
+ }
 }
 
+export default new StudentService();
 
 
-  // export const deleteUserService = async (userId: string) => {
-  //   const existingUser = await prisma.user.findUnique({ where: { id: userId } });
-  
-  //   if (!existingUser) {
-  //     throw new HttpException(404, "User not found");
-  //   }
-  
-  //   await prisma.user.delete({ where: { id: userId } });
-  
-  //   return {
-  //     message: "User deleted successfully",
-  //     userId
-  //   };
-  // };
-  
+
+
   
