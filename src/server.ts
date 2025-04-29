@@ -1,7 +1,9 @@
+import fs from "fs";
 import express from 'express';
+import { PrismaClient } from '@prisma/client';
+
 import router from './router';
 import globalErrorHandler from './middleware/globalErrorHandler';
-import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -25,6 +27,15 @@ app.use(express.json());
 app.use('/api/v1', router)
 
 app.use(globalErrorHandler);
+
+/**
+ * Only for development
+ */
+const directoryPath = "./uploads";
+if (!fs.existsSync(directoryPath)) {
+  fs.mkdirSync(directoryPath, { recursive: true });
+}
+
 
 app.listen(PORT, () => {
     console.log(`Server is running at port ${PORT}`);

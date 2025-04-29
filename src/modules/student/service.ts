@@ -3,7 +3,7 @@ import { prisma } from "../../config";
 import HttpException from "../../utils/api/httpException";
 import { generateToken} from "../../middleware/authMiddleware";
 import { hashPassword, verifyPassword } from "../../utils/password/hash";
-import type { IRegisterSchema, ILoginSchema, IChangePassword, } from "../../utils/validators/validation";
+import { type IRegisterSchema, type ILoginSchema, type IChangePassword, type IUpdateProfile } from "../../utils/validators/validation";
 
 
 class StudentService {
@@ -27,9 +27,17 @@ class StudentService {
         username: data.username,
         email: data.email,
         password: hashedPassword,
-        role: data.role
-      }
+        role: data.role,
+        profile:{
+          create:{
+            bio: null,
+            image: ""
+          }
+        }
+      },
     });
+
+    //
     return user
    }
 
@@ -60,7 +68,7 @@ class StudentService {
   };
 };
 
-async changePassword(userId:string,data:IChangePassword){
+async changePassword(userId:string,data:IChangePassword) {
   const user = await prisma.user.findUnique({
     where:{id: userId}
    });
@@ -93,6 +101,32 @@ async changePassword(userId:string,data:IChangePassword){
     }
   });
  }
+ async updateProfile(userId:string, data: IUpdateProfile) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    include: { profile: true },
+   })
+
+   // !USER THROW -> HTTPEXCEPTION
+   if(!user){
+    throw new HttpException(404, "User not found");
+   }
+
+   if(!user.profile){
+    throw new HttpException(404, "Profile not found")
+   }
+
+  return await prisma.profile.update({
+    where: {
+      id: user.profile.id
+    },
+    data:{
+      image: data.image
+    }
+   });
+  
+ }
+  
 }
 
 export default new StudentService();

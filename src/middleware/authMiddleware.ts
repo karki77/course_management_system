@@ -23,16 +23,12 @@ export type ITokenType= "REFRESH_TOKEN" | "ACCESS_TOKEN"
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    
-    console.log("token1");
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer')) {
       throw new HttpException(401, 'Authentication required');
     }
 
-    console.log("token2");
   const token = authHeader.split(' ')[1];
-  console.log(token, "check token")
   // Verify token
     const decoded =  jwt.verify(token, process.env.JWT_SECRET_ACCESS as string) as IUser;
     

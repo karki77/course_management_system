@@ -36,6 +36,18 @@ export const changePasswordSchema = z.object({
     .regex(/[\W_]/, { message: "New password must include at least one special character" }),
 }).strict();
 
+export const updateProfileSchema = z.object({
+  bio: z
+    .string({required_error:"bio is required"}).toLowerCase()
+    .min(3, { message: "bio must be at least 3 characters" })
+    .max(20, { message: "bio must be at most 20 characters" })
+    .regex(/^[a-zA-Z0-9_]+$/, {
+      message: "bio can only contain letters, numbers, and underscores",
+    }),
+  image:z.string({required_error:"Upload an image"})
+}).strict();
+
 export type IRegisterSchema = z.infer<typeof registerUserSchema>;
 export type ILoginSchema = z.infer<typeof loginUserSchema>;
 export type IChangePassword = z.infer<typeof changePasswordSchema>;
+export type IUpdateProfile = z.infer<typeof updateProfileSchema>;

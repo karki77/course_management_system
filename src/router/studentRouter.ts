@@ -21,7 +21,7 @@ studentRouter.post('/register', bodyValidator(registerUserSchema), registerUser)
 
 studentRouter.patch('/change-password', authMiddleware, bodyValidator(changePasswordSchema), changePasssword);
 
-studentRouter.get('/student', authMiddleware, roleMiddleware([UserRole.STUDENT]), async (req, res) => {
+studentRouter.get('/role', authMiddleware, roleMiddleware([UserRole.STUDENT]), async (req, res) => {
    res.json({message:"Hello from student router"});
 })
 
