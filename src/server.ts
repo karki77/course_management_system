@@ -31,10 +31,7 @@ app.use(globalErrorHandler);
 /**
  * Only for development
  */
-const directoryPath = "./uploads";
-if (!fs.existsSync(directoryPath)) {
-  fs.mkdirSync(directoryPath, { recursive: true });
-}
+
 
 
 app.listen(PORT, () => {

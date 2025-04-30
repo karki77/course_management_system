@@ -9,7 +9,7 @@ const router = Router();
 
 router.use('/email', emailRouter)
 router.use('/student', studentRouter);
-router.post('/update-profile', authMiddleware, upload.single('file'), updateProfile)
+router.patch('/update-profile', authMiddleware, upload.single('file'), updateProfile)
 
 //
 export default router;
