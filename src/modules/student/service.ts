@@ -13,6 +13,7 @@ class StudentService {
         OR: [
           { email: data.email },
           { username: data.username }
+          
         ]
       }
     });
@@ -30,8 +31,8 @@ class StudentService {
         role: data.role,
         profile:{
           create:{
-            bio: null,
-            image: ""
+            bio: "hello there",
+            image: " ",
           }
         }
       },
@@ -101,10 +102,12 @@ async changePassword(userId:string,data:IChangePassword) {
     }
   });
  }
+
  async updateProfile(userId:string, data: IUpdateProfile) {
   const user = await prisma.user.findUnique({
     where: { id: userId },
     include: { profile: true },
+      
    })
 
    // !USER THROW -> HTTPEXCEPTION
@@ -120,12 +123,27 @@ async changePassword(userId:string,data:IChangePassword) {
     where: {
       id: user.profile.id
     },
+    
     data:{
-      image: data.image
+      ...(data.image && { image: data.image }), // best
+      ...(data.bio && { bio: data.bio }), 
     }
    });
-  
- }
+  }
+  async getUserWithProfile(userId: string) {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        profile: true,
+        courses: true,
+      },
+    });
+
+    if (!user) {
+      throw new HttpException(404, "User not found");
+    }
+     return user;
+  }
   
 }
 

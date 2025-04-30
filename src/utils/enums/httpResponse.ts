@@ -10,6 +10,8 @@ export enum HTTPSTATUS {
     FORBIDDEN = 403,
     NOTFOUND = 404,
     CONFLICT = 409,
+    UNSUPPORTED = 415,
     SERVERERROR = 500,
     UNAVAILABLE = 503,
+
 }

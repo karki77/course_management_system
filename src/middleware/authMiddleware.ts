@@ -53,8 +53,8 @@ export const generateToken = (user: IUser) => {
     role: user.role
   };
 
- const accessToken= jwt.sign({...payload}, process.env.JWT_SECRET_ACCESS as string, {expiresIn:'15min'}); 
- const refreshToken = jwt.sign({...payload}, process.env.JWT_SECRET_REFRESH as string,{expiresIn:'7d'});
+ const accessToken= jwt.sign({...payload}, process.env.JWT_SECRET_ACCESS as string, {expiresIn:'7d'}); 
+ const refreshToken = jwt.sign({...payload}, process.env.JWT_SECRET_REFRESH as string,{expiresIn:'15d'});
 
  //
  return{accessToken,refreshToken};

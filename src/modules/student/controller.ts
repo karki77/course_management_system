@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import {HttpResponse} from "../../utils/api/httpResponse";
-import type { IRegisterSchema} from "../../utils/validators/validation";
+import type { IRegisterSchema,IUpdateProfile} from "../../utils/validators/validation";
 import HttpException from "../../utils/api/httpException";
 
 import studentService from "./service"
 import { log } from "node:console";
+import errorMap from "zod/lib/locales/en";
 
 /**
  * Register User
@@ -55,23 +56,42 @@ export const changePasssword = async (req: Request, res: Response, next: NextFun
       }
     };
     
-export const updateProfile = async(req:Request, res:Response, next: NextFunction) => {
+export const updateProfile = async(req: Request<unknown, unknown, IUpdateProfile>,res:Response, next: NextFunction) => {
   try{
-    console.log("hello");
     
     if(!req?.user?.id){
         throw new HttpException(401, "User not authenticated");
     };
 
-    console.log(req.file, "check file");
-    console.log("-----------------------------");
-    console.log(req.files, "check files");
+    const image = req.file?.filename!;
+    const bio = req.body.bio;
 
-    await studentService.updateProfile(req.user.id, req.body);
-    res.send(new HttpResponse({
+     const updatedprofile = await studentService.updateProfile(req.user.id, {
+      bio,
+      image,
+    });
+    
+  res.send(new HttpResponse({
       message:"Profile updated successfully",
+      data:updatedprofile
     }))
-} catch(error){
+     } catch(error){
   next(error);
- }
+    }
+  }
+export const getUserWithProfile = async(req:Request, res:Response, next: NextFunction) => {
+  try{
+    if(!req?.user?.id){
+      throw new HttpException(404, "User not found")
+    }
+    const user = await studentService.getUserWithProfile(req.user.id);
+     res.send(new HttpResponse({
+      message:"user with profile fetched successfully",
+      data:user
+     })
+    );
+  }catch(error){
+    next(error);
+  }
 }
+

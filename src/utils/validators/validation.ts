@@ -44,7 +44,7 @@ export const updateProfileSchema = z.object({
     .regex(/^[a-zA-Z0-9_]+$/, {
       message: "bio can only contain letters, numbers, and underscores",
     }),
-  image:z.string({required_error:"Upload an image"})
+  image:z.string({required_error:"Image is required"})
 }).strict();
 
 export type IRegisterSchema = z.infer<typeof registerUserSchema>;
