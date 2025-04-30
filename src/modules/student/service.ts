@@ -3,7 +3,7 @@ import { prisma } from "../../config";
 import HttpException from "../../utils/api/httpException";
 import { generateToken} from "../../middleware/authMiddleware";
 import { hashPassword, verifyPassword } from "../../utils/password/hash";
-import { type IRegisterSchema, type ILoginSchema, type IChangePassword, type IUpdateProfile } from "../../utils/validators/validation";
+import { type IRegisterSchema, type ILoginSchema, type IChangePassword, type IUpdateProfile } from "./validation";
 
 
 class StudentService {

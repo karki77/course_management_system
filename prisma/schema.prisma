@@ -45,8 +45,10 @@ model Course{
   id             String    @id @default(uuid())
   title          String
   content        String?
-  instructur     User      @relation(fields: [instructurId], references: [id])
-  instructurId   String
+  instructor     User      @relation(fields: [instructorId], references: [id])
+  instructorId   String
+  duration       Int?
+  period         String?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 }

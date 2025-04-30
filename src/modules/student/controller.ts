@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import {HttpResponse} from "../../utils/api/httpResponse";
-import type { IRegisterSchema,IUpdateProfile} from "../../utils/validators/validation";
+import type { IRegisterSchema,IUpdateProfile} from "./validation";
 import HttpException from "../../utils/api/httpException";
 
 import studentService from "./service"

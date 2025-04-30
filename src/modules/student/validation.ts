@@ -47,6 +47,7 @@ export const updateProfileSchema = z.object({
   image:z.string({required_error:"Image is required"})
 }).strict();
 
+
 export type IRegisterSchema = z.infer<typeof registerUserSchema>;
 export type ILoginSchema = z.infer<typeof loginUserSchema>;
 export type IChangePassword = z.infer<typeof changePasswordSchema>;

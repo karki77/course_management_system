@@ -2,7 +2,7 @@ import {Router} from "express";
 import { UserRole } from "@prisma/client";
 
 import bodyValidator from "../utils/validators/bodyValidator";
-import { registerUserSchema, loginUserSchema, changePasswordSchema} from "../utils/validators/validation";
+import { registerUserSchema, loginUserSchema, changePasswordSchema} from "../modules/student/validation";
 
 import { authMiddleware } from "../middleware/authMiddleware";
 import { roleMiddleware } from "../middleware/rolemiddleware";
