@@ -65,6 +65,3 @@ model CourseEnrollment{
   updatedAt DateTime @updatedAt
   @@unique([userId, courseId]) 
 }
-
-
-// 

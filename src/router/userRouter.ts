@@ -6,13 +6,13 @@ import {
   registerUserSchema,
   loginUserSchema,
   changePasswordSchema,
-} from '../modules/student/validation';
+} from '../modules/user/validation';
 
 import { authMiddleware } from '../middleware/authMiddleware';
 import { roleMiddleware } from '../middleware/rolemiddleware';
 
 import upload from '../utils/multer';
-import { updateProfileSchema } from '../modules/student/validation';
+import { updateProfileSchema } from '../modules/user/validation';
 import { mediaRequest } from '../utils/validators/mediaRequest';
 
 import {
@@ -21,7 +21,7 @@ import {
   changePasssword,
   updateProfile,
   getUserWithProfile,
-} from '../modules/student/controller';
+} from '../modules/user/controller';
 
 /**
  * User Router

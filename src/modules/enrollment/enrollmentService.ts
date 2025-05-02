@@ -33,3 +33,5 @@ class EnrollmentService {
     }
   }
 }
+
+export default new EnrollmentService();
