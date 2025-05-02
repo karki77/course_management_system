@@ -13,10 +13,11 @@ try {
     console.log(`Upload directory already exists: ${uploadDir}`);
   }
 } catch (error) {
-  console.error(`Error creating upload directory: ${error instanceof Error ? error.message : String(error)}`);
+  console.error(
+    `Error creating upload directory: ${error instanceof Error ? error.message : String(error)}`
+  );
   throw new Error('Failed to create upload directory');
 }
-
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -25,26 +26,33 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     const suffix = Date.now();
     cb(null, suffix + '-' + file.originalname);
-  }
+  },
 });
 
-const fileFilter = (req: any, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
+const fileFilter = (
+  req: any,
+  file: Express.Multer.File,
+  cb: multer.FileFilterCallback
+) => {
   // Accept images, documents, and other common file types
   const allowedMimeTypes = [
-    'image/jpeg', 'image/png', 'image/gif',
-    'application/pdf', 'application/msword',
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'application/pdf',
+    'application/msword',
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    'text/plain'
+    'text/plain',
   ];
   if (allowedMimeTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    throw new HttpException(415, "Unsupported media type!")
+    throw new HttpException(415, 'Unsupported media type!');
   }
 };
 const upload = multer({
   storage,
-  limits: { fileSize: 10 * 1024 * 1024 } // 10MB
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
 });
 
 export default upload;

@@ -1,4 +1,4 @@
-import fs from "fs";
+import fs from 'fs';
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 
@@ -10,11 +10,10 @@ const prisma = new PrismaClient();
 const PORT = process.env.PORT ?? 7000;
 const app = express();
 
-
 void (async (): Promise<void> => {
   try {
     await prisma.$connect();
-    console.log("Database connected successfully.");
+    console.log('Database connected successfully.');
   } catch (error) {
     console.log(`ERROR CONNECTING DATABASE: ${(error as Error).message}`);
     console.error(error);
@@ -24,7 +23,7 @@ void (async (): Promise<void> => {
 
 app.use(express.json());
 
-app.use('/api/v1', router)
+app.use('/api/v1', router);
 
 app.use(globalErrorHandler);
 
@@ -32,12 +31,9 @@ app.use(globalErrorHandler);
  * Only for development
  */
 
-
-
 app.listen(PORT, () => {
-    console.log(`Server is running at port ${PORT}`);
-  });
-  
+  console.log(`Server is running at port ${PORT}`);
+});
 
 // ILoginSchema
 // IRegisterSchema
@@ -45,7 +41,6 @@ app.listen(PORT, () => {
 /**
  * THIS CODE IS FOR : --
  */
-
 
 /**
  * FOR MIGRATION CASE:

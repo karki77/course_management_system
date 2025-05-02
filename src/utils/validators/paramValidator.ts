@@ -1,8 +1,8 @@
-import { ZodError } from "zod";
+import { ZodError } from 'zod';
 
 //
-import type { ZodTypeAny } from "zod";
-import type { Request, Response, NextFunction } from "express";
+import type { ZodTypeAny } from 'zod';
+import type { Request, Response, NextFunction } from 'express';
 
 /**
  * Query validator
@@ -12,7 +12,7 @@ const queryValidator =
   (
     req: Request<unknown, unknown, unknown, unknown>,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): void => {
     try {
       req.query = schema.parse(req.query);
@@ -24,7 +24,7 @@ const queryValidator =
 
       res.status(422).json({
         success: false,
-        message: "Query validation error!",
+        message: 'Query validation error!',
         errors: errorObj,
       });
       return;

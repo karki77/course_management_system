@@ -1,21 +1,12 @@
-import {Router} from "express";
-import studentRouter from "./studentRouter";
-import emailRouter from "./emailRouter";
-import { getUserWithProfile, updateProfile } from "../modules/student/controller";
-import { authMiddleware } from "../middleware/authMiddleware";
-import upload from "../utils/multer";
-import bodyValidator from "../utils/validators/bodyValidator";
-import {updateProfileSchema } from "../modules/student/validation";
-import { mediaRequest } from "../utils/validators/mediaRequest";
+import { Router } from 'express';
+import courseRouter from './courseRouter';
+import emailRouter from './emailRouter';
+import userRouter from './userRouter';
 
 const router = Router();
 
-router.use('/email', emailRouter)
-router.use('/student', studentRouter);
-router.patch('/update-profile', authMiddleware, upload.single('file'), mediaRequest, bodyValidator(updateProfileSchema), updateProfile)
-router.get('/user', authMiddleware,
-    getUserWithProfile)
+router.use('/email', emailRouter);
+router.use('/user', userRouter);
+router.use('/course', courseRouter);
 
-
-//
 export default router;

@@ -2,7 +2,7 @@ import nodemailer from 'nodemailer';
 import { IEmailSend } from './types';
 
 export const sendEmail = async (payload: IEmailSend) => {
-    const transporter = nodemailer.createTransport({
+  const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
     secure: true,
@@ -14,13 +14,11 @@ export const sendEmail = async (payload: IEmailSend) => {
 
   const mailOptions = {
     from: '"Kuber Karki" <karkikuber5@gmail.com>',
-    to: payload.to,
+    to: 'kuberdai789@gmail.com',
     subject: payload.subject,
     text: payload.text,
     html: payload.html,
   };
-  
 
   return transporter.sendMail(mailOptions);
 };
-

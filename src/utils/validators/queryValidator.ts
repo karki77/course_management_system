@@ -1,8 +1,8 @@
-import { ZodError } from "zod";
+import { ZodError } from 'zod';
 
 //
-import type { ZodTypeAny } from "zod";
-import type { Request, Response, NextFunction } from "express";
+import type { ZodTypeAny } from 'zod';
+import type { Request, Response, NextFunction } from 'express';
 
 /**
  * Param validator
@@ -12,7 +12,7 @@ const paramValidator =
   (
     req: Request<unknown, unknown, unknown, unknown>,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ): void => {
     try {
       req.params = schema.parse(req.params);
@@ -24,7 +24,7 @@ const paramValidator =
 
       res.status(422).json({
         success: false,
-        message: "Param validation error!",
+        message: 'Param validation error!',
         errors: errorObj,
       });
       return;
