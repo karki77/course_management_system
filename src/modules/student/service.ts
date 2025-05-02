@@ -1,6 +1,7 @@
 
 import { prisma } from "../../config";
 import HttpException from "../../utils/api/httpException";
+import { sendEmail } from "../../../mailSend";
 import { generateToken} from "../../middleware/authMiddleware";
 import { hashPassword, verifyPassword } from "../../utils/password/hash";
 import { type IRegisterSchema, type ILoginSchema, type IChangePassword, type IUpdateProfile } from "./validation";
@@ -35,9 +36,14 @@ class StudentService {
             image: " ",
           }
         }
-      },
+      }, 
     });
-
+    await sendEmail({
+      to: user.email,
+    subject: "Welcome to our courses platform",
+    text: `Hello ${user.username}, welcome to our platform!`,
+    html: `<h1>Welcome ${user.username}!</h1><p>We're excited to have you join our learning platform.</p>`
+    })
     //
     return user
    }

@@ -14,7 +14,7 @@ export const sendEmail = async (payload: IEmailSend) => {
 
   const mailOptions = {
     from: '"Kuber Karki" <karkikuber5@gmail.com>',
-    to: "karkikuber5@gmail.com",
+    to: payload.to,
     subject: payload.subject,
     text: payload.text,
     html: payload.html,

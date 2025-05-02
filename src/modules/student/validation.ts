@@ -40,10 +40,7 @@ export const updateProfileSchema = z.object({
   bio: z
     .string({required_error:"bio is required"}).toLowerCase()
     .min(3, { message: "bio must be at least 3 characters" })
-    .max(20, { message: "bio must be at most 20 characters" })
-    .regex(/^[a-zA-Z0-9_]+$/, {
-      message: "bio can only contain letters, numbers, and underscores",
-    }),
+    .max(50, { message: "bio must be at most 20 characters" }),
   image:z.string({required_error:"Image is required"})
 }).strict();
 
