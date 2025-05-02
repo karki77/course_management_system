@@ -8,13 +8,12 @@ export const createCourseSchema = z
       .max(50, { message: 'Course title must be at most 50 characters' }),
     content: z
       .string({ required_error: 'Course content is required' })
-      .min(10, { message: 'Course content must be at least 10 characters' })
-      .max(500, { message: 'Course content must be at most 500 characters' }),
-    instructor: z
-      .string({ required_error: 'Instructor name is required' })
-      .min(3, { message: 'Instructor name must be at least 3 characters' })
-      .max(50, { message: 'Instructor name must be at most 50 characters' }),
-
+      .min(10, {
+        message: 'Course content must be at least 10 characters',
+      })
+      .max(500, {
+        message: 'Course content must be at most 500 characters',
+      }),
     duration: z
       .number({ required_error: 'Course duration is required' })
       .int()

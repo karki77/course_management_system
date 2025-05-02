@@ -26,11 +26,13 @@ export const registerUserSchema = z
       .regex(/[a-z]/, {
         message: 'Password must include at least one lowercase letter',
       })
-      .regex(/[0-9]/, { message: 'Password must include at least one number' })
+      .regex(/[0-9]/, {
+        message: 'Password must include at least one number',
+      })
       .regex(/[\W_]/, {
         message: 'Password must include at least one special character',
       }),
-    role: z.nativeEnum(UserRole),
+    role: z.nativeEnum(UserRole)
   })
   .strict();
 
@@ -45,12 +47,14 @@ export const loginUserSchema = z
 
 export const changePasswordSchema = z
   .object({
-    oldPassword: z
-      .string()
-      .min(8, { message: 'Old password must be at least 8 characters long' }),
+    oldPassword: z.string().min(8, {
+      message: 'Old password must be at least 8 characters long',
+    }),
     newPassword: z
       .string({ required_error: 'New password is required' })
-      .min(8, { message: 'New password must be at least 8 characters long' })
+      .min(8, {
+        message: 'New password must be at least 8 characters long',
+      })
       .regex(/[A-Z]/, {
         message: 'New password must include at least one uppercase letter',
       })
