@@ -26,4 +26,17 @@ export const createCourseSchema = z
   })
   .strict();
 
+export const updateCourseSchema = createCourseSchema.partial().strict();
+
+export const deleteCourseSchema = z
+  .object({
+    courseId: z
+      .string({ required_error: 'Course ID is required' })
+      .uuid({ message: 'Course ID must be a valid UUID' }),
+  })
+  .strict();
+
+// Type inference
 export type ICreateCourseSchema = z.infer<typeof createCourseSchema>;
+export type IUpdatedCourseSchema = z.infer<typeof updateCourseSchema>;
+export type IDeleteCourseSchema = z.infer<typeof deleteCourseSchema>;

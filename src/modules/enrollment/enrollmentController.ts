@@ -1,11 +1,13 @@
-import {Request, Response, NextFunction} from 'express';
-import {HttpResponse} from '../../utils/api/httpResponse';
+import { Request, Response, NextFunction } from 'express';
+import { HttpResponse } from '../../utils/api/httpResponse';
 import HttpException from '../../utils/api/httpException';
-import type {ICreateEnrollmentSchema} from './enrollmentValidation';
+import type { ICreateEnrollmentSchema } from './enrollmentValidation';
 import EnrollmentService from './enrollmentService';
 
 export const enroll = async (
-  req: Request<unknown, unknown, ICreateEnrollmentSchema>, res: Response, next: NextFunction
+  req: Request<unknown, unknown, ICreateEnrollmentSchema>,
+  res: Response,
+  next: NextFunction
 ) => {
   try {
     const userId = req.user?.id;
@@ -17,11 +19,11 @@ export const enroll = async (
 
     res.send(
       new HttpResponse({
-        message: 'Enrolled successfully',
+        message: enrollment.message,
         data: enrollment,
       })
     );
   } catch (error) {
     next(error);
   }
-}  
+};

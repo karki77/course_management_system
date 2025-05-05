@@ -20,15 +20,23 @@ const bodyValidator =
       next();
       return;
     } catch (error) {
-      const errorObj =
-        error instanceof ZodError ? error.flatten().fieldErrors : {};
+      if (error instanceof ZodError) {
+        const firstErrorMessage = error?.issues[0]?.message || 'Invalid input';
 
-      res.status(422).json({
+        //
+        res.status(400).json({
+          success: false,
+          message: firstErrorMessage,
+          errors: error.issues,
+        });
+        return;
+      }
+
+      //
+      res.status(500).json({
         success: false,
-        message: 'Body validation error!',
-        errors: errorObj,
+        message: 'An unexpected error occurred.',
       });
-      return;
     }
   };
 

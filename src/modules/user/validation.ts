@@ -32,7 +32,7 @@ export const registerUserSchema = z
       .regex(/[\W_]/, {
         message: 'Password must include at least one special character',
       }),
-    role: z.nativeEnum(UserRole)
+    role: z.nativeEnum(UserRole),
   })
   .strict();
 

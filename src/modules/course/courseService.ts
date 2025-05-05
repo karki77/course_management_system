@@ -1,6 +1,10 @@
 import { prisma } from '../../config';
 import HttpException from '../../utils/api/httpException';
-import { ICreateCourseSchema } from './courseValidation';
+import {
+  ICreateCourseSchema,
+  IUpdatedCourseSchema,
+  IDeleteCourseSchema
+} from '../course/courseValidation';
 
 class CourseService {
   async createCourse(instructorId: string, data: ICreateCourseSchema) {
@@ -36,6 +40,66 @@ class CourseService {
     //
     return course;
   }
+  async updateCourse(
+    instructorId: string,
+    courseId: string,
+    data: IUpdatedCourseSchema
+  ) {
+    const course = await prisma.course.findUnique({
+      where: { id: courseId },
+    });
+
+    if (!course) {
+      throw new HttpException(404, 'Course not found');
+    }
+
+    if (course.instructorId !== instructorId) {
+      throw new HttpException(
+        403,
+        'You are not authorized to update this course'
+      );
+    }
+
+    const updatedCourse = await prisma.course.update({
+      where: { id: courseId },
+      data: {
+        ...(data.title !== undefined && { title: data.title }),
+        ...(data.content !== undefined && { content: data.content }),
+        ...(data.duration !== undefined && { duration: data.duration }),
+        ...(data.period !== undefined && { period: data.period }),
+      }
+      
+    });
+
+    return updatedCourse;
+  }
+  async deleteCourse(instructorId: string, data: IDeleteCourseSchema) {
+    const courseId = data.courseId;
+    if (!courseId) {
+    const course = await prisma.course.findUnique({
+      where: { id: courseId },
+    });
+
+    if (!course) {
+      throw new HttpException(404, 'Course not found');
+    }
+
+    if (course.instructorId !== instructorId) {
+      throw new HttpException(
+        403,
+        'You are not authorized to delete this course'
+      );
+    }
+
+    await prisma.course.delete({
+      where: { id: courseId },
+    });
+
+    return {
+      message: 'Course deleted successfully',
+    };
+  }
+}
 }
 
 export default new CourseService();

@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import e, { Router } from 'express';
 import { UserRole } from '@prisma/client';
 
 import bodyValidator from '../utils/validators/bodyValidator';
@@ -13,6 +13,8 @@ import { roleMiddleware } from '../middleware/rolemiddleware';
 
 import upload from '../utils/multer';
 import { updateProfileSchema } from '../modules/user/validation';
+import { createEnrollmentSchema } from '../modules/enrollment/enrollmentValidation';
+import { enroll } from '../modules/enrollment/enrollmentController';
 import { mediaRequest } from '../utils/validators/mediaRequest';
 
 import {
@@ -62,5 +64,13 @@ userRouter.patch(
   updateProfile
 );
 userRouter.get('/profile', authMiddleware, getUserWithProfile);
+
+userRouter.post(
+  '/enroll',
+  authMiddleware,
+  roleMiddleware([UserRole.STUDENT]),
+  bodyValidator(createEnrollmentSchema),
+  enroll
+);
 
 export default userRouter;
