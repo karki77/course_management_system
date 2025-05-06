@@ -86,3 +86,10 @@ export const verifyToken = (token: string): IUser => {
     throw new HttpException(401, 'Invalid or expired token');
   }
 };
+
+export function authorizeInstructor(req: Request, res: Response, next: NextFunction) {
+  if (!req.user || req.user.role !== 'INSTRUCTOR') {
+    return next(new HttpException(403, 'Only instructors are allowed to perform this action'));
+  }
+  next();
+}

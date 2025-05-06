@@ -10,16 +10,16 @@ export const enroll = async (
   next: NextFunction
 ) => {
   try {
-    const userId = req.user?.id;
-    if (!userId) {
+    const instructorId = req.user?.id;
+    if (!instructorId) {
       throw new HttpException(401, 'User not authenticated');
     }
 
-    const enrollment = await EnrollmentService.enroll(userId, req.body);
+    const enrollment = await EnrollmentService.enroll(instructorId, req.body);
 
     res.send(
       new HttpResponse({
-        message: enrollment.message,
+        message: 'enrollment created successfully',
         data: enrollment,
       })
     );
@@ -27,3 +27,24 @@ export const enroll = async (
     next(error);
   }
 };
+
+export const getAllEnrolledUsers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const instructorId = req.user?.id;
+    if (!instructorId) {
+      throw new HttpException(401, 'User not authenticated');
+    }
+
+   
+      const enrollments = await EnrollmentService.getAllEnrolledUsers();
+      res.send(new HttpResponse({ data: enrollments }));
+    } catch (error) {
+      next(error);
+    }
+  }
+
+

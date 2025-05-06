@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import bodyValidator from '../utils/validators/bodyValidator';
+import { getAllEnrolledUsers } from '../modules/enrollment/enrollmentController';
 import { createCourse, updateCourse,deleteCourse} from '../modules/course/courseController';
 import {
   createCourseSchema,
@@ -21,18 +22,24 @@ courseRouter.post(
 );
 
 courseRouter.patch(
-  '/update',
+  '/update/:courseId',
   authMiddleware,
   roleMiddleware([UserRole.INSTRUCTOR]),
   bodyValidator(updateCourseSchema),
   updateCourse
 );
 courseRouter.delete(
-  '/delete',
+  '/delete/:courseId',
   authMiddleware,
   roleMiddleware([UserRole.INSTRUCTOR]),
   bodyValidator(deleteCourseSchema),
   deleteCourse
 );
 
+courseRouter.get(
+  '/:courseId',
+  authMiddleware,
+  roleMiddleware([UserRole.INSTRUCTOR]),
+  getAllEnrolledUsers
+);
 export default courseRouter;

@@ -68,7 +68,7 @@ userRouter.get('/profile', authMiddleware, getUserWithProfile);
 userRouter.post(
   '/enroll',
   authMiddleware,
-  roleMiddleware([UserRole.STUDENT]),
+  roleMiddleware([UserRole.INSTRUCTOR]),
   bodyValidator(createEnrollmentSchema),
   enroll
 );
