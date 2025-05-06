@@ -3,7 +3,7 @@ import HttpException from '../../utils/api/httpException';
 import {
   ICreateCourseSchema,
   IUpdatedCourseSchema,
-  IDeleteCourseSchema
+  IDeleteCourseSchema,
 } from '../course/courseValidation';
 
 class CourseService {
@@ -67,8 +67,7 @@ class CourseService {
         ...(data.content !== undefined && { content: data.content }),
         ...(data.duration !== undefined && { duration: data.duration }),
         ...(data.period !== undefined && { period: data.period }),
-      }
-      
+      },
     });
 
     return updatedCourse;
@@ -76,30 +75,30 @@ class CourseService {
   async deleteCourse(instructorId: string, data: IDeleteCourseSchema) {
     const courseId = data.courseId;
     if (!courseId) {
-    const course = await prisma.course.findUnique({
-      where: { id: courseId },
-    });
+      const course = await prisma.course.findUnique({
+        where: { id: courseId },
+      });
 
-    if (!course) {
-      throw new HttpException(404, 'Course not found');
+      if (!course) {
+        throw new HttpException(404, 'Course not found');
+      }
+
+      if (course.instructorId !== instructorId) {
+        throw new HttpException(
+          403,
+          'You are not authorized to delete this course'
+        );
+      }
+
+      await prisma.course.delete({
+        where: { id: courseId },
+      });
+
+      return {
+        message: 'Course deleted successfully',
+      };
     }
-
-    if (course.instructorId !== instructorId) {
-      throw new HttpException(
-        403,
-        'You are not authorized to delete this course'
-      );
-    }
-
-    await prisma.course.delete({
-      where: { id: courseId },
-    });
-
-    return {
-      message: 'Course deleted successfully',
-    };
   }
-}
 }
 
 export default new CourseService();

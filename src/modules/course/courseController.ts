@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express';
 import { HttpResponse } from '../../utils/api/httpResponse';
 import type {
   ICreateCourseSchema,
-  updateCourseSchema,
 } from './courseValidation';
 import courseService from './courseService';
 import HttpException from '../../utils/api/httpException';
@@ -63,8 +62,6 @@ export const updateCourse = async (
     next(error);
   }
 };
-
-
 
 export const deleteCourse = async (
   req: Request,

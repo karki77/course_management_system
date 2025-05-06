@@ -87,9 +87,18 @@ export const verifyToken = (token: string): IUser => {
   }
 };
 
-export function authorizeInstructor(req: Request, res: Response, next: NextFunction) {
+export function authorizeInstructor(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   if (!req.user || req.user.role !== 'INSTRUCTOR') {
-    return next(new HttpException(403, 'Only instructors are allowed to perform this action'));
+    return next(
+      new HttpException(
+        403,
+        'Only instructors are allowed to perform this action'
+      )
+    );
   }
   next();
 }

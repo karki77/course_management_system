@@ -5,9 +5,9 @@ import type { ZodTypeAny } from 'zod';
 import type { Request, Response, NextFunction } from 'express';
 
 /**
- * Query validator
+ * Param validator
  */
-const queryValidator =
+const paramValidator =
   (schema: ZodTypeAny) =>
   (
     req: Request<unknown, unknown, unknown, unknown>,
@@ -15,7 +15,8 @@ const queryValidator =
     next: NextFunction
   ): void => {
     try {
-      req.query = schema.parse(req.query);
+      req.params = schema.parse(req.params);
+
       next();
       return;
     } catch (error) {
@@ -24,11 +25,11 @@ const queryValidator =
 
       res.status(422).json({
         success: false,
-        message: 'Query validation error!',
+        message: 'Param validation error!',
         errors: errorObj,
       });
       return;
     }
   };
 
-export default queryValidator;
+export default paramValidator;

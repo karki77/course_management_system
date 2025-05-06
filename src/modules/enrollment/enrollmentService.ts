@@ -4,16 +4,15 @@ import { sendEmail } from '../../utils/email/service';
 import { ICreateEnrollmentSchema } from './enrollmentValidation';
 
 class EnrollmentService {
-  async enroll(instructorId: string, data:ICreateEnrollmentSchema) {
+  async enroll(instructorId: string, data: ICreateEnrollmentSchema) {
     // Check if the user is an instructor
     const instructor = await prisma.user.findUnique({
       where: { id: instructorId },
     });
-    
+
     if (!instructor || instructor.role !== 'INSTRUCTOR') {
       throw new HttpException(403, 'User is not an instructor');
     }
-    
 
     // check student is exist or not in database
     const student = await prisma.user.findUnique({
@@ -50,8 +49,9 @@ class EnrollmentService {
       },
     });
   }
-  async getAllEnrolledUsers() {
+  async getAllEnrolledUsers(courseId: string) {
     const enrollments = await prisma.courseEnrollment.findMany({
+      where: { courseId },
       include: {
         user: {
           select: {
@@ -69,16 +69,13 @@ class EnrollmentService {
       },
     });
 
-    return enrollments.map(enrollment => ({
+    return enrollments.map((enrollment) => ({
       studentId: enrollment.user.id,
       course: enrollment.course.title,
       duration: enrollment.course.duration,
       period: enrollment.course.period,
     }));
   }
-  
 }
-
-
 
 export default new EnrollmentService();

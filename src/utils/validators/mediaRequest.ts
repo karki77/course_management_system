@@ -27,6 +27,8 @@ export const mediaRequest = (
     req.body = payload;
     next();
   } catch (error) {
+    // if your file is not upload, -> upload error 
+    // file -> delete.
     next(error);
     console.log(error);
   }

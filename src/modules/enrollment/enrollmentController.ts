@@ -34,17 +34,21 @@ export const getAllEnrolledUsers = async (
   next: NextFunction
 ) => {
   try {
-    const instructorId = req.user?.id;
+    const instructorId = req.params.courseId;
     if (!instructorId) {
       throw new HttpException(401, 'User not authenticated');
     }
 
-   
-      const enrollments = await EnrollmentService.getAllEnrolledUsers();
-      res.send(new HttpResponse({ data: enrollments }));
-    } catch (error) {
-      next(error);
-    }
+    const enrollments = await EnrollmentService.getAllEnrolledUsers(
+      req.params.courseId
+    );
+    res.send(
+      new HttpResponse({
+        message: 'Enrollment fetched successfully',
+        data: enrollments,
+      })
+    );
+  } catch (error) {
+    next(error);
   }
-
-
+};
