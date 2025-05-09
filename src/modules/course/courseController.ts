@@ -4,10 +4,12 @@ import { HttpResponse } from '../../utils/api/httpResponse';
 
 import type {
   ICreateCourseSchema,
+  ICreateModuleSchema,
 } from './courseValidation';
 
 import courseService from './courseService';
 import HttpException from '../../utils/api/httpException';
+import { title } from 'process';
 
 export const createCourse = async (
   req: Request<unknown, unknown, ICreateCourseSchema>,
@@ -79,6 +81,25 @@ export const deleteCourse = async (
     res.send(
       new HttpResponse({
         message: 'Course deleted successfully',
+      })
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const createModule = async (
+  req: Request<unknown, unknown, ICreateModuleSchema>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const module = await courseService.createModule(req.body);
+
+    res.send(
+      new HttpResponse({
+        message: 'Module created successfully',
+        data: module,
       })
     );
   } catch (error) {

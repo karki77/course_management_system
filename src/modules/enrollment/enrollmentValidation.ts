@@ -11,6 +11,13 @@ export const createEnrollmentSchema = z
   })
   .strict();
 
-export type ICreateEnrollmentSchema = z.infer<typeof createEnrollmentSchema>;
+export const paramUserSchema = z
+  .object({
+    studentId: z
+      .string({ required_error: 'Student Id is required' })
+      .uuid({ message: 'StudentId must be a valid UUID' }),
+  })
+  .strict();
 
-// add/update/delete_model_fields.
+export type IParamsUserSchema = z.infer<typeof paramUserSchema>;
+export type ICreateEnrollmentSchema = z.infer<typeof createEnrollmentSchema>;

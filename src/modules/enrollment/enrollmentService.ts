@@ -1,3 +1,4 @@
+import { title } from 'process';
 import { prisma } from '../../config';
 import HttpException from '../../utils/api/httpException';
 import { sendEmail } from '../../utils/email/service';
@@ -49,31 +50,70 @@ class EnrollmentService {
       },
     });
   }
+
   async getAllEnrolledUsers(courseId: string) {
     const enrollments = await prisma.courseEnrollment.findMany({
       where: { courseId },
       include: {
-        user: {
-          select: {
-            id: true, // studentId
-          },
-        },
+        user: true,
         course: {
           select: {
             id: true,
             title: true,
             duration: true,
             period: true,
+            module: {
+              select: {
+                id: true,
+                title: true,
+              },
+            },
           },
         },
       },
     });
 
     return enrollments.map((enrollment) => ({
-      studentId: enrollment.user.id,
+      student: enrollment.user,
       course: enrollment.course.title,
       duration: enrollment.course.duration,
       period: enrollment.course.period,
+      modules: enrollment.course.module,
+    }));
+  }
+
+  async viewAllEnrolledCourses(studentId: string) {
+
+    
+
+    const enrollments = await prisma.courseEnrollment.findMany({
+      where: { userId: studentId },
+      include: {
+        user: true,
+        course: {
+          select: {
+            id: true,
+            title: true,
+            duration: true,
+            period: true,
+            module: {
+              select: {
+                id: true,
+                title: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+
+    return enrollments.map((enrollment) => ({
+      courseId: enrollment.course.id,
+      courseTitle: enrollment.course.title,
+      duration: enrollment.course.duration,
+      period: enrollment.course.period,
+      modules: enrollment.course.module,
     }));
   }
 }

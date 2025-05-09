@@ -13,9 +13,16 @@ import { roleMiddleware } from '../middleware/rolemiddleware';
 
 import upload from '../utils/multer';
 import { updateProfileSchema } from '../modules/user/validation';
-import { createEnrollmentSchema } from '../modules/enrollment/enrollmentValidation';
-import { enroll } from '../modules/enrollment/enrollmentController';
+import {
+  createEnrollmentSchema,
+  paramUserSchema,
+} from '../modules/enrollment/enrollmentValidation';
+import {
+  enroll,
+  viewAllEnrolledCourses,
+} from '../modules/enrollment/enrollmentController';
 import { mediaRequest } from '../utils/validators/mediaRequest';
+import paramsValidator from '../utils/validators/paramValidator';
 
 import {
   registerUser,
@@ -71,6 +78,14 @@ userRouter.post(
   roleMiddleware([UserRole.INSTRUCTOR]),
   bodyValidator(createEnrollmentSchema),
   enroll
+);
+
+userRouter.get(
+  '/viewcourses/:userId',
+  authMiddleware,
+  roleMiddleware([UserRole.STUDENT]),
+  paramsValidator(paramUserSchema),
+  viewAllEnrolledCourses
 );
 
 export default userRouter;

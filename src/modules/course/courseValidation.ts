@@ -56,24 +56,24 @@ export const updateCourseSchema = z
   })
   .strict();
 
-export const paramsSchema = z
+export const paramsCourseSchema = z
   .object({
     courseId: z
       .string({ required_error: 'Course ID is required' })
       .uuid({ message: 'Course ID must be a valid UUID' }),
   })
   .strict();
-  export const createModuleSchema = z.object({
-    title: z
-      .string()
-      .min(1, "Title is required")
-      .max(100, "Title must be at most 100 characters long"),
-    courseId: z
-      .string()
-      .uuid("Invalid course ID format"),
-  });
+
+export const createModuleSchema = z.object({
+  title: z
+    .string()
+    .min(1, 'Title is required')
+    .max(100, 'Title must be at most 100 characters long'),
+  courseId: z.string().uuid('Invalid course ID format'),
+});
 
 // Type inference
 export type ICreateCourseSchema = z.infer<typeof createCourseSchema>;
 export type IUpdatedCourseSchema = z.infer<typeof updateCourseSchema>;
-export type IParamsSchema = z.infer<typeof paramsSchema>;
+export type IParamsSchema = z.infer<typeof paramsCourseSchema>;
+export type ICreateModuleSchema = z.infer<typeof createModuleSchema>;
