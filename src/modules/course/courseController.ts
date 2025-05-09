@@ -1,8 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
+
 import { HttpResponse } from '../../utils/api/httpResponse';
+
 import type {
   ICreateCourseSchema,
 } from './courseValidation';
+
 import courseService from './courseService';
 import HttpException from '../../utils/api/httpException';
 
@@ -42,11 +45,7 @@ export const updateCourse = async (
     }
 
     const courseId = req.params.courseId;
-    if (!courseId) {
-      throw new HttpException(400, 'Course ID is required');
-    }
-
-    const updatedCourse = await courseService.updateCourse(
+    const response = await courseService.updateCourse(
       instructorId,
       courseId,
       req.body
@@ -55,7 +54,7 @@ export const updateCourse = async (
     res.send(
       new HttpResponse({
         message: 'Course updated successfully',
-        data: updatedCourse,
+        data: response,
       })
     );
   } catch (error) {
@@ -75,12 +74,7 @@ export const deleteCourse = async (
     }
 
     const courseId = req.params.courseId;
-    if (!courseId) {
-      throw new HttpException(400, 'Course ID is required');
-    }
-
-    const data = { courseId };
-    await courseService.deleteCourse(instructorId, data);
+    await courseService.deleteCourse(instructorId, courseId);
 
     res.send(
       new HttpResponse({

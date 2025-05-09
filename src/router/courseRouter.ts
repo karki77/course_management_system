@@ -12,9 +12,9 @@ import {
 import {
   createCourseSchema,
   updateCourseSchema,
-  deleteCourseSchema,
   paramsSchema,
 } from '../modules/course/courseValidation';
+
 import { authMiddleware } from '../middleware/authMiddleware';
 import { roleMiddleware } from '../middleware/rolemiddleware';
 import paramValidator from '../utils/validators/paramValidator';
@@ -43,14 +43,14 @@ courseRouter.delete(
   authMiddleware,
   roleMiddleware([UserRole.INSTRUCTOR]),
   paramValidator(paramsSchema),
-  bodyValidator(deleteCourseSchema),
   deleteCourse
 );
 
 courseRouter.get(
-  '/enroll/:id',
+  '/enroll/:courseId',
   authMiddleware,
   roleMiddleware([UserRole.INSTRUCTOR]),
+  paramValidator(paramsSchema),
   getAllEnrolledUsers
 );
 

@@ -33,6 +33,7 @@ model User{
 }
 
 model Profile{
+
   id        String   @id @default(uuid())
   bio       String?
   user      User     @relation(fields: [userId], references: [id])
@@ -50,6 +51,7 @@ model Course{
   instructorId   String
   duration       Int?
   period         String?
+  module         Module[]
   enrollments    CourseEnrollment[]
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
@@ -65,3 +67,70 @@ model CourseEnrollment{
   updatedAt DateTime @updatedAt
   @@unique([userId, courseId]) 
 }
+
+model Module {
+  id String @id @default(uuid())
+  title String
+  course Course @relation(fields: [courseId], references: [id])
+  courseId String
+  lessons Lesson[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Lesson {
+  id String @id @default(uuid())
+  title String
+  content String
+  module Module @relation(fields: [moduleId], references: [id])
+  moduleId String
+  videoUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+// cron job -> 
+
+
+// HAMRO BAZAR DATABASE DESIGN
+
+// model Category{
+// id                    String    @id @default(uuid())
+// name                  String    @unique
+// updatedAt             DateTime       @updatedAt
+// }
+
+// // sub category
+// // 1 category -> M SUB CATEGORY
+
+// // 1 sub category -> multiple products
+
+
+// model Product{
+// id                    String        @id @default(uuid())
+// name                  String        @unique
+// // category
+// // sub category
+// description           String
+// price                 String // prisma orm
+// // enum
+// // address
+// // latitude
+// // longitute
+// // created user -> eg. john doe
+// // image -> 1-1 relation
+// // images: priductImages // normaliation.
+// // isTrending -> true / false
+// // isRecommended -> true / false
+// // createdAt
+// // isNegotiated -> true / false (fixed price)
+// updateAt              DateTime      @updatedAt
+// }
+
+// // analytic table product
+// // top 5 product --> 
+
+
+// // 1 product -> M Images
+// // productImage --> id, productId, image,
