@@ -10,7 +10,7 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "sourceMap": true,  
-    "rootDir": "src",
+    "rootDir": "./src",
     "outDir": "./dist",
     "baseUrl": "./src",  // If you need baseUrl
     "experimentalDecorators": true,
