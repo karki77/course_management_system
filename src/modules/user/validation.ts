@@ -85,3 +85,5 @@ export type IRegisterSchema = z.infer<typeof registerUserSchema>;
 export type ILoginSchema = z.infer<typeof loginUserSchema>;
 export type IChangePassword = z.infer<typeof changePasswordSchema>;
 export type IUpdateProfile = z.infer<typeof updateProfileSchema>;
+
+// validation for all users were initialized in the userValidation.ts file
