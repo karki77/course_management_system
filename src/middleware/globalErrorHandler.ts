@@ -5,19 +5,19 @@ const globalErrorHandler = async (
   req: Request,
   res: Response,
   next: NextFunction
-):Promise<void> => {
+): Promise<void> => {
   const statusCode = err.status ?? 500;
 
-   res.status(statusCode).json({
+  res.status(statusCode).json({
     success: false,
-    message: err?.message ?? "Something went wrong",
-    originalError: err?.stack
+    message: err?.message ?? 'Something went wrong',
+    originalError: err?.stack,
   });
 };
 
 export default globalErrorHandler;
 
-// change password -> 
+// change password ->
 // user should be authenticated.
 // user -> previous password should be correct
 // user -> new password should be different from previous password
@@ -27,7 +27,6 @@ export default globalErrorHandler;
 
 // payload // req.body -> oldPassword, newPassword
 
-// logger -> 
+// logger ->
 
 // nodejs -> node 22 ki 20.
-
