@@ -1,13 +1,14 @@
 import express from 'express';
 import morgan from 'morgan';
 import { PrismaClient } from '@prisma/client';
+import config from './config';
 
 import router from './router';
 import globalErrorHandler from './middleware/globalErrorHandler';
 
 const prisma = new PrismaClient();
 
-const PORT = process.env.PORT ?? 7000;
+const PORT = config.server.port || 9000;
 const app = express();
 
 // ✅ Custom morgan token for timestamp
