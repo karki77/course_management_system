@@ -1,8 +1,8 @@
 // paramId
 
-export const paramIdSchema= {
-    //
-}
+export const paramIdSchema = {
+  //
+};
 
 // pagination
 // page, limit

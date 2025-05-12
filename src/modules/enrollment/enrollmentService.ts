@@ -83,9 +83,6 @@ class EnrollmentService {
   }
 
   async viewAllEnrolledCourses(studentId: string) {
-
-    
-
     const enrollments = await prisma.courseEnrollment.findMany({
       where: { userId: studentId },
       include: {
@@ -106,7 +103,6 @@ class EnrollmentService {
         },
       },
     });
-
 
     return enrollments.map((enrollment) => ({
       courseId: enrollment.course.id,

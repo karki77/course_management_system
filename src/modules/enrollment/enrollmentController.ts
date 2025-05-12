@@ -58,13 +58,11 @@ export const viewAllEnrolledCourses = async (
   next: NextFunction
 ) => {
   try {
-
     const studentId = req.user?.id;
-    if(!studentId){
-      throw new HttpException (401, 'User not authenticated' );
+    if (!studentId) {
+      throw new HttpException(401, 'User not authenticated');
     }
 
-    
     const enrollsubjects = await EnrollmentService.viewAllEnrolledCourses(
       req.params.studentId
     );
