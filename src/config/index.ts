@@ -19,4 +19,3 @@ export default {
   },
   // Add other config settings here
 };
-

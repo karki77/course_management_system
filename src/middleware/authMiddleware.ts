@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import HttpException from '../utils/api/httpException';
 import { UserRole } from '@prisma/client';
+// import HttpException from '#utils/api/httpException';
+import HttpException from '../utils/api/httpException';
 
 // Define token payload type
 interface IUser {
