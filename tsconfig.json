@@ -9,7 +9,8 @@
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "sourceMap": true,
+    "sourceMap": true,  
+    "rootDir": "src",
     "outDir": "./dist",
     "baseUrl": "./src",  // If you need baseUrl
     "experimentalDecorators": true,
