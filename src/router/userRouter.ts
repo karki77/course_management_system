@@ -38,7 +38,36 @@ import {
 
 const userRouter = Router();
 
+/**
+ * @swagger
+ * /api/v1/user/login:
+ *   post:
+ *     summary: User login
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: user@example.com
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 example: strongpassword123
+ *     responses:
+ *       200:
+ *         description: Login successful
+ */
 userRouter.post('/login', bodyValidator(loginUserSchema), loginUser);
+
 userRouter.post('/register', bodyValidator(registerUserSchema), registerUser);
 userRouter.patch(
   '/change-password',

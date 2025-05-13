@@ -1,5 +1,5 @@
 import { title } from 'process';
-import { prisma } from '../../config/serverconfig';
+import { prisma } from '../../config/prismaClient';
 import HttpException from '../../utils/api/httpException';
 import { sendEmail } from '../../utils/email/service';
 import { ICreateEnrollmentSchema } from './enrollmentValidation';

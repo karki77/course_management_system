@@ -1,23 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 export const prisma = new PrismaClient();
-import swaggerJSDoc from 'swagger-jsdoc';
-
-const swaggerOptions: swaggerJSDoc.Options = {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'Course Management System API',
-      version: '1.0.0',
-      description: 'API documentation for Course Management System',
-    },
-  },
-  apis: [
-    './src/router/*.ts',        // Routes like userRouter.ts
-    './src/modules/**/*.ts',    // Controller/module logic
-  ],
-};
-
-export const swaggerSpec = swaggerJSDoc(swaggerOptions);
 
 
 import dotenv from 'dotenv';

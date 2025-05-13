@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import HttpException from '../utils/api/httpException';
-import { prisma } from '../config/serverconfig';
+import { prisma } from '../config/prismaClient';
 import { UserRole } from '@prisma/client';
 
 export const roleMiddleware = (allowedRoles: UserRole[]) => {
