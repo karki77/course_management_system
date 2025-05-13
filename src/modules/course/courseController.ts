@@ -14,7 +14,7 @@ import { title } from 'process';
 export const createCourse = async (
   req: Request<unknown, unknown, ICreateCourseSchema>,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const instructorId = req.user?.id;
@@ -28,7 +28,7 @@ export const createCourse = async (
       new HttpResponse({
         message: 'Course created successfully',
         data: course,
-      })
+      }),
     );
   } catch (error) {
     next(error);
@@ -38,7 +38,7 @@ export const createCourse = async (
 export const updateCourse = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const instructorId = req.user?.id;
@@ -50,14 +50,14 @@ export const updateCourse = async (
     const response = await courseService.updateCourse(
       instructorId,
       courseId,
-      req.body
+      req.body,
     );
 
     res.send(
       new HttpResponse({
         message: 'Course updated successfully',
         data: response,
-      })
+      }),
     );
   } catch (error) {
     next(error);
@@ -67,7 +67,7 @@ export const updateCourse = async (
 export const deleteCourse = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const instructorId = req.user?.id;
@@ -81,7 +81,7 @@ export const deleteCourse = async (
     res.send(
       new HttpResponse({
         message: 'Course deleted successfully',
-      })
+      }),
     );
   } catch (error) {
     next(error);
@@ -91,7 +91,7 @@ export const deleteCourse = async (
 export const createModule = async (
   req: Request<unknown, unknown, ICreateModuleSchema>,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const module = await courseService.createModule(req.body);
@@ -100,7 +100,7 @@ export const createModule = async (
       new HttpResponse({
         message: 'Module created successfully',
         data: module,
-      })
+      }),
     );
   } catch (error) {
     next(error);

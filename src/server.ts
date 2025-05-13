@@ -1,7 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import { PrismaClient } from '@prisma/client';
-import config from './config';
+import config from './config/serverconfig';
 
 import router from './router';
 import globalErrorHandler from './middleware/globalErrorHandler';
@@ -9,7 +9,12 @@ import globalErrorHandler from './middleware/globalErrorHandler';
 const prisma = new PrismaClient();
 
 const PORT = config.server.port || 9000;
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './config/serverconfig';
+
 const app = express();
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 
 // ✅ Custom morgan token for timestamp
 morgan.token('timestamp', () => new Date().toISOString());

@@ -1,4 +1,4 @@
-import { prisma } from '../../config';
+import { prisma } from '../../config/serverconfig';
 
 import HttpException from '../../utils/api/httpException';
 import type {
@@ -56,7 +56,7 @@ class CourseService {
   async updateCourse(
     instructorId: string,
     courseId: string,
-    data: IUpdatedCourseSchema
+    data: IUpdatedCourseSchema,
   ) {
     await this._getCourse(courseId, instructorId);
 
@@ -88,7 +88,7 @@ class CourseService {
     if (existingModule) {
       throw new HttpException(
         400,
-        'Module with this title already exists in the course'
+        'Module with this title already exists in the course',
       );
     }
 

@@ -14,7 +14,7 @@ try {
   }
 } catch (error) {
   console.error(
-    `Error creating upload directory: ${error instanceof Error ? error.message : String(error)}`
+    `Error creating upload directory: ${error instanceof Error ? error.message : String(error)}`,
   );
   throw new Error('Failed to create upload directory');
 }
@@ -32,7 +32,7 @@ const storage = multer.diskStorage({
 const fileFilter = (
   req: any,
   file: Express.Multer.File,
-  cb: multer.FileFilterCallback
+  cb: multer.FileFilterCallback,
 ) => {
   // Accept images, documents, and other common file types
   const allowedMimeTypes = [

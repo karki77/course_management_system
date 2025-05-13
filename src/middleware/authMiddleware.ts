@@ -25,7 +25,7 @@ export type ITokenType = 'REFRESH_TOKEN' | 'ACCESS_TOKEN';
 export const authMiddleware = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const authHeader = req.headers.authorization;
@@ -37,7 +37,7 @@ export const authMiddleware = async (
     // Verify token
     const decoded = jwt.verify(
       token,
-      process.env.JWT_SECRET_ACCESS as string
+      process.env.JWT_SECRET_ACCESS as string,
     ) as IUser;
 
     // Add user to request object
@@ -64,12 +64,12 @@ export const generateToken = (user: IUser) => {
   const accessToken = jwt.sign(
     { ...payload },
     process.env.JWT_SECRET_ACCESS as string,
-    { expiresIn: '7d' }
+    { expiresIn: '7d' },
   );
   const refreshToken = jwt.sign(
     { ...payload },
     process.env.JWT_SECRET_REFRESH as string,
-    { expiresIn: '15d' }
+    { expiresIn: '15d' },
   );
 
   //
@@ -80,7 +80,7 @@ export const verifyToken = (token: string): IUser => {
   try {
     const decoded = jwt.verify(
       token,
-      process.env.JWT_SECRET as string
+      process.env.JWT_SECRET as string,
     ) as IUser;
     return decoded;
   } catch (error) {
@@ -91,14 +91,14 @@ export const verifyToken = (token: string): IUser => {
 export function authorizeInstructor(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
   if (!req.user || req.user.role !== 'INSTRUCTOR') {
     return next(
       new HttpException(
         403,
-        'Only instructors are allowed to perform this action'
-      )
+        'Only instructors are allowed to perform this action',
+      ),
     );
   }
   next();

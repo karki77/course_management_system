@@ -9,7 +9,7 @@ import HttpException from '../api/httpException';
 export const mediaRequest = (
   req: Request,
   _res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const file = req?.file;

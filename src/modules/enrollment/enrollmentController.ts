@@ -11,7 +11,7 @@ import { IParamsSchema } from '#modules/course/courseValidation';
 export const enroll = async (
   req: Request<unknown, unknown, ICreateEnrollmentSchema>,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const instructorId = req.user?.id;
@@ -25,7 +25,7 @@ export const enroll = async (
       new HttpResponse({
         message: 'enrollment created successfully',
         data: enrollment,
-      })
+      }),
     );
   } catch (error) {
     next(error);
@@ -35,17 +35,17 @@ export const enroll = async (
 export const getAllEnrolledUsers = async (
   req: Request<IParamsSchema>,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const enrollments = await EnrollmentService.getAllEnrolledUsers(
-      req.params.courseId
+      req.params.courseId,
     );
     res.send(
       new HttpResponse({
         message: 'Enrollment fetched successfully',
         data: enrollments,
-      })
+      }),
     );
   } catch (error) {
     next(error);
@@ -55,7 +55,7 @@ export const getAllEnrolledUsers = async (
 export const viewAllEnrolledCourses = async (
   req: Request<IParamsUserSchema>,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const studentId = req.user?.id;
@@ -64,14 +64,14 @@ export const viewAllEnrolledCourses = async (
     }
 
     const enrollsubjects = await EnrollmentService.viewAllEnrolledCourses(
-      req.params.studentId
+      req.params.studentId,
     );
 
     res.send(
       new HttpResponse({
         message: 'Courses fetched successfully',
         data: enrollsubjects,
-      })
+      }),
     );
   } catch (error) {
     next(error);

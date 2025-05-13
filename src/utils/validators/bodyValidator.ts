@@ -12,7 +12,7 @@ const bodyValidator =
   (
     req: Request<unknown, unknown, unknown, unknown>,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ): void => {
     try {
       req.body = schema.parse(req.body);

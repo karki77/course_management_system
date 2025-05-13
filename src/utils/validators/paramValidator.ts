@@ -12,7 +12,7 @@ const paramValidator =
   (
     req: Request<unknown, unknown, unknown, unknown>,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ): void => {
     try {
       req.params = schema.parse(req.params);

@@ -1,4 +1,4 @@
-import { prisma } from '../../config';
+import { prisma } from '../../config/serverconfig';
 import HttpException from '../../utils/api/httpException';
 import { sendEmail } from '../../utils/email/service';
 import { generateToken } from '../../middleware/authMiddleware';
@@ -109,7 +109,7 @@ class UserService {
     // user.password, data.oldPassword -> check compare.
     const isOldPassordValid = await verifyPassword(
       user.password,
-      data.oldPassword
+      data.oldPassword,
     );
 
     if (!isOldPassordValid) {
@@ -120,7 +120,7 @@ class UserService {
     if (data.oldPassword === data.newPassword) {
       throw new HttpException(
         400,
-        'New password cannot be the same as the old password'
+        'New password cannot be the same as the old password',
       );
     }
 

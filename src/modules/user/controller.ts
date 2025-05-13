@@ -11,7 +11,7 @@ import UserService from './service';
 export const registerUser = async (
   req: Request<unknown, unknown, IRegisterSchema>,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const data = await UserService.register(req.body);
@@ -19,7 +19,7 @@ export const registerUser = async (
       new HttpResponse({
         message: 'User registered successfully',
         data,
-      })
+      }),
     );
   } catch (error) {
     next(error);
@@ -32,7 +32,7 @@ export const registerUser = async (
 export const loginUser = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const data = await UserService.login(req.body);
@@ -40,7 +40,7 @@ export const loginUser = async (
       new HttpResponse({
         message: 'User login successfully',
         data,
-      })
+      }),
     );
   } catch (error) {
     next(error);
@@ -54,7 +54,7 @@ export const loginUser = async (
 export const changePasssword = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     if (!req?.user?.id) {
@@ -65,7 +65,7 @@ export const changePasssword = async (
     res.send(
       new HttpResponse({
         message: 'Password changed successfully',
-      })
+      }),
     );
   } catch (error) {
     next(error);
@@ -75,7 +75,7 @@ export const changePasssword = async (
 export const updateProfile = async (
   req: Request<unknown, unknown, IUpdateProfile>,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     if (!req?.user?.id) {
@@ -94,7 +94,7 @@ export const updateProfile = async (
       new HttpResponse({
         message: 'Profile updated successfully',
         data: updatedprofile,
-      })
+      }),
     );
   } catch (error) {
     next(error);
@@ -103,7 +103,7 @@ export const updateProfile = async (
 export const getUserWithProfile = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     if (!req?.user?.id) {
@@ -114,7 +114,7 @@ export const getUserWithProfile = async (
       new HttpResponse({
         message: 'user with profile fetched successfully',
         data: user,
-      })
+      }),
     );
   } catch (error) {
     next(error);

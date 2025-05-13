@@ -44,7 +44,7 @@ userRouter.patch(
   '/change-password',
   authMiddleware,
   bodyValidator(changePasswordSchema),
-  changePasssword
+  changePasssword,
 );
 userRouter.get(
   '/role',
@@ -52,7 +52,7 @@ userRouter.get(
   roleMiddleware([UserRole.STUDENT]),
   async (req, res) => {
     res.json({ message: 'Hello from student router' });
-  }
+  },
 );
 userRouter.get(
   '/instructor',
@@ -60,7 +60,7 @@ userRouter.get(
   roleMiddleware([UserRole.INSTRUCTOR]),
   async (req, res) => {
     res.json({ message: 'Hello from instructor router' });
-  }
+  },
 );
 userRouter.patch(
   '/update-profile',
@@ -68,7 +68,7 @@ userRouter.patch(
   upload.single('file'),
   mediaRequest,
   bodyValidator(updateProfileSchema),
-  updateProfile
+  updateProfile,
 );
 userRouter.get('/profile', authMiddleware, getUserWithProfile);
 
@@ -77,7 +77,7 @@ userRouter.post(
   authMiddleware,
   roleMiddleware([UserRole.INSTRUCTOR]),
   bodyValidator(createEnrollmentSchema),
-  enroll
+  enroll,
 );
 
 userRouter.get(
@@ -85,7 +85,7 @@ userRouter.get(
   authMiddleware,
   roleMiddleware([UserRole.STUDENT]),
   paramsValidator(paramUserSchema),
-  viewAllEnrolledCourses
+  viewAllEnrolledCourses,
 );
 
 export default userRouter;

@@ -6,7 +6,7 @@ const errorMiddleware = (
   error: Error | HttpException,
   _req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): any => {
   console.error('Error caught in middleware:', error);
 
@@ -21,7 +21,7 @@ const errorMiddleware = (
           success: false,
           message: 'Internal Server Error',
           details: 'Error handling middleware encountered an unexpected issue.',
-        })
+        }),
       );
     } catch (fallbackError) {
       console.error('Failed to send fallback response:', fallbackError);

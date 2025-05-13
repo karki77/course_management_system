@@ -12,7 +12,7 @@ const queryValidator =
   (
     req: Request<unknown, unknown, unknown, unknown>,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ): void => {
     try {
       req.query = schema.parse(req.query);

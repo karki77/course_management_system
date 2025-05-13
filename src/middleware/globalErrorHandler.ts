@@ -4,7 +4,7 @@ const globalErrorHandler = async (
   err: any,
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> => {
   const statusCode = err.status ?? 500;
 

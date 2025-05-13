@@ -1,13 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 import HttpException from '../utils/api/httpException';
-import { prisma } from '../../src/config';
+import { prisma } from '../config/serverconfig';
 import { UserRole } from '@prisma/client';
 
 export const roleMiddleware = (allowedRoles: UserRole[]) => {
   return async (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ): Promise<void> => {
     try {
       if (!req.user?.email) {

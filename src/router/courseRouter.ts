@@ -27,7 +27,7 @@ courseRouter.post(
   authMiddleware,
   roleMiddleware([UserRole.INSTRUCTOR]),
   bodyValidator(createCourseSchema),
-  createCourse
+  createCourse,
 );
 
 courseRouter.patch(
@@ -36,7 +36,7 @@ courseRouter.patch(
   roleMiddleware([UserRole.INSTRUCTOR]),
   paramValidator(paramsCourseSchema),
   bodyValidator(updateCourseSchema),
-  updateCourse
+  updateCourse,
 );
 
 courseRouter.delete(
@@ -44,7 +44,7 @@ courseRouter.delete(
   authMiddleware,
   roleMiddleware([UserRole.INSTRUCTOR]),
   paramValidator(paramsCourseSchema),
-  deleteCourse
+  deleteCourse,
 );
 
 courseRouter.get(
@@ -52,7 +52,7 @@ courseRouter.get(
   authMiddleware,
   roleMiddleware([UserRole.INSTRUCTOR]),
   paramValidator(paramsCourseSchema),
-  getAllEnrolledUsers
+  getAllEnrolledUsers,
 );
 
 courseRouter.post(
@@ -60,7 +60,7 @@ courseRouter.post(
   authMiddleware,
   roleMiddleware([UserRole.INSTRUCTOR]),
   bodyValidator(createModuleSchema),
-  createModule
+  createModule,
 );
 
 //
