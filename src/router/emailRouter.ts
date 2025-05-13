@@ -3,6 +3,7 @@ import { sendEmail } from '../utils/email/service';
 import HttpException from '../utils/api/httpException';
 
 const emailRouter = Router();
+
 /**
  * @swagger
  * /api/v1/email/send-email:
@@ -37,6 +38,8 @@ const emailRouter = Router();
  *     responses:
  *       200:
  *         description: Email sent successfully
+ *     apiResponse:
+ *        message: {message: "Email sent successfully!"}
  */
 
 emailRouter.post('/send-email', async (req: Request, res: Response) => {
@@ -53,3 +56,14 @@ emailRouter.post('/send-email', async (req: Request, res: Response) => {
 });
 
 export default emailRouter;
+
+// role -> specific data.
+// INSTRUCTOR, STUDENT, ADMIN
+
+// update userProfile -> email(required), bio(optional), image(optional):
+
+
+// 200. success message
+// api response: {data: {username: "", email: "", bio: "", image: ""}}
+
+// api response type: {data: {username: string, email: string, bio: string, image: string}}

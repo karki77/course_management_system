@@ -161,6 +161,8 @@ courseRouter.get(
  *   post:
  *     summary: Create a new module for a course
  *     tags: [Course]
+ *     security:
+ *      - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:

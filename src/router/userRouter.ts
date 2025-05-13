@@ -65,6 +65,8 @@ const userRouter = Router();
  *     responses:
  *       200:
  *         description: Login successful
+ *     apiResponse:
+ *       message: {data: {user: {id: "<user_id>", name: "<user_name>", email: "<user_email>", role: "<user_role>"}, accessToken: "<access_token>", refreshToken: "<refresh_token>"}}
  */
 userRouter.post('/login', bodyValidator(loginUserSchema), loginUser);
 

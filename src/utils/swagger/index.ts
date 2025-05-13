@@ -1,25 +1,5 @@
-/**
- * swagger ma esari esari documentation.
- */
-
-// 2 hours -> 30 min.
-
-// web socket // socket.io
-
-// DOCS
-
-// RADIS
-// DOCS
-
-
 import swaggerJSDoc from 'swagger-jsdoc';
 
-/**
- * Swagger configuration
- * 
- * For Route Documentation:
- * 1. router in this file: ./src/router
- */
 const swaggerOptions: swaggerJSDoc.Options = {
   definition: {
     openapi: '3.0.0',
@@ -28,11 +8,26 @@ const swaggerOptions: swaggerJSDoc.Options = {
       version: '1.0.0',
       description: 'API documentation for Course Management System',
     },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT', 
+        },
+      },
+    },
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
   },
   apis: [
-    './src/router/*.ts',        // Routes like userRouter.ts
-    './src/modules/**/*.ts',    // Controller/module logic
+    './src/router/*.ts',     
+    './src/modules/**/*.ts',  
   ],
 };
 
 export const swaggerSpec = swaggerJSDoc(swaggerOptions);
+
