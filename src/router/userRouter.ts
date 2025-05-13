@@ -65,8 +65,41 @@ const userRouter = Router();
  *     responses:
  *       200:
  *         description: Login successful
- *     apiResponse:
- *       message: {data: {user: {id: "<user_id>", name: "<user_name>", email: "<user_email>", role: "<user_role>"}, accessToken: "<access_token>", refreshToken: "<refresh_token>"}}
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Login successful
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     user:
+ *                       type: object
+ *                       properties:
+ *                         id:
+ *                           type: string
+ *                           example: "user_123"
+ *                         name:
+ *                           type: string
+ *                           example: "John Doe"
+ *                         email:
+ *                           type: string
+ *                           example: "user@example.com"
+ *                         role:
+ *                           type: string
+ *                           example: "student"
+ *                     accessToken:
+ *                       type: string
+ *                       example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *                     refreshToken:
+ *                       type: string
+ *                       example: "dGhpc2lzYXJlZnJlc2h0b2tlbg=="
  */
 userRouter.post('/login', bodyValidator(loginUserSchema), loginUser);
 
