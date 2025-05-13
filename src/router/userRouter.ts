@@ -164,6 +164,29 @@ userRouter.get(
     res.json({ message: 'Hello from instructor router' });
   },
 );
+
+/**
+ * @swagger
+ * /api/v1/user/update-profile: 
+ *  patch:        
+ *     summary: Update user profile
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               bio:
+ *                 type: string
+ *               profilePicture:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Profile updated successfully
+ */
+
 userRouter.patch(
   '/update-profile',
   authMiddleware,
@@ -174,6 +197,28 @@ userRouter.patch(
 );
 userRouter.get('/profile', authMiddleware, getUserWithProfile);
 
+/**
+ * @swagger
+ * /api/v1/user/enroll:
+ *   post:
+ *     summary: Enroll in a course
+ *     tags: [Enrollment]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - courseId
+ *             properties:
+ *               courseId:
+ *                 type: string
+ *                 example: 12345
+ *     responses:
+ *       200:
+ *         description: Enrollment successful
+ */
 userRouter.post(
   '/enroll',
   authMiddleware,
@@ -182,6 +227,24 @@ userRouter.post(
   enroll,
 );
 
+
+/**
+ * @swagger
+ * /api/v1/user/viewcourses/{userId}:
+ *   get:
+ *     summary: View all enrolled courses for a user
+ *     tags: [Enrollment]
+ *     parameters:
+ *       - name: userId
+ *         in: path
+ *         required: true
+ *         description: ID of the user
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved enrolled courses
+ */
 userRouter.get(
   '/viewcourses/:userId',
   authMiddleware,
