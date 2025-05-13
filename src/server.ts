@@ -1,8 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import { PrismaClient } from '@prisma/client';
-import config from './config/prismaClient';
-
+import config from './config/envConfig';
 import router from './router';
 import globalErrorHandler from './middleware/globalErrorHandler';
 import { setupSwagger } from './utils/swagger/swaggerUi';  // 👈 one simple import
