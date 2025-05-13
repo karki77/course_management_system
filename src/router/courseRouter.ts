@@ -22,6 +22,36 @@ import paramValidator from '../utils/validators/paramValidator';
 
 const courseRouter = Router();
 
+/**
+ * @swagger
+ * /api/v1/course/create:
+ *   post:
+ *     summary: Create a new course
+ *     tags: [Course]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: Introduction to Programming
+ *               content:
+ *                 type: string
+ *                 example: A beginner's guide to programming.
+ *               duration:
+ *                 type: integer
+ *                 example: 30
+ *               period:
+ *                 type: string
+ *                 example: 3 months
+ * responses:
+ *       200:
+ *         description: course created successfully
+ */
+ 
 courseRouter.post(
   '/create',
   authMiddleware,
@@ -30,6 +60,41 @@ courseRouter.post(
   createCourse,
 );
 
+/**
+ * @swagger
+ * /api/v1/course/update/{courseId}:
+ *   patch:
+ *     summary: Update a course
+ *     tags: [Course]
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         required: true
+ *         description: ID of the course to update
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *        content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: Introduction to Programming
+ *               content:
+ *                 type: string
+ *                 example: A beginner's guide to programming.
+ *               duration:
+ *                 type: integer
+ *                 example: 30
+ *               period:
+ *                 type: string
+ *                 example: 3 months
+ * responses:
+ *       200:
+ *         description: course updated successfully
+ */
 courseRouter.patch(
   '/update/:courseId',
   authMiddleware,
@@ -39,6 +104,23 @@ courseRouter.patch(
   updateCourse,
 );
 
+/**
+ * @swagger
+ * /api/v1/course/delete/{courseId}:
+ *   delete:
+ *     summary: Delete a course
+ *     tags: [Course]
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         required: true
+ *         description: ID of the course to delete
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Course deleted successfully
+ */
 courseRouter.delete(
   '/delete/:courseId',
   authMiddleware,
@@ -47,6 +129,23 @@ courseRouter.delete(
   deleteCourse,
 );
 
+/**
+ * @swagger
+ * /api/v1/course/enroll/{courseId}:
+ *   get:
+ *     summary: Get all enrolled users for a course
+ *     tags: [Enrollment]
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         required: true
+ *         description: ID of the course
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: List of enrolled users
+ */
 courseRouter.get(
   '/enroll/:courseId',
   authMiddleware,
@@ -55,6 +154,30 @@ courseRouter.get(
   getAllEnrolledUsers,
 );
 
+
+/**
+ * @swagger
+ * /api/v1/course/create-module:
+ *   post:
+ *     summary: Create a new module for a course
+ *     tags: [Course]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: Introduction to Programming
+ *               courseId:
+ *                 type: string
+ *                 example: example123
+ *     responses:
+ *       200:
+ *         description: Module created successfully
+ */
 courseRouter.post(
   '/create-module',
   authMiddleware,
