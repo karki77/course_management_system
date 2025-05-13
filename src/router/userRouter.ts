@@ -68,15 +68,88 @@ const userRouter = Router();
  */
 userRouter.post('/login', bodyValidator(loginUserSchema), loginUser);
 
+/**
+ * @swagger
+ * /api/v1/user/register:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *              - name
+ *               - email
+ *               - password
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 example: John Doe
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: john@example.com
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 example: strongpassword123
+ *     responses:
+ *       200:
+ *         description: User registered successfully
+ */
+
 userRouter.post('/register', bodyValidator(registerUserSchema), registerUser);
+
+/**
+ * @swagger
+ * /api/v1/user/change-password:
+ *   patch:
+ *     summary: Change user password
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - oldPassword
+ *               - newPassword
+ *             properties:
+ *               oldPassword:
+ *                 type: string
+ *                 format: password
+ *                 example: oldpassword123
+ *               newPassword:
+ *                 type: string
+ *                 format: password
+ *                 example: newpassword123
+ *     responses:
+ *       200:
+ *         description: Password changed successfully
+ */
 userRouter.patch(
   '/change-password',
   authMiddleware,
   bodyValidator(changePasswordSchema),
   changePasssword,
 );
+
+/**
+ * @swagger
+ * /api/v1/user/role:
+ *   get:
+ *     summary: Get user role
+ *     tags: [Auth]
+ *     responses:
+ *       200:
+ *         description: User role retrieved successfully
+ */
 userRouter.get(
-  '/role',
+  '/student',
   authMiddleware,
   roleMiddleware([UserRole.STUDENT]),
   async (req, res) => {
