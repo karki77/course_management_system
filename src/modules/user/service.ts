@@ -1,18 +1,22 @@
-import { prisma } from '../../config/prismaClient';
-import cryto from 'crypto';
-import { sendVerificationEmail } from '#utils/email/email';
 import HttpException from '../../utils/api/httpException';
+
+import { prisma } from '../../config/prismaClient';
 import { sendEmail } from '../../utils/email/service';
 import { generateToken } from '../../middleware/authMiddleware';
+
 import { hashPassword, verifyPassword } from '../../utils/password/hash';
-import {
-  type IRegisterSchema,
-  type ILoginSchema,
-  type IChangePassword,
-  type IUpdateProfile,
+import type {
+  IRegisterSchema,
+  ILoginSchema,
+  IChangePassword,
+  IUpdateProfile,
   IVerifyEmailSchema,
 } from './validation';
 
+
+/**
+ * User Service
+ */
 class UserService {
   async register(data: IRegisterSchema) {
     const existingUser = await prisma.user.findFirst({
@@ -41,35 +45,15 @@ class UserService {
       },
     });
 
-    // transaction
-    let emailResult;
-    try {
-      emailResult = await sendEmail({
-        to: user.email,
-        subject: 'Welcome to our courses platform',
-        text: `Hello ${user.username}, welcome to our platform!`,
-        html: `<h1>Welcome ${user.username}!</h1><p>We're excited to have you join our learning platform.</p>`,
-      });
+    await sendEmail({
+      to: user.email,
+      subject: 'Welcome to our courses platform',
+      text: `Hello ${user.username}, welcome to our platform!`,
+      html: `<h1>Welcome ${user.username}!</h1><p>We're excited to have you join our learning platform.</p>`,
+    });
 
-      // Return both user and email info
-      return {
-        user,
-        emailInfo: {
-          status: 'sent',
-          messageId: emailResult.messageId,
-          response: emailResult.response,
-        },
-      };
-    } catch (error) {
-      // Email failed but user was created
-      return {
-        user,
-        emailInfo: {
-          status: 'failed',
-          message: 'Email could not be sent',
-        },
-      };
-    }
+    //
+    return user
   }
 
   async verifyEmail(data: IVerifyEmailSchema, code: any) {
@@ -187,6 +171,7 @@ class UserService {
       },
     });
   }
+  
   async getUserWithProfile(userId: string) {
     const user = await prisma.user.findUnique({
       where: { id: userId },
@@ -204,4 +189,5 @@ class UserService {
   }
 }
 
+//
 export default new UserService();

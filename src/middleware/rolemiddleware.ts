@@ -1,12 +1,16 @@
-import { Request, Response, NextFunction } from 'express';
-import HttpException from '../utils/api/httpException';
-import { prisma } from '../config/prismaClient';
 import { UserRole } from '@prisma/client';
+import { Request, Response, NextFunction } from 'express';
 
+import { prisma } from '../config/prismaClient';
+import HttpException from '../utils/api/httpException';
+
+/**
+ * Role Middleware
+ */
 export const roleMiddleware = (allowedRoles: UserRole[]) => {
   return async (
     req: Request,
-    res: Response,
+    _res: Response,
     next: NextFunction,
   ): Promise<void> => {
     try {
@@ -18,7 +22,6 @@ export const roleMiddleware = (allowedRoles: UserRole[]) => {
         where: { email: req.user.email },
       });
 
-      // user role
       if (!user) {
         throw new HttpException(401, 'Unauthenticated');
       }

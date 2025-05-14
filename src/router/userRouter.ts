@@ -140,11 +140,7 @@ userRouter.post('/login', bodyValidator(loginUserSchema), loginUser);
 
 userRouter.post('/register', bodyValidator(registerUserSchema), registerUser);
 
-userRouter.post(
-  '/verify-email',
-  bodyValidator(verifyEmailSchema),
-  verifyEmail
-);
+userRouter.post('/verify-email', bodyValidator(verifyEmailSchema), verifyEmail);
 
 /**
  * @swagger
@@ -180,7 +176,7 @@ userRouter.patch(
   '/change-password',
   authMiddleware,
   bodyValidator(changePasswordSchema),
-  changePassword
+  changePassword,
 );
 
 /**
@@ -307,7 +303,6 @@ userRouter.post(
   bodyValidator(createEnrollmentSchema),
   enroll,
 );
-
 
 /**
  * @swagger

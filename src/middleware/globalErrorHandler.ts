@@ -14,19 +14,5 @@ const globalErrorHandler = async (
     originalError: err?.stack,
   });
 };
-
 export default globalErrorHandler;
 
-// change password ->
-// user should be authenticated.
-// user -> previous password should be correct
-// user -> new password should be different from previous password
-// user -> new password should be strong enough
-// user -> new password should be hashed before saving to db
-// user -> new password should be saved to db
-
-// payload // req.body -> oldPassword, newPassword
-
-// logger ->
-
-// nodejs -> node 22 ki 20.

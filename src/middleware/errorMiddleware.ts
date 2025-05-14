@@ -1,5 +1,6 @@
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import type { Request, Response, NextFunction } from 'express';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+
 import HttpException from '../utils/api/httpException';
 
 const errorMiddleware = (

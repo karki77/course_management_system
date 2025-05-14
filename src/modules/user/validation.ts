@@ -4,11 +4,15 @@ import { z } from 'zod';
 export const registerUserSchema = z
   .object({
     email: z
-      .string()
+      .string({
+        required_error: 'Email is required',
+        invalid_type_error: 'Email must be a string',
+      })
       .toLowerCase()
+      .trim()
       .email({ message: 'Invalid email address' })
-      .min(5)
-      .max(50),
+      .min(5, 'Email must be at least 5 characters long')
+      .max(50, 'Email must be at most 50 characters long'),
     username: z
       .string({ required_error: 'Username is required' })
       .toLowerCase()
