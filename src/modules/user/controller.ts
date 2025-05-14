@@ -26,6 +26,29 @@ export const registerUser = async (
   }
 };
 
+
+/**
+ * Verify Email
+ */
+export const verifyEmail = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { email, code } = req.body;
+    const verificationCode = await UserService.verifyEmail(email, code);
+    res.send(
+      new HttpResponse({
+        message: 'Email verified successfully',
+        data: verificationCode,
+      }),
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
 /**
  * Login User
  */

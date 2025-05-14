@@ -1,4 +1,6 @@
 import { prisma } from '../../config/prismaClient';
+import cryto from 'crypto';
+import { sendVerificationEmail } from '#utils/email/email';
 import HttpException from '../../utils/api/httpException';
 import { sendEmail } from '../../utils/email/service';
 import { generateToken } from '../../middleware/authMiddleware';
@@ -67,6 +69,28 @@ class UserService {
         },
       };
     }
+  }
+
+  async verifyEmail(email: string, code: string) {
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!user) {
+      throw new HttpException(404, 'User not found');
+    }
+    if (user.verificationCode !== code) {
+      throw new HttpException(400, 'Invalid verification code');
+    }
+    const verificationCode = user.verificationCode;
+    await prisma.user.update({
+      where: { email },
+      data: {
+        isEmailVerified: true,
+        verificationCode: null, // clear code after successful verification
+      },
+    });
+    return verificationCode;
   }
 
   async login(data: ILoginSchema) {

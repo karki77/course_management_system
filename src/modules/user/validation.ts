@@ -36,6 +36,21 @@ export const registerUserSchema = z
   })
   .strict();
 
+export const verifyEmailSchema = z
+  .object({
+    email: z
+      .string()
+      .toLowerCase()
+      .email({ message: 'Invalid email address' })
+      .min(5)
+      .max(50),
+    code: z
+      .string({ required_error: 'Verification code is required' })
+      .min(6, { message: 'Verification code must be at least 6 characters' })
+      .max(6, { message: 'Verification code must be at most 6 characters' }),
+  })
+  .strict();
+
 export const loginUserSchema = z
   .object({
     email: z.string().toLowerCase().email({ message: 'Invalid email address' }),
@@ -82,6 +97,7 @@ export const updateProfileSchema = z
   .strict();
 
 export type IRegisterSchema = z.infer<typeof registerUserSchema>;
+export type IVerifyEmailSchema = z.infer<typeof verifyEmailSchema>;
 export type ILoginSchema = z.infer<typeof loginUserSchema>;
 export type IChangePassword = z.infer<typeof changePasswordSchema>;
 export type IUpdateProfile = z.infer<typeof updateProfileSchema>;

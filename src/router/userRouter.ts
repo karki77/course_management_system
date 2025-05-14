@@ -138,6 +138,10 @@ userRouter.post('/login', bodyValidator(loginUserSchema), loginUser);
 
 userRouter.post('/register', bodyValidator(registerUserSchema), registerUser);
 
+userRouter.post(
+  '/verify-email',
+  ver
+    
 /**
  * @swagger
  * /api/v1/user/change-password:
