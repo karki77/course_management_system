@@ -28,6 +28,8 @@ model User{
   profile   Profile?  
   courses   Course[]  @relation("InstructorCourses")
   courseEnrollments  CourseEnrollment[]
+  isEmailVerified   Boolean  @default(false)
+  verificationCode  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
