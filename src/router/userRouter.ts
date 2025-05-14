@@ -144,6 +144,8 @@ userRouter.post('/register', bodyValidator(registerUserSchema), registerUser);
  *   patch:
  *     summary: Change user password
  *     tags: [Auth]
+ *     security:
+ *      - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -179,6 +181,8 @@ userRouter.patch(
  *   get:
  *     summary: Get user role
  *     tags: [Auth]
+ *     security:
+ *      - bearerAuth: []
  *     responses:
  *       200:
  *         description: User role retrieved successfully
@@ -191,6 +195,19 @@ userRouter.get(
     res.json({ message: 'Hello from student router' });
   },
 );
+
+/**
+ * @swagger
+ * /api/v1/user/instructor:
+ *   get:
+ *     summary: Get instructor role
+ *     tags: [Auth]
+ *     security:
+ *      - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Instructor role retrieved successfully
+ */
 userRouter.get(
   '/instructor',
   authMiddleware,
@@ -206,6 +223,8 @@ userRouter.get(
  *  patch:        
  *     summary: Update user profile
  *     tags: [Auth]
+ *     security:
+ *      - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -230,6 +249,19 @@ userRouter.patch(
   bodyValidator(updateProfileSchema),
   updateProfile,
 );
+
+/**
+ * @swagger
+ * /api/v1/user/profile:
+ *   get:
+ *     summary: Get user profile
+ *     tags: [Auth]
+ *     security:
+ *      - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User profile retrieved successfully
+ */
 userRouter.get('/profile', authMiddleware, getUserWithProfile);
 
 /**
@@ -238,6 +270,8 @@ userRouter.get('/profile', authMiddleware, getUserWithProfile);
  *   post:
  *     summary: Enroll in a course
  *     tags: [Enrollment]
+ *     security:
+ *      - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -269,6 +303,8 @@ userRouter.post(
  *   get:
  *     summary: View all enrolled courses for a user
  *     tags: [Enrollment]
+ *     security:
+ *      - bearerAuth: []
  *     parameters:
  *       - name: userId
  *         in: path
