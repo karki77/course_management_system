@@ -28,6 +28,8 @@ const courseRouter = Router();
  *   post:
  *     summary: Create a new course
  *     tags: [Course]
+ *     security:
+ *      - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -66,6 +68,8 @@ courseRouter.post(
  *   patch:
  *     summary: Update a course
  *     tags: [Course]
+ *     security:
+ *      - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: courseId
@@ -110,6 +114,8 @@ courseRouter.patch(
  *   delete:
  *     summary: Delete a course
  *     tags: [Course]
+ *     security:
+ *      - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: courseId
