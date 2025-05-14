@@ -5,6 +5,7 @@ import { HttpResponse } from '../../utils/api/httpResponse';
 import type {
   ICreateCourseSchema,
   ICreateModuleSchema,
+  IUpdatedCourseSchema,
 } from './courseValidation';
 
 import courseService from './courseService';
@@ -36,7 +37,7 @@ export const createCourse = async (
 };
 
 export const updateCourse = async (
-  req: Request,
+  req: Request<{ courseId: string }, unknown, IUpdatedCourseSchema>,
   res: Response,
   next: NextFunction,
 ) => {

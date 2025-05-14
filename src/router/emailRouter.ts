@@ -62,7 +62,6 @@ export default emailRouter;
 
 // update userProfile -> email(required), bio(optional), image(optional):
 
-
 // 200. success message
 // api response: {data: {username: "", email: "", bio: "", image: ""}}
 

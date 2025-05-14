@@ -53,7 +53,7 @@ const courseRouter = Router();
  *       200:
  *         description: course created successfully
  */
- 
+
 courseRouter.post(
   '/create',
   authMiddleware,
@@ -161,7 +161,6 @@ courseRouter.get(
   paramValidator(paramsCourseSchema),
   getAllEnrolledUsers,
 );
-
 
 /**
  * @swagger

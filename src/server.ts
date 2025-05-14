@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client';
 import config from './config/envConfig';
 import router from './router';
 import globalErrorHandler from './middleware/globalErrorHandler';
-import { setupSwagger } from './utils/swagger/swaggerUi';  // 👈 one simple import
+import { setupSwagger } from './utils/swagger/swaggerUi'; // 👈 one simple import
 import path from 'path';
 
 const prisma = new PrismaClient();
@@ -14,10 +14,9 @@ const app = express();
 setupSwagger(app);
 
 //
-const projectRoot = path.join(__dirname, '..'); 
-const uploadsPath = path.join(projectRoot, 'uploads'); 
+const projectRoot = path.join(__dirname, '..');
+const uploadsPath = path.join(projectRoot, 'uploads');
 app.use('/uploads', serveStatic(uploadsPath));
-
 
 //  Custom morgan token for timestamp
 morgan.token('timestamp', () => new Date().toISOString());
@@ -47,4 +46,3 @@ app.use(globalErrorHandler);
 app.listen(PORT, () => {
   console.log(`Server is running at port ${PORT}`);
 });
-

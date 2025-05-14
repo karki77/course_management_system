@@ -13,17 +13,12 @@ const swaggerOptions: swaggerJSDoc.Options = {
         bearerAuth: {
           type: 'http',
           scheme: 'bearer',
-          bearerFormat: 'JWT', 
+          bearerFormat: 'JWT',
         },
       },
     },
-    
   },
-  apis: [
-    './src/router/*.ts',     
-    './src/modules/**/*.ts',  
-  ],
+  apis: ['./src/router/*.ts', './src/modules/**/*.ts'],
 };
 
 export const swaggerSpec = swaggerJSDoc(swaggerOptions);
-

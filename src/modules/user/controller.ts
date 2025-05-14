@@ -1,6 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import { HttpResponse } from '../../utils/api/httpResponse';
-import type { IRegisterSchema, IUpdateProfile } from './validation';
+import type {
+  IChangePassword,
+  ILoginSchema,
+  IRegisterSchema,
+  IUpdateProfile,
+  IVerifyEmailSchema,
+} from './validation';
 import HttpException from '../../utils/api/httpException';
 
 import UserService from './service';
@@ -26,18 +32,23 @@ export const registerUser = async (
   }
 };
 
-
 /**
  * Verify Email
  */
 export const verifyEmail = async (
-  req: Request,
+  req: Request<unknown, unknown, IVerifyEmailSchema>,
   res: Response,
   next: NextFunction,
 ) => {
   try {
     const { email, code } = req.body;
-    const verificationCode = await UserService.verifyEmail(email, code);
+    const verificationCode = await UserService.verifyEmail(
+      {
+        email,
+        code: '',
+      },
+      code,
+    );
     res.send(
       new HttpResponse({
         message: 'Email verified successfully',
@@ -53,7 +64,7 @@ export const verifyEmail = async (
  * Login User
  */
 export const loginUser = async (
-  req: Request,
+  req: Request<unknown, unknown, ILoginSchema>,
   res: Response,
   next: NextFunction,
 ) => {
@@ -74,8 +85,8 @@ export const loginUser = async (
  * Change User Password
  */
 
-export const changePasssword = async (
-  req: Request,
+export const changePassword = async (
+  req: Request<unknown, unknown, IChangePassword>,
   res: Response,
   next: NextFunction,
 ) => {

@@ -10,6 +10,7 @@ import {
   type ILoginSchema,
   type IChangePassword,
   type IUpdateProfile,
+  IVerifyEmailSchema,
 } from './validation';
 
 class UserService {
@@ -71,20 +72,20 @@ class UserService {
     }
   }
 
-  async verifyEmail(email: string, code: string) {
+  async verifyEmail(data: IVerifyEmailSchema, code: any) {
     const user = await prisma.user.findUnique({
-      where: { email },
+      where: { email: data.email },
     });
 
     if (!user) {
       throw new HttpException(404, 'User not found');
     }
-    if (user.verificationCode !== code) {
+    if (user.verificationCode !== data.code) {
       throw new HttpException(400, 'Invalid verification code');
     }
     const verificationCode = user.verificationCode;
     await prisma.user.update({
-      where: { email },
+      where: { email: data.email },
       data: {
         isEmailVerified: true,
         verificationCode: null, // clear code after successful verification
@@ -199,7 +200,6 @@ class UserService {
       throw new HttpException(404, 'User not found');
     }
 
-    //
     return user;
   }
 }
