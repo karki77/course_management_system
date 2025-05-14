@@ -1,16 +1,22 @@
-import express from 'express';
+import express, { static as serveStatic } from 'express';
 import morgan from 'morgan';
 import { PrismaClient } from '@prisma/client';
 import config from './config/envConfig';
 import router from './router';
 import globalErrorHandler from './middleware/globalErrorHandler';
 import { setupSwagger } from './utils/swagger/swaggerUi';  // 👈 one simple import
+import path from 'path';
 
 const prisma = new PrismaClient();
 const PORT = config.server.port || 9000;
 const app = express();
 
 setupSwagger(app);
+
+//
+const projectRoot = path.join(__dirname, '..'); 
+const uploadsPath = path.join(projectRoot, 'uploads'); 
+app.use('/uploads', serveStatic(uploadsPath));
 
 
 //  Custom morgan token for timestamp
@@ -42,19 +48,3 @@ app.listen(PORT, () => {
   console.log(`Server is running at port ${PORT}`);
 });
 
-// swagger docs
-// post, get, patch, delete
-
-// product/:productId
-// param, query and body
-
-// file upload in swagger by using form-data.
-
-// Dto
-
-
-// API RESPONSE FOR ALL ENDPOINTS
-// status: true / false
-// message: "success" // "error"
-// data: {}. // [] or {}.
-// pagination {page: 1, limit: 10, total: 100}

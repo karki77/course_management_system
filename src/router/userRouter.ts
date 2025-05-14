@@ -221,21 +221,25 @@ userRouter.get(
  * @swagger
  * /api/v1/user/update-profile: 
  *  patch:        
- *     summary: Update user profile
+ *     summary: Update user profile with updating bio and uploading profile picture
  *     tags: [Auth]
+ *     description: Update user profile with bio and profile picture
  *     security:
  *      - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
  *               bio:
  *                 type: string
+ *                 description: User biography
  *               profilePicture:
  *                 type: string
+ *                 format: binary
+ *                 description: Profile picture image file
  *     responses:
  *       200:
  *         description: Profile updated successfully
