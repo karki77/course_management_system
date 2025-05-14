@@ -6,6 +6,7 @@ import {
   registerUserSchema,
   loginUserSchema,
   changePasswordSchema,
+  verifyEmailSchema,
 } from '../modules/user/validation';
 
 import { authMiddleware } from '../middleware/authMiddleware';
@@ -27,9 +28,10 @@ import paramsValidator from '../utils/validators/paramValidator';
 import {
   registerUser,
   loginUser,
-  changePasssword,
+  changePassword,
   updateProfile,
   getUserWithProfile,
+  verifyEmail,
 } from '../modules/user/controller';
 
 /**
@@ -140,8 +142,10 @@ userRouter.post('/register', bodyValidator(registerUserSchema), registerUser);
 
 userRouter.post(
   '/verify-email',
-  ver
-    
+  bodyValidator(verifyEmailSchema),
+  verifyEmail
+);
+
 /**
  * @swagger
  * /api/v1/user/change-password:
@@ -176,7 +180,7 @@ userRouter.patch(
   '/change-password',
   authMiddleware,
   bodyValidator(changePasswordSchema),
-  changePasssword,
+  changePassword
 );
 
 /**
