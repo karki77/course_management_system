@@ -17,11 +17,7 @@ const swaggerOptions: swaggerJSDoc.Options = {
         },
       },
     },
-    security: [
-      {
-        bearerAuth: [],
-      },
-    ],
+    
   },
   apis: [
     './src/router/*.ts',     

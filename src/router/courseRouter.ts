@@ -135,6 +135,8 @@ courseRouter.delete(
  *   get:
  *     summary: Get all enrolled users for a course
  *     tags: [Enrollment]
+ *     security:
+ *      - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: courseId
