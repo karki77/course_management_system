@@ -74,6 +74,9 @@ export const changePasswordSchema = z
       .min(8, {
         message: 'New password must be at least 8 characters long',
       })
+
+      //this regex need to be fixed
+      
       .regex(/[A-Z]/, {
         message: 'New password must include at least one uppercase letter',
       })
