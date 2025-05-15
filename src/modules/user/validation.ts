@@ -76,7 +76,7 @@ export const changePasswordSchema = z
       })
 
       //this regex need to be fixed
-      
+
       .regex(/[A-Z]/, {
         message: 'New password must include at least one uppercase letter',
       })
@@ -90,7 +90,7 @@ export const changePasswordSchema = z
         message: 'New password must include at least one special character',
       }),
   })
-  .strict();
+  .strict();  //need to fix this 
 
 export const updateProfileSchema = z
   .object({
