@@ -3,18 +3,16 @@ import { IEmailSend } from './types';
 
 export const sendEmail = async (payload: IEmailSend) => {
   const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
+    service: 'gmail',
+  auth: {
+    user: 'courseplatform.noreply@gmail.com',
+    pass: 'otwltjbqslvcjkfe', // NOT your Gmail password!
+  },
+});
 
   const mailOptions = {
-    from: '"Kuber Karki" <karkikuber5@gmail.com>',
-    to: 'kuberdai789@gmail.com',
+    from: '"courseplatform" <courseplatform.noreply@gmail.com>',
+    to: payload.to,
     subject: payload.subject,
     text: payload.text,
     html: payload.html,

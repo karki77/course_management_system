@@ -45,10 +45,9 @@ export const verifyEmail = async (
     const verificationCode = await UserService.verifyEmail(
       {
         email,
-        code: '',
+        code: code,
       },
-      code,
-    );
+      );
     res.send(
       new HttpResponse({
         message: 'Email verified successfully',

@@ -28,6 +28,7 @@ class UserService {
     if (existingUser) {
       throw new HttpException(400, 'Email or username already exist');
     }
+   
 
     const hashedPassword = await hashPassword(data.password);
     const user = await prisma.user.create({
@@ -45,18 +46,34 @@ class UserService {
       },
     });
 
-    await sendEmail({
-      to: user.email,
-      subject: 'Welcome to our courses platform',
-      text: `Hello ${user.username}, welcome to our platform!`,
-      html: `<h1>Welcome ${user.username}!</h1><p>We're excited to have you join our learning platform.</p>`,
-    });
+  await sendEmail({
+    to: user.email,
+    subject: 'Welcome to our courses platform',
+    text: `Hello ${user.username}, welcome to our platform!`,
+    html: `<h1>Welcome ${user.username}!</h1><p>We're excited to have you join our learning platform.</p>`,
+  });
 
-    //
-    return user
-  }
+  // generate verification code
+  const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+  await prisma.user.update({
+    where: { id: user.id },
+    data: {
+      verificationCode,
+    },
+  });
+  //send email verification link
+    const verificationLink = `https://your-frontend.com/verify-email?email=${user.email}&code=${verificationCode}`;
+  await sendEmail({
+    to: user.email,
+    subject: 'Email Verification',
+    text: `Hello ${user.username}, please verify your email by clicking on the following link: ${verificationLink}`,
+    html: `<h1>Email Verification</h1><p>Hello ${user.username}, please verify your email by clicking on the following link: <a href="${verificationLink}">Verify Email</a></p>`,
+  });
 
-  async verifyEmail(data: IVerifyEmailSchema, code: any) {
+  return user;
+}
+
+  async verifyEmail(data: IVerifyEmailSchema) {
     const user = await prisma.user.findUnique({
       where: { email: data.email },
     });
@@ -64,6 +81,9 @@ class UserService {
     if (!user) {
       throw new HttpException(404, 'User not found');
     }
+    if (user.isEmailVerified) {
+      throw new HttpException(400, 'Email already verified');
+    } 
     if (user.verificationCode !== data.code) {
       throw new HttpException(400, 'Invalid verification code');
     }
