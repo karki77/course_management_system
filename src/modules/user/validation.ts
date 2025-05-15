@@ -90,7 +90,7 @@ export const changePasswordSchema = z
         message: 'New password must include at least one special character',
       }),
   })
-  .strict();  //need to fix this again 
+  .strict();  //need to fix this again okey
 
 export const updateProfileSchema = z
   .object({
