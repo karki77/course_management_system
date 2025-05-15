@@ -46,7 +46,6 @@ class UserService {
         },
       },
     });
-  console.log('User created:', user);
   
     // send welcome email
   try {

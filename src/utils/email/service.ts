@@ -5,12 +5,15 @@ export const sendEmail = async (payload: IEmailSend) => {
   console.log('Sending email to:');
   try{
     const transporter = nodemailer.createTransport({
-    service: 'gmail',
-  auth: {
-    user: 'courseplatform.noreply@gmail.com',
-    pass: 'otwltjbqslvcjkfe', // NOT your Gmail password!
-  },
-});
+      host: 'sandbox.smtp.mailtrap.io',
+      port: 587,
+      secure: false, // true for 465, false for other ports
+
+      auth: {
+        user: '3cac6fe40e5bba', // generated ethereal user
+        pass: '69fd33c9d9a55b', // NOT your Gmail password!
+      },
+    });
 
   const mailOptions = {
     from: 'courseplatform.noreply@gmail.com',
