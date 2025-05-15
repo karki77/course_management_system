@@ -19,6 +19,7 @@ import type {
  */
 class UserService {
   async register(data: IRegisterSchema) {
+    console.log('Registering user:', data);
     const existingUser = await prisma.user.findFirst({
       where: {
         OR: [{ email: data.email }, { username: data.username }],
@@ -45,13 +46,20 @@ class UserService {
         },
       },
     });
-
-  await sendEmail({
-    to: user.email,
-    subject: 'Welcome to our courses platform',
-    text: `Hello ${user.username}, welcome to our platform!`,
-    html: `<h1>Welcome ${user.username}!</h1><p>We're excited to have you join our learning platform.</p>`,
-  });
+  console.log('User created:', user);
+  
+    // send welcome email
+  try {
+    await sendEmail({
+      to: user.email,
+      subject: 'Welcome to our courses platform',
+      text: `Hello ${user.username}, welcome to our platform!`,
+      html: `<h1>Welcome ${user.username}!</h1><p>We're excited to have you join our learning platform.</p>`,
+    });
+    console.log('✅ Email sent to:', user.email);
+  } catch (error) {
+    console.error('❌ Error sending email:', error);
+  }
 
   // generate verification code
   const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();

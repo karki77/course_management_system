@@ -2,7 +2,9 @@ import nodemailer from 'nodemailer';
 import { IEmailSend } from './types';
 
 export const sendEmail = async (payload: IEmailSend) => {
-  const transporter = nodemailer.createTransport({
+  console.log('Sending email to:');
+  try{
+    const transporter = nodemailer.createTransport({
     service: 'gmail',
   auth: {
     user: 'courseplatform.noreply@gmail.com',
@@ -11,12 +13,19 @@ export const sendEmail = async (payload: IEmailSend) => {
 });
 
   const mailOptions = {
-    from: '"courseplatform" <courseplatform.noreply@gmail.com>',
+    from: 'courseplatform.noreply@gmail.com',
     to: payload.to,
     subject: payload.subject,
     text: payload.text,
     html: payload.html,
   };
 
-  return transporter.sendMail(mailOptions);
+  const data=await transporter.sendMail(mailOptions);
+
+  console.log('Email sent:', data.response);
+  return data
+  }catch(err){
+    console.error('Error sending email:', err);
+    throw new Error('Failed to send email');
+  }
 };

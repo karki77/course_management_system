@@ -57,12 +57,3 @@ emailRouter.post('/send-email', async (req: Request, res: Response) => {
 
 export default emailRouter;
 
-// role -> specific data.
-// INSTRUCTOR, STUDENT, ADMIN
-
-// update userProfile -> email(required), bio(optional), image(optional):
-
-// 200. success message
-// api response: {data: {username: "", email: "", bio: "", image: ""}}
-
-// api response type: {data: {username: string, email: string, bio: string, image: string}}
