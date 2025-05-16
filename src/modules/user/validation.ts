@@ -42,7 +42,10 @@ export const registerUserSchema = z
 
 export const verifyEmailQuerySchema = z
   .object({
-    token: z.string().min(1, 'Verification token is required'),
+    token: z.string({
+      required_error: 'Verification token is required',
+      invalid_type_error: 'Verification token must be a string',
+    }),
   })
   .strict();
 

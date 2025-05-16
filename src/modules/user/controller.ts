@@ -8,7 +8,6 @@ import type {
   IVerifyEmailSchema,
 } from './validation';
 import HttpException from '../../utils/api/httpException';
-
 import UserService from './service';
 
 /**
@@ -36,24 +35,18 @@ export const registerUser = async (
  * Verify Email
  */
 export const verifyEmail = async (
-  req: Request<unknown, unknown, IVerifyEmailSchema>,
+  req: Request<unknown, unknown, unknown, IVerifyEmailSchema>,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const { token } = req.query;
+    // Extract token from query
+    const { token } = req.query as IVerifyEmailSchema;
+    await UserService.verifyEmail({ token });
 
-    if (!token || typeof token !== 'string') {
-      throw new HttpException(400, 'Verification token is required');
-    }
-
-    // Delegate to service
-    const verifiedUser = await UserService.verifyEmail({ token });
-
-    res.status(200).send(
+    res.send(
       new HttpResponse({
         message: 'Email verified successfully',
-        data: verifiedUser,
       }),
     );
   } catch (error) {

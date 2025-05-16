@@ -1,5 +1,4 @@
 import HttpException from '../../utils/api/httpException';
-
 import { prisma } from '../../config/prismaClient';
 import { sendEmail } from '../../utils/email/service';
 import { generateToken } from '../../middleware/authMiddleware';
@@ -28,7 +27,8 @@ class UserService {
     if (existingUser) {
       throw new HttpException(400, 'Email or username already exist');
     }
-      const verificationToken = randomBytes(32).toString('hex');
+    const verificationToken = randomBytes(32).toString('hex');
+    const verificationTokenExpires = new Date(Date.now() + 60 * 60 * 1000);
 
     const hashedPassword = await hashPassword(data.password);
 
@@ -39,6 +39,7 @@ class UserService {
         password: hashedPassword,
         role: data.role,
         verificationToken: verificationToken,
+        verificationTokenExpires: verificationTokenExpires,
         profile: {
           create: {
             bio: 'hello there',
@@ -48,56 +49,48 @@ class UserService {
       },
     });
 
-  // Update verification link to use token
-  const verificationLink = `http://localhost:9000/api/v1/user/verify-email?token=${verificationToken}`;
+    // Update verification link to use token
+    const verificationLink = `http://localhost:9000/api/v1/user/verify-email?token=${verificationToken}`;
 
-  await sendEmail({
-    to: user.email,
-    subject: 'Email Verification',
-    text: `Hello ${user.username}, please verify your email by clicking on the following link: ${verificationLink}`,
-    html: `<h1>Email Verification</h1><p>Hello ${user.username}, please verify your email by clicking on the following link: <a href="${verificationLink}">Verify Email</a></p>`,
-  });
+    await sendEmail({
+      to: user.email,
+      subject: 'Email Verification',
+      text: `Hello ${user.username}, please verify your email by clicking on the following link: ${verificationLink}`,
+      html: `<h1>Email Verification</h1><p>Hello ${user.username}, please verify your email by clicking on the following link: <a href="${verificationLink}">Verify Email</a></p>`,
+    });
 
-  return user;
-}
+    return user;
+  }
 
-  async verifyEmail(_query: IVerifyEmailSchema) {
-    const { token } = _query;
-
-    if (!token) {
-      throw new HttpException(400, 'Verification token is required');
-    }
-
+  async verifyEmail(query: IVerifyEmailSchema) {
     const user = await prisma.user.findFirst({
-      where: { 
-        verificationToken: token,
+      where: {
+        verificationToken: query.token,
         verificationTokenExpires: {
-          gte: new Date(), // Check if the token is not expired
-        },
-      },
+      gte: new Date(), // Token is still valid (not expired)
+    },
+  }
     });
 
     if (!user) {
-      throw new HttpException(400, 'Invalid or expired verification token');
+      throw new HttpException(400, 'Invalid or expired verification token.');
     }
 
     if (user.isEmailVerified) {
       throw new HttpException(400, 'Email already verified');
     }
-
-    await prisma.user.update({
+    // Update user to set email as verified
+    // and clear the verification token
+    // and token expiration date
+    const updatedUser = await prisma.user.update({
       where: { id: user.id },
       data: {
         isEmailVerified: true,
-        verificationToken: null, // Clear token after successful verification
+        verificationToken: null,
         verificationTokenExpires: null,
       },
     });
-    return {
-      id: user.id,
-      email: user.email,
-      isEmailVerified: user.isEmailVerified,
-    };
+
   }
 
   async login(data: ILoginSchema) {
@@ -210,7 +203,6 @@ class UserService {
     return user;
   }
 }
-
 
 //
 export default new UserService();

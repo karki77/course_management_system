@@ -11,7 +11,7 @@ export const createEnrollmentSchema = z
   })
   .strict();
 
-export const paramUserSchema = z
+export const paramStudentSchema = z
   .object({
     studentId: z
       .string({ required_error: 'Student Id is required' })
@@ -19,5 +19,5 @@ export const paramUserSchema = z
   })
   .strict();
 
-export type IParamsUserSchema = z.infer<typeof paramUserSchema>;
+export type IParamsStudentSchema = z.infer<typeof paramStudentSchema>;
 export type ICreateEnrollmentSchema = z.infer<typeof createEnrollmentSchema>;

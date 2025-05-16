@@ -15,20 +15,20 @@ const queryValidator =
     next: NextFunction,
   ): void => {
     try {
-      req.query = schema.parse(req.query);
+       console.log('Query Validator:', req.query);
+      const validated = schema.parse(req.query);
 
+       // Attach to a custom property
+      (req as any).validatedQuery = validated;
       next();
-      return;
     } catch (error) {
       const errorObj =
         error instanceof ZodError ? error.flatten().fieldErrors : {};
-
       res.status(422).json({
         success: false,
         message: 'Query validation error!',
-        errors: errorObj,
+        errors: error,
       });
-      return;
     }
   };
 

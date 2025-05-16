@@ -6,7 +6,7 @@ import {
   registerUserSchema,
   loginUserSchema,
   changePasswordSchema,
-  verifyEmailQuerySchema
+  verifyEmailQuerySchema,
 } from '../modules/user/validation';
 
 import { authMiddleware } from '../middleware/authMiddleware';
@@ -16,7 +16,8 @@ import upload from '../utils/multer';
 import { updateProfileSchema } from '../modules/user/validation';
 import {
   createEnrollmentSchema,
-  paramUserSchema,
+  paramStudentSchema,
+  IParamsStudentSchema,
 } from '../modules/enrollment/enrollmentValidation';
 import {
   enroll,
@@ -33,6 +34,7 @@ import {
   getUserWithProfile,
   verifyEmail,
 } from '../modules/user/controller';
+import queryValidator from '#utils/validators/queryValidator';
 
 /**
  * User Router
@@ -140,7 +142,7 @@ userRouter.post('/login', bodyValidator(loginUserSchema), loginUser);
 
 userRouter.post('/register', bodyValidator(registerUserSchema), registerUser);
 
-userRouter.post('/verify-email', bodyValidator(verifyEmailQuerySchema), verifyEmail);
+userRouter.get('/verify', queryValidator(verifyEmailQuerySchema), verifyEmail);
 
 /**
  * @swagger
@@ -327,7 +329,7 @@ userRouter.get(
   '/viewcourses/:userId',
   authMiddleware,
   roleMiddleware([UserRole.STUDENT]),
-  paramsValidator(paramUserSchema),
+  paramsValidator(paramStudentSchema),
   viewAllEnrolledCourses,
 );
 

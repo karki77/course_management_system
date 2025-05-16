@@ -11,6 +11,7 @@
     "resolveJsonModule": true,
     "sourceMap": true,
     "outDir": "dist",
+    "rootDir": "src",
     "baseUrl": "./src",  // If you need baseUrl
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,

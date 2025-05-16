@@ -3,7 +3,7 @@ import { HttpResponse } from '../../utils/api/httpResponse';
 import HttpException from '../../utils/api/httpException';
 import type {
   ICreateEnrollmentSchema,
-  IParamsUserSchema,
+  IParamsStudentSchema,
 } from './enrollmentValidation';
 import EnrollmentService from './enrollmentService';
 import { IParamsSchema } from '#modules/course/courseValidation';
@@ -53,7 +53,7 @@ export const getAllEnrolledUsers = async (
 };
 
 export const viewAllEnrolledCourses = async (
-  req: Request<IParamsUserSchema>,
+  req: Request<IParamsStudentSchema>,
   res: Response,
   next: NextFunction,
 ) => {
