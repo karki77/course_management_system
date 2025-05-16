@@ -2,8 +2,10 @@ import { Request, Response, NextFunction } from 'express';
 import { HttpResponse } from '../../utils/api/httpResponse';
 import type {
   IChangePassword,
+  IForgotPasswordSchema,
   ILoginSchema,
   IRegisterSchema,
+  IResetPasswordSchema,
   IUpdateProfile,
   IVerifyEmailSchema,
 } from './validation';
@@ -128,6 +130,11 @@ export const updateProfile = async (
     next(error);
   }
 };
+
+/**
+ * Get User Profile
+ */
+
 export const getUserWithProfile = async (
   req: Request,
   res: Response,
@@ -142,6 +149,48 @@ export const getUserWithProfile = async (
       new HttpResponse({
         message: 'user with profile fetched successfully',
         data: user,
+      }),
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Request a password reset
+ */
+
+export const forgotPassword = async (
+  req: Request<unknown, unknown, IForgotPasswordSchema>,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    await UserService.requestPasswordReset(req.body);
+    res.send(
+      new HttpResponse({
+        message: 'Password reset link sent successfully',
+      }),
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Reset password with token
+ */
+
+export const resetPassword = async (
+  req: Request<unknown, unknown, IResetPasswordSchema>,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    await UserService.resetPassword(req.body);
+    res.send(
+      new HttpResponse({
+        message: 'Password reset successfully',
       }),
     );
   } catch (error) {

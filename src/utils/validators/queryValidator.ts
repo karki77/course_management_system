@@ -15,10 +15,10 @@ const queryValidator =
     next: NextFunction,
   ): void => {
     try {
-       console.log('Query Validator:', req.query);
+      console.log('Query Validator:', req.query);
       const validated = schema.parse(req.query);
 
-       // Attach to a custom property
+      // Attach to a custom property
       (req as any).validatedQuery = validated;
       next();
     } catch (error) {

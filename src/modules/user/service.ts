@@ -11,7 +11,10 @@ import type {
   IChangePassword,
   IUpdateProfile,
   IVerifyEmailSchema,
+  IForgotPasswordSchema,
+  IResetPasswordSchema,
 } from './validation';
+import { request } from 'http';
 
 /**
  * User Service
@@ -67,9 +70,9 @@ class UserService {
       where: {
         verificationToken: query.token,
         verificationTokenExpires: {
-      gte: new Date(), // Token is still valid (not expired)
-    },
-  }
+          gte: new Date(), // Token is still valid (not expired)
+        },
+      },
     });
 
     if (!user) {
@@ -90,7 +93,6 @@ class UserService {
         verificationTokenExpires: null,
       },
     });
-
   }
 
   async login(data: ILoginSchema) {
@@ -202,7 +204,75 @@ class UserService {
 
     return user;
   }
+  // forgot password
+  async requestPasswordReset(data: IForgotPasswordSchema) {
+    const user = await prisma.user.findUnique({
+      where: { email: data.email },
+    });
+
+    if (!user) {
+      throw new HttpException(404, 'User not found');
+    }
+
+    const resetToken = randomBytes(32).toString('hex');
+    const resetTokenExpires = new Date(Date.now() + 60 * 60 * 1000);
+
+    //save token to db
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        resetToken: resetToken,
+        resetTokenExpires: resetTokenExpires,
+      },
+    });
+
+    // create reset link
+    const resetLink = `http://localhost:9000/api/v1/user/reset-password?token=${resetToken}`;
+    await sendEmail({
+      to: user.email,
+      subject: 'Password Reset',
+      text: `Hello ${user.username}, please reset your password by clicking on the following link: ${resetLink}. This link will expire in 1 hour.`,
+      html: `<h1>Password Reset</h1>
+      <p>Hello ${user.username},</p>
+      <p>Please reset your password by clicking on the following link: <a href="${resetLink}">Reset Password</a>. This link will expire in 1 hour.</p>`,
+    });
+  }
+  // Removed duplicate resetPassword(data: IResetPasswordSchema) implementation.
+  async resetPassword(data: IResetPasswordSchema) {
+    const user = await prisma.user.findFirst({
+      where: {
+        resetToken: data.token,
+        resetTokenExpires: {
+          gte: new Date(), // Token is still valid (not expired)
+        },
+      },
+    });
+
+    if (!user) {
+      throw new HttpException(400, 'Invalid or expired reset token.');
+    }
+
+    const hashedPassword = await hashPassword(data.password);
+    // Update user password and clear reset token and expiration date
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        password: hashedPassword,
+        resetToken: null,
+        resetTokenExpires: null,
+      },
+    });
+    // Send confirmation email
+    await sendEmail({
+      to: user.email,
+      subject: 'Password Reset Confirmation',
+      text: `Hello ${user.username}, your password has been successfully reset.`,
+      html: `<h1>Password Reset Confirmation</h1>
+      <p>Hello ${user.username},</p>
+      <p>Your password has been successfully reset.</p>`,
+    });
+  }
 }
 
-//
 export default new UserService();

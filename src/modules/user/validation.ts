@@ -97,10 +97,23 @@ export const updateProfileSchema = z
   })
   .strict();
 
+export const forgotPasswordSchema = z.object({
+  email: z.string().email('Invalid email format'),
+});
+
+export const resetPasswordSchema = z.object({
+  token: z.string(),
+  password: z.string().min(6),
+});
+
 export type IRegisterSchema = z.infer<typeof registerUserSchema>;
 export type IVerifyEmailSchema = z.infer<typeof verifyEmailQuerySchema>;
 export type ILoginSchema = z.infer<typeof loginUserSchema>;
 export type IChangePassword = z.infer<typeof changePasswordSchema>;
 export type IUpdateProfile = z.infer<typeof updateProfileSchema>;
-
+export type IForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>;
+export type IResetPasswordSchema = z.infer<typeof resetPasswordSchema>;
 // validation for all users were initialized in the userValidation.ts file
+
+// router.post('/forgot-password', bodyValidator(forgotPasswordSchema), forgotPassword);
+// router.post('/reset-password', bodyValidator(resetPasswordSchema), resetPassword);

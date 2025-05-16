@@ -7,6 +7,8 @@ import {
   loginUserSchema,
   changePasswordSchema,
   verifyEmailQuerySchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
 } from '../modules/user/validation';
 
 import { authMiddleware } from '../middleware/authMiddleware';
@@ -33,6 +35,8 @@ import {
   updateProfile,
   getUserWithProfile,
   verifyEmail,
+  forgotPassword,
+  resetPassword,
 } from '../modules/user/controller';
 import queryValidator from '#utils/validators/queryValidator';
 
@@ -331,6 +335,18 @@ userRouter.get(
   roleMiddleware([UserRole.STUDENT]),
   paramsValidator(paramStudentSchema),
   viewAllEnrolledCourses,
+);
+
+userRouter.post(
+  '/forgot-password',
+  bodyValidator(forgotPasswordSchema),
+  forgotPassword,
+);
+
+userRouter.post(
+  '/reset-password',
+  bodyValidator(resetPasswordSchema),
+  resetPassword,
 );
 
 export default userRouter;
