@@ -6,7 +6,7 @@ import {
   registerUserSchema,
   loginUserSchema,
   changePasswordSchema,
-  verifyEmailSchema,
+  verifyEmailQuerySchema
 } from '../modules/user/validation';
 
 import { authMiddleware } from '../middleware/authMiddleware';
@@ -140,7 +140,7 @@ userRouter.post('/login', bodyValidator(loginUserSchema), loginUser);
 
 userRouter.post('/register', bodyValidator(registerUserSchema), registerUser);
 
-userRouter.post('/verify-email', bodyValidator(verifyEmailSchema), verifyEmail);
+userRouter.post('/verify-email', bodyValidator(verifyEmailQuerySchema), verifyEmail);
 
 /**
  * @swagger

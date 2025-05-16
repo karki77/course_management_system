@@ -41,17 +41,19 @@ export const verifyEmail = async (
   next: NextFunction,
 ) => {
   try {
-    const { email, code } = req.body;
-    const verificationCode = await UserService.verifyEmail(
-      {
-        email,
-        code: code,
-      },
-      );
-    res.send(
+    const { token } = req.query;
+
+    if (!token || typeof token !== 'string') {
+      throw new HttpException(400, 'Verification token is required');
+    }
+
+    // Delegate to service
+    const verifiedUser = await UserService.verifyEmail({ token });
+
+    res.status(200).send(
       new HttpResponse({
         message: 'Email verified successfully',
-        data: verificationCode,
+        data: verifiedUser,
       }),
     );
   } catch (error) {

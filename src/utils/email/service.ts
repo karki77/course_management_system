@@ -3,7 +3,7 @@ import { IEmailSend } from './types';
 
 export const sendEmail = async (payload: IEmailSend) => {
   console.log('Sending email to:');
-  try{
+  try {
     const transporter = nodemailer.createTransport({
       host: 'sandbox.smtp.mailtrap.io',
       port: 587,
@@ -15,19 +15,19 @@ export const sendEmail = async (payload: IEmailSend) => {
       },
     });
 
-  const mailOptions = {
-    from: 'courseplatform.noreply@gmail.com',
-    to: payload.to,
-    subject: payload.subject,
-    text: payload.text,
-    html: payload.html,
-  };
+    const mailOptions = {
+      from: 'courseplatform.noreply@gmail.com',
+      to: payload.to,
+      subject: payload.subject,
+      text: payload.text,
+      html: payload.html,
+    };
 
-  const data=await transporter.sendMail(mailOptions);
+    const data = await transporter.sendMail(mailOptions);
 
-  console.log('Email sent:', data.response);
-  return data
-  }catch(err){
+    console.log('Email sent:', data.response);
+    return data;
+  } catch (err) {
     console.error('Error sending email:', err);
     throw new Error('Failed to send email');
   }

@@ -3,6 +3,7 @@ import HttpException from '../../utils/api/httpException';
 import { prisma } from '../../config/prismaClient';
 import { sendEmail } from '../../utils/email/service';
 import { generateToken } from '../../middleware/authMiddleware';
+import { randomBytes } from 'crypto';
 
 import { hashPassword, verifyPassword } from '../../utils/password/hash';
 import type {
@@ -13,13 +14,11 @@ import type {
   IVerifyEmailSchema,
 } from './validation';
 
-
 /**
  * User Service
  */
 class UserService {
   async register(data: IRegisterSchema) {
-    console.log('Registering user:', data);
     const existingUser = await prisma.user.findFirst({
       where: {
         OR: [{ email: data.email }, { username: data.username }],
@@ -29,15 +28,17 @@ class UserService {
     if (existingUser) {
       throw new HttpException(400, 'Email or username already exist');
     }
-   
+      const verificationToken = randomBytes(32).toString('hex');
 
     const hashedPassword = await hashPassword(data.password);
+
     const user = await prisma.user.create({
       data: {
         username: data.username,
         email: data.email,
         password: hashedPassword,
         role: data.role,
+        verificationToken: verificationToken,
         profile: {
           create: {
             bio: 'hello there',
@@ -46,30 +47,10 @@ class UserService {
         },
       },
     });
-  
-    // send welcome email
-  try {
-    await sendEmail({
-      to: user.email,
-      subject: 'Welcome to our courses platform',
-      text: `Hello ${user.username}, welcome to our platform!`,
-      html: `<h1>Welcome ${user.username}!</h1><p>We're excited to have you join our learning platform.</p>`,
-    });
-    console.log('✅ Email sent to:', user.email);
-  } catch (error) {
-    console.error('❌ Error sending email:', error);
-  }
 
-  // generate verification code
-  const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-  await prisma.user.update({
-    where: { id: user.id },
-    data: {
-      verificationCode,
-    },
-  });
-  //send email verification link
-    const verificationLink = `https://your-frontend.com/verify-email?email=${user.email}&code=${verificationCode}`;
+  // Update verification link to use token
+  const verificationLink = `http://localhost:9000/api/v1/user/verify-email?token=${verificationToken}`;
+
   await sendEmail({
     to: user.email,
     subject: 'Email Verification',
@@ -80,29 +61,43 @@ class UserService {
   return user;
 }
 
-  async verifyEmail(data: IVerifyEmailSchema) {
-    const user = await prisma.user.findUnique({
-      where: { email: data.email },
+  async verifyEmail(_query: IVerifyEmailSchema) {
+    const { token } = _query;
+
+    if (!token) {
+      throw new HttpException(400, 'Verification token is required');
+    }
+
+    const user = await prisma.user.findFirst({
+      where: { 
+        verificationToken: token,
+        verificationTokenExpires: {
+          gte: new Date(), // Check if the token is not expired
+        },
+      },
     });
 
     if (!user) {
-      throw new HttpException(404, 'User not found');
+      throw new HttpException(400, 'Invalid or expired verification token');
     }
+
     if (user.isEmailVerified) {
       throw new HttpException(400, 'Email already verified');
-    } 
-    if (user.verificationCode !== data.code) {
-      throw new HttpException(400, 'Invalid verification code');
     }
-    const verificationCode = user.verificationCode;
+
     await prisma.user.update({
-      where: { email: data.email },
+      where: { id: user.id },
       data: {
         isEmailVerified: true,
-        verificationCode: null, // clear code after successful verification
+        verificationToken: null, // Clear token after successful verification
+        verificationTokenExpires: null,
       },
     });
-    return verificationCode;
+    return {
+      id: user.id,
+      email: user.email,
+      isEmailVerified: user.isEmailVerified,
+    };
   }
 
   async login(data: ILoginSchema) {
@@ -198,7 +193,7 @@ class UserService {
       },
     });
   }
-  
+
   async getUserWithProfile(userId: string) {
     const user = await prisma.user.findUnique({
       where: { id: userId },
@@ -215,6 +210,7 @@ class UserService {
     return user;
   }
 }
+
 
 //
 export default new UserService();

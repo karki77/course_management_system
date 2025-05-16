@@ -56,4 +56,3 @@ emailRouter.post('/send-email', async (req: Request, res: Response) => {
 });
 
 export default emailRouter;
-

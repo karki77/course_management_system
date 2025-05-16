@@ -40,18 +40,9 @@ export const registerUserSchema = z
   })
   .strict();
 
-export const verifyEmailSchema = z
+export const verifyEmailQuerySchema = z
   .object({
-    email: z
-      .string()
-      .toLowerCase()
-      .email({ message: 'Invalid email address' })
-      .min(5)
-      .max(50),
-    code: z
-      .string({ required_error: 'Verification code is required' })
-      .min(6, { message: 'Verification code must be at least 6 characters' })
-      .max(6, { message: 'Verification code must be at most 6 characters' }),
+    token: z.string().min(1, 'Verification token is required'),
   })
   .strict();
 
@@ -90,7 +81,7 @@ export const changePasswordSchema = z
         message: 'New password must include at least one special character',
       }),
   })
-  .strict();  //need to fix this again okey
+  .strict(); //need to fix this again okey
 
 export const updateProfileSchema = z
   .object({
@@ -104,7 +95,7 @@ export const updateProfileSchema = z
   .strict();
 
 export type IRegisterSchema = z.infer<typeof registerUserSchema>;
-export type IVerifyEmailSchema = z.infer<typeof verifyEmailSchema>;
+export type IVerifyEmailSchema = z.infer<typeof verifyEmailQuerySchema>;
 export type ILoginSchema = z.infer<typeof loginUserSchema>;
 export type IChangePassword = z.infer<typeof changePasswordSchema>;
 export type IUpdateProfile = z.infer<typeof updateProfileSchema>;
