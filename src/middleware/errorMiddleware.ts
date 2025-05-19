@@ -13,7 +13,7 @@ const errorMiddleware = (
 
   // Check if res.status is a function
   if (typeof res.status !== 'function') {
-    console.error('res.status is not a function. res object:', res);
+    logger.error('res.status is not a function. res object:', res);
     // Attempt to use res.writeHead and res.end as a fallback
     try {
       res.writeHead(500, { 'Content-Type': 'application/json' });
