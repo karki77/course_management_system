@@ -78,7 +78,7 @@ export const createModuleSchema = z
     message: 'Extra fields are not allowed in the module data',
   });
 
-// Type inference
+// Exporting the types for the schemas
 export type ICreateCourseSchema = z.infer<typeof createCourseSchema>;
 export type IUpdatedCourseSchema = z.infer<typeof updateCourseSchema>;
 export type IParamsSchema = z.infer<typeof paramsCourseSchema>;
