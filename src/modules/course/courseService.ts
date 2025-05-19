@@ -1,4 +1,4 @@
-import { prisma } from '../../config/prismaClient';
+import { prisma } from '../../config/setup/dbSetup';
 
 import HttpException from '../../utils/api/httpException';
 import type {

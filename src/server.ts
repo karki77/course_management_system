@@ -1,7 +1,9 @@
 import express, { static as serveStatic } from 'express';
+import logger from './config/setup/logSetup';
+
 import morgan from 'morgan';
 import { PrismaClient } from '@prisma/client';
-import config from './config/envConfig';
+import config from './config/setup/envConfig';
 import router from './router';
 import globalErrorHandler from './middleware/globalErrorHandler';
 import { setupSwagger } from './utils/swagger/swaggerUi'; // 👈 one simple import
@@ -31,10 +33,10 @@ app.use(morgan(morganFormat));
 void (async (): Promise<void> => {
   try {
     await prisma.$connect();
-    console.log('Database connected successfully.');
+    logger.info('Database connected successfully.');
   } catch (error) {
-    console.log(`ERROR CONNECTING DATABASE: ${(error as Error).message}`);
-    console.error(error);
+    logger.error(`ERROR CONNECTING DATABASE: ${(error as Error).message}`);
+    logger.error(error);
     process.exit(1);
   }
 })();
@@ -44,5 +46,5 @@ app.use('/api/v1', router);
 app.use(globalErrorHandler);
 
 app.listen(PORT, () => {
-  console.log(`Server is running at port ${PORT}`);
+  logger.info(`Server is running at port ${PORT}`);
 });

@@ -1,5 +1,5 @@
 import HttpException from '../../utils/api/httpException';
-import { prisma } from '../../config/prismaClient';
+import { prisma } from '../../config/setup/dbSetup';
 import { sendEmail } from '../../utils/email/service';
 import { generateToken } from '../../middleware/authMiddleware';
 import { randomBytes } from 'crypto';

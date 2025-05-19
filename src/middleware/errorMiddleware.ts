@@ -2,14 +2,14 @@ import type { Request, Response, NextFunction } from 'express';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 import HttpException from '../utils/api/httpException';
-
+import logger from 'config/setup/logSetup';
 const errorMiddleware = (
   error: Error | HttpException,
   _req: Request,
   res: Response,
   next: NextFunction,
 ): any => {
-  console.error('Error caught in middleware:', error);
+  logger.error('Error caught in middleware:', error);
 
   // Check if res.status is a function
   if (typeof res.status !== 'function') {
@@ -25,7 +25,7 @@ const errorMiddleware = (
         }),
       );
     } catch (fallbackError) {
-      console.error('Failed to send fallback response:', fallbackError);
+      logger.error('Failed to send fallback response:', fallbackError);
       next(error); // Pass the original error to the default Express error handler
     }
     return;
