@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build":"prisma generate && prisma migrate deploy && tsc",
+    "build": "prisma generate && prisma migrate deploy && tsc",
     "build:watch": "tsc --watch",
     "start:dev": "concurrently \"npm run build:watch\" \"npm run dev\"",
     "dev": "nodemon --exec ts-node src/server.ts",
@@ -13,7 +13,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src --ext .ts,.js",
     "lint:fix": "eslint src --ext .ts,.js --fix",
-    "format": "prettier --write \"src/**/*.{ts,js,json,md}\""
+    "format": "prettier --write \"src/**/*.{ts,js,json,md}\"",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx}": ["eslint --fix", "prettier --write"]
   },
   "keywords": [],
   "imports": {
@@ -49,16 +53,13 @@
     "@types/nodemailer": "^6.4.17",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
-    "@typescript-eslint/eslint-plugin": "^8.31.1",
-    "@typescript-eslint/parser": "^8.31.1",
-    "eslint": "^9.25.1",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-prettier": "^5.2.6",
     "eslint-plugin-unused-imports": "^4.1.4",
-    "prettier": "^3.5.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.0.0",
     "prisma": "^6.6.0",
     "ts-node": "^10.9.2",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^5.8.3"
+    "ts-node-dev": "^2.0.0"
   }
 }
