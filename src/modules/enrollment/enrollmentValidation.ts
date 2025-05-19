@@ -9,7 +9,9 @@ export const createEnrollmentSchema = z
       .string({ required_error: 'Student ID is required' })
       .uuid({ message: 'Student ID must be a valid UUID' }),
   })
-  .strict();
+  .strict({
+    message: 'Extra fields are not allowed in the enrollment data',
+  });
 
 export const paramStudentSchema = z
   .object({
@@ -17,7 +19,9 @@ export const paramStudentSchema = z
       .string({ required_error: 'Student Id is required' })
       .uuid({ message: 'StudentId must be a valid UUID' }),
   })
-  .strict();
+  .strict({
+    message: 'Extra fields are not allowed in the student ID parameter',
+  });
 
 export type IParamsStudentSchema = z.infer<typeof paramStudentSchema>;
 export type ICreateEnrollmentSchema = z.infer<typeof createEnrollmentSchema>;
