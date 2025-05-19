@@ -22,6 +22,6 @@ export const paramStudentSchema = z
   .strict({
     message: 'Extra fields are not allowed in the student ID parameter',
   });
-
+// Exporting the types for the schemas
 export type IParamsStudentSchema = z.infer<typeof paramStudentSchema>;
 export type ICreateEnrollmentSchema = z.infer<typeof createEnrollmentSchema>;
