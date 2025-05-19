@@ -11,8 +11,9 @@ export const registerUserSchema = z
       .toLowerCase()
       .trim()
       .email({ message: 'Invalid email address' })
-      .min(5, 'Email must be at least 5 characters long')
-      .max(50, 'Email must be at most 50 characters long'),
+      .min(5, { message: 'Email must be at least 5 characters long' })
+      .max(50, { message: 'Email must be at most 50 characters long' }),
+
     username: z
       .string({ required_error: 'Username is required' })
       .toLowerCase()
@@ -21,24 +22,20 @@ export const registerUserSchema = z
       .regex(/^[a-zA-Z0-9_]+$/, {
         message: 'Username can only contain letters, numbers, and underscores',
       }),
+
     password: z
       .string({ required_error: 'Password is required' })
       .min(8, { message: 'Password must be at least 8 characters long' })
-      .regex(/[A-Z]/, {
-        message: 'Password must include at least one uppercase letter',
-      })
-      .regex(/[a-z]/, {
-        message: 'Password must include at least one lowercase letter',
-      })
-      .regex(/[0-9]/, {
-        message: 'Password must include at least one number',
-      })
-      .regex(/[\W_]/, {
-        message: 'Password must include at least one special character',
+      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/, {
+        message:
+          'Password must include uppercase, lowercase, number, and special character',
       }),
+
     role: z.nativeEnum(UserRole),
   })
-  .strict();
+  .strict({
+    message: 'Extra fields are not allowed in the registration data',
+  });
 
 export const verifyEmailQuerySchema = z
   .object({
@@ -47,7 +44,9 @@ export const verifyEmailQuerySchema = z
       invalid_type_error: 'Verification token must be a string',
     }),
   })
-  .strict();
+  .strict({
+    message: 'Extra fields are not allowed in the verification data',
+  });
 
 export const loginUserSchema = z
   .object({
@@ -56,7 +55,9 @@ export const loginUserSchema = z
       .string()
       .min(8, { message: 'Password must be at least 8 characters long' }),
   })
-  .strict();
+  .strict({
+    message: 'Extra fields are not allowed in the login data',
+  });
 
 export const changePasswordSchema = z
   .object({
@@ -68,43 +69,45 @@ export const changePasswordSchema = z
       .min(8, {
         message: 'New password must be at least 8 characters long',
       })
-
-      //this regex need to be fixed
-
-      .regex(/[A-Z]/, {
-        message: 'New password must include at least one uppercase letter',
-      })
-      .regex(/[a-z]/, {
-        message: 'New password must include at least one lowercase letter',
-      })
-      .regex(/[0-9]/, {
-        message: 'New password must include at least one number',
-      })
-      .regex(/[\W_]/, {
-        message: 'New password must include at least one special character',
+      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/, {
+        message:
+          'New password must include at least one uppercase letter, one lowercase letter, one number, and one special character',
       }),
   })
-  .strict(); //need to fix this again okey
-
+  .strict({
+    message: 'Extra fields are not allowed in the change password data',
+  });
 export const updateProfileSchema = z
   .object({
     bio: z
       .string({ required_error: 'bio is required' })
       .toLowerCase()
       .min(3, { message: 'bio must be at least 3 characters' })
-      .max(50, { message: 'bio must be at most 20 characters' }),
+      .max(50, { message: 'bio must be at most 50 characters' }),
     image: z.string({ required_error: 'Image is required' }),
   })
-  .strict();
+  .strict({
+    message: 'Extra fields are not allowed in the update profile data',
+  });
 
-export const forgotPasswordSchema = z.object({
-  email: z.string().email('Invalid email format'),
-});
+export const forgotPasswordSchema = z
+  .object({
+    email: z.string().email('Invalid email format'),
+  })
+  .strict({
+    message: 'Extra fields are not allowed in the forgot password data',
+  });
 
-export const resetPasswordSchema = z.object({
-  token: z.string(),
-  password: z.string().min(6),
-});
+export const resetPasswordSchema = z
+  .object({
+    token: z.string(),
+    password: z.string().min(6),
+  })
+  .strict({
+    message: 'Extra fields are not allowed in the reset password data',
+  });
+
+// validation for all users were initialized in the userValidation.ts file
 
 export type IRegisterSchema = z.infer<typeof registerUserSchema>;
 export type IVerifyEmailSchema = z.infer<typeof verifyEmailQuerySchema>;
@@ -113,7 +116,3 @@ export type IChangePassword = z.infer<typeof changePasswordSchema>;
 export type IUpdateProfile = z.infer<typeof updateProfileSchema>;
 export type IForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>;
 export type IResetPasswordSchema = z.infer<typeof resetPasswordSchema>;
-// validation for all users were initialized in the userValidation.ts file
-
-// router.post('/forgot-password', bodyValidator(forgotPasswordSchema), forgotPassword);
-// router.post('/reset-password', bodyValidator(resetPasswordSchema), resetPassword);
