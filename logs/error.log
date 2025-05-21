@@ -5,3 +5,6 @@ Please make sure your database server is running at `dpg-d0gpmobe5dus73aiqdh0-a.
 2025-05-20 14:30:26 [error]: ERROR CONNECTING DATABASE: Can't reach database server at `dpg-d0gpmobe5dus73aiqdh0-a.oregon-postgres.render.com:5432`
 
 Please make sure your database server is running at `dpg-d0gpmobe5dus73aiqdh0-a.oregon-postgres.render.com:5432`.
+2025-05-21 16:10:46 [error]: ERROR CONNECTING DATABASE: Can't reach database server at `dpg-d0gpmobe5dus73aiqdh0-a.oregon-postgres.render.com:5432`
+
+Please make sure your database server is running at `dpg-d0gpmobe5dus73aiqdh0-a.oregon-postgres.render.com:5432`.
