@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "prisma generate && prisma migrate deploy && tsc",
+    "build": "prisma generate && tsc",
+    "migrate":"prisma migrate deploy",
     "build:watch": "tsc --watch",
+    "permission":"chmod +x docker-setup.sh",
+    "docker":"./docker-setup.sh",
     "start:dev": "concurrently \"npm run build:watch\" \"npm run dev\"",
     "dev": "nodemon --exec ts-node src/server.ts",
     "start": "node dist/server.js",

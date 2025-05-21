@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  app:
+    # Use image name to avoid build issues
+    image: course-management-system:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: course_management_system
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=${PORT:-9000}
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET_REFRESH=${JWT_SECRET_REFRESH}
+      - JWT_SECRET_ACCESS=${JWT_SECRET_ACCESS}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app-network
+    volumes:
+      - ./uploads:/app/uploads
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+  
+  db:
+    image: postgres:15-alpine
+    container_name: course_db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres}
+      - POSTGRES_DB=${DB_NAME:-course}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

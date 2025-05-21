@@ -1,0 +1,50 @@
+# Dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Git
+.git
+.gitignore
+.github
+
+# Development files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose*.yml
+
+# Build directories
+dist
+build
+
+# Editor directories and files
+.vscode
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+.DS_Store
+
+# Testing
+coverage
+.nyc_output
+
+# Logs
+logs
+*.log
+
+# Prisma - don't ignore this as we need it for migrations
+# prisma/migrations
+
+# Husky
+.husky
