@@ -24,6 +24,7 @@ import {
 import {
   enroll,
   viewAllEnrolledCourses,
+  getAllEnrolledUsers,
 } from '../modules/enrollment/enrollmentController';
 import { mediaRequest } from '../utils/validators/mediaRequest';
 import paramsValidator from '../utils/validators/paramValidator';
@@ -39,6 +40,7 @@ import {
   resetPassword,
 } from '../modules/user/controller';
 import queryValidator from '#utils/validators/queryValidator';
+import { paramsCourseSchema } from '../modules/course/courseValidation';
 
 /**
  * User Router
@@ -294,10 +296,14 @@ userRouter.get('/profile', authMiddleware, getUserWithProfile);
  *             type: object
  *             required:
  *               - courseId
+ *               - studentId
  *             properties:
  *               courseId:
  *                 type: string
- *                 example: 12345
+ *                 example: "course123"
+ *               studentId:
+ *                 type: string
+ *                 example: "student456"
  *     responses:
  *       200:
  *         description: Enrollment successful
@@ -308,6 +314,47 @@ userRouter.post(
   roleMiddleware([UserRole.INSTRUCTOR]),
   bodyValidator(createEnrollmentSchema),
   enroll,
+);
+
+/**
+ * @swagger
+ * /api/v1/user/courses/{courseId}/enrollments:
+ *   get:
+ *     summary: Get all enrolled users for a course with pagination
+ *     tags: [Enrollment]
+ *     security:
+ *      - bearerAuth: []
+ *     parameters:
+ *       - name: courseId
+ *         in: path
+ *         required: true
+ *         description: ID of the course
+ *         schema:
+ *           type: string
+ *       - name: page
+ *         in: query
+ *         required: false
+ *         description: Page number for pagination
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - name: limit
+ *         in: query
+ *         required: false
+ *         description: Number of items per page
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved enrolled users
+ */
+userRouter.get(
+  '/courses/:courseId/enrollments',
+  authMiddleware,
+  roleMiddleware([UserRole.INSTRUCTOR]),
+  paramsValidator(paramsCourseSchema),
+  getAllEnrolledUsers,
 );
 
 /**

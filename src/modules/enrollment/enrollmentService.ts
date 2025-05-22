@@ -51,7 +51,16 @@ class EnrollmentService {
     });
   }
 
-  async getAllEnrolledUsers(courseId: string) {
+  async countEnrolledUsers(courseId: string) {
+    return await prisma.courseEnrollment.count({
+      where: { courseId },
+    });
+  }
+
+  async getAllEnrolledUsers(
+    courseId: string,
+    pagination: { skip: number; limit: number },
+  ) {
     const enrollments = await prisma.courseEnrollment.findMany({
       where: { courseId },
       include: {
@@ -71,6 +80,8 @@ class EnrollmentService {
           },
         },
       },
+      skip: pagination.skip,
+      take: pagination.limit,
     });
 
     return enrollments.map((enrollment) => ({

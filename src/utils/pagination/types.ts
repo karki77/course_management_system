@@ -1,36 +1,34 @@
-/**
- * Options for pagination calculation.
- */
-export interface PaginationOptions {
-  page?: number; // Current page number (1-based)
-  limit?: number; // Number of items per page
-}
+import { z } from 'zod';
+import { paginationDto } from './validation';
 
 /**
- * Result of pagination calculation, including query parameters and metadata.
+ * Type for pagination parameters derived from Zod schema
  */
-export interface PaginationResult {
-  skip: number; // Number of items to skip for database queries
-  take: number; // Number of items to take for database queries (same as limit)
-  currentPage: number;
-  totalPages: number;
-  totalItems: number;
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
-}
+export type PaginationParams = z.infer<typeof paginationDto>;
 
 /**
- * Standardized response structure for paginated API data.
- * This is also a common pagination-related interface, so it makes sense to keep it here.
+ * Type for pagination result
  */
-export interface PaginatedResponse<T> {
-  data: T[]; // Array of the actual data items
-  pagination: {
-    currentPage: number;
-    totalPages: number;
-    totalItems: number;
-    limit: number; // The limit that was applied (same as 'take')
-    hasNextPage: boolean;
-    hasPreviousPage: boolean;
+export interface PageDocsResult {
+  total: {
+    page: number;
+    limit: number;
   };
+  next: {
+    page: number | null;
+    limit: number;
+  };
+  prev: {
+    page: number | null;
+    limit: number;
+  };
+}
+
+/**
+ * Input type for getPageDocs function
+ */
+export interface PageDocProps {
+  page: number;
+  limit: number;
+  count: number;
 }

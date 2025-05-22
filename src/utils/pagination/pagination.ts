@@ -1,51 +1,100 @@
-import {
-  PaginationOptions,
-  PaginationResult,
-  PaginatedResponse,
-} from './types';
+import { PageDocsResult } from './types';
+import { paginationDto } from './validation';
+import { ZodError } from 'zod';
+
+const DEFAULT_LIMIT = 10;
+const DEFAULT_PAGE = 1;
 
 /**
- * Calculates pagination parameters for database queries and returns pagination metadata.
- * @param totalItems The total number of items available.
- * @param options Pagination options including page and limit.
- * @returns PaginationResult object.
+ * Format Zod validation errors into user-friendly messages
  */
-export function getPagination(
-  totalItems: number,
-  options: PaginationOptions,
-): PaginationResult {
-  const defaultPage = 1;
-  const defaultLimit = 10;
+function formatZodError(error: unknown): string {
+  if (error instanceof ZodError) {
+    // Extract just the messages from the errors and join them
+    return error.errors
+      .map((err) => `${err.path.join('.')}: ${err.message}`)
+      .join(', ');
+  }
 
-  const page = Math.max(
-    1,
-    options.page ? parseInt(String(options.page), 10) : defaultPage,
-  );
-  const limit = Math.max(
-    1,
-    options.limit ? parseInt(String(options.limit), 10) : defaultLimit,
-  );
-
-  const totalPages = Math.ceil(totalItems / limit);
-  const currentPage = Math.min(page, totalPages > 0 ? totalPages : 1);
-  const skip = (currentPage - 1) * limit;
-  const take = limit;
-
-  const hasNextPage = currentPage < totalPages;
-  const hasPreviousPage = currentPage > 1;
-
-  return {
-    skip,
-    take,
-    currentPage,
-    totalPages,
-    totalItems,
-    hasNextPage,
-    hasPreviousPage,
-  };
+  // If it's another kind of error, return its message or a default
+  return error instanceof Error
+    ? error.message
+    : 'Invalid pagination parameters';
 }
 
-// If you were exporting PaginatedResponse from here previously, you can remove it
-// or re-export it if you want the utility file to be the single point of import
-// for all pagination related concerns.
-// export type { PaginatedResponse }; // Example of re-exporting
+/**
+ * Calculate pagination parameters and metadata
+ */
+export const pagination = (data: unknown = {}, totalCount: number) => {
+  try {
+    // Validate input
+    const validated = paginationDto.parse(data);
+
+    // Set defaults for optional values
+    const limit = validated.limit ?? DEFAULT_LIMIT;
+    const page = validated.page ?? DEFAULT_PAGE;
+
+    // Calculate skip and pages
+    const skip = limit * (page - 1);
+    const totalPages = Math.ceil(totalCount / limit);
+
+    return {
+      success: true,
+      pagination: {
+        limit,
+        skip,
+        page,
+      },
+      meta: {
+        total: {
+          page: totalPages,
+          limit: totalCount,
+        },
+        next: {
+          page: page < totalPages ? page + 1 : null,
+          limit,
+        },
+        prev: {
+          page: page > 1 ? page - 1 : null,
+          limit,
+        },
+      },
+    };
+  } catch (error) {
+    // Format error message for better readability
+    const errorMessage = formatZodError(error);
+    console.error('Pagination error:', errorMessage);
+
+    // Return just success flag and error message
+    return {
+      success: false,
+      error: errorMessage,
+    };
+  }
+};
+
+/**
+ * Calculate pagination metadata including total, next and previous page information
+ */
+export const getPageDocs = (data: {
+  page: number;
+  limit: number;
+  count: number;
+}): PageDocsResult => {
+  const totalPages = Math.ceil(data.count / data.limit);
+
+  return {
+    total: {
+      page: totalPages,
+      limit: data.count,
+    },
+    next: {
+      page: data.page + 1 > totalPages ? null : data.page + 1,
+      limit: data.limit,
+    },
+    prev: {
+      page: data.page - 1 <= 0 ? null : data.page - 1,
+      limit: data.limit,
+    },
+  };
+};
