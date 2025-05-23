@@ -2,7 +2,7 @@ import { prisma } from '../../config/setup/dbSetup';
 import HttpException from '../../utils/api/httpException';
 import { ICreateEnrollmentSchema } from './enrollmentValidation';
 import { pagination, getPageDocs } from '../../utils/pagination/pagination';
-import { IPaginationSchema } from '#utils/validators/commonValidation';
+import { IPaginationSchema } from '../../utils/validators/commonValidation';
 class EnrollmentService {
   async enroll(data: ICreateEnrollmentSchema) {
     const student = await prisma.user.findUnique({
@@ -37,12 +37,6 @@ class EnrollmentService {
         userId: data.studentId,
         courseId: data.courseId,
       },
-    });
-  }
-
-  async countEnrolledUsers(courseId: string) {
-    return await prisma.courseEnrollment.count({
-      where: { courseId },
     });
   }
 
@@ -95,7 +89,6 @@ class EnrollmentService {
       count,
     });
 
-    //
     return {
       enrollments,
       docs,

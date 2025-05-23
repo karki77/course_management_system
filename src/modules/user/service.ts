@@ -14,7 +14,8 @@ import type {
   IForgotPasswordSchema,
   IResetPasswordSchema,
 } from './validation';
-import { request } from 'http';
+import { pagination, getPageDocs } from '#utils/pagination/pagination';
+import { IPaginationSchema } from '../../utils/validators/commonValidation';
 
 /**
  * User Service
@@ -93,6 +94,35 @@ class UserService {
         verificationTokenExpires: null,
       },
     });
+  }
+
+  async getAllRegisteredUsers(query: IPaginationSchema) {
+    const { skip, limit, page } = pagination({
+      limit: query.limit,
+      page: query.page,
+    });
+
+    const [users, count] = await Promise.all([
+      await prisma.user.findMany({
+        take: limit,
+        skip,
+        orderBy: {
+          createdAt: 'desc',
+        },
+      }),
+      prisma.user.count(),
+    ]);
+
+    const docs = getPageDocs({
+      page,
+      limit,
+      count,
+    });
+
+    return {
+      users,
+      docs,
+    };
   }
 
   async login(data: ILoginSchema) {

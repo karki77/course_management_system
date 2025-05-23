@@ -1,4 +1,4 @@
-import e, { Router } from 'express';
+import { Router } from 'express';
 import { UserRole } from '@prisma/client';
 
 import bodyValidator from '../utils/validators/bodyValidator';
@@ -19,7 +19,6 @@ import { updateProfileSchema } from '../modules/user/validation';
 import {
   createEnrollmentSchema,
   paramStudentSchema,
-  IParamsStudentSchema,
 } from '../modules/enrollment/enrollmentValidation';
 import {
   enroll,
@@ -38,10 +37,11 @@ import {
   verifyEmail,
   forgotPassword,
   resetPassword,
+  getAllRegisteredUsers,
 } from '../modules/user/controller';
 import queryValidator from '#utils/validators/queryValidator';
 import { paramsCourseSchema } from '../modules/course/courseValidation';
-
+import { paginationSchema } from '#utils/validators/commonValidation';
 /**
  * User Router
  */
@@ -148,6 +148,12 @@ userRouter.post('/login', bodyValidator(loginUserSchema), loginUser);
 
 userRouter.post('/register', bodyValidator(registerUserSchema), registerUser);
 
+userRouter.get(
+  '/getallusers',
+  queryValidator(paginationSchema),
+  getAllRegisteredUsers,
+);
+
 userRouter.get('/verify', queryValidator(verifyEmailQuerySchema), verifyEmail);
 
 /**
@@ -185,48 +191,6 @@ userRouter.patch(
   authMiddleware,
   bodyValidator(changePasswordSchema),
   changePassword,
-);
-
-/**
- * @swagger
- * /api/v1/user/role:
- *   get:
- *     summary: Get user role
- *     tags: [Auth]
- *     security:
- *      - bearerAuth: []
- *     responses:
- *       200:
- *         description: User role retrieved successfully
- */
-userRouter.get(
-  '/student',
-  authMiddleware,
-  roleMiddleware([UserRole.STUDENT]),
-  async (req, res) => {
-    res.json({ message: 'Hello from student router' });
-  },
-);
-
-/**
- * @swagger
- * /api/v1/user/instructor:
- *   get:
- *     summary: Get instructor role
- *     tags: [Auth]
- *     security:
- *      - bearerAuth: []
- *     responses:
- *       200:
- *         description: Instructor role retrieved successfully
- */
-userRouter.get(
-  '/instructor',
-  authMiddleware,
-  roleMiddleware([UserRole.INSTRUCTOR]),
-  async (req, res) => {
-    res.json({ message: 'Hello from instructor router' });
-  },
 );
 
 /**

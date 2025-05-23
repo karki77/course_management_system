@@ -32,6 +32,28 @@ export const registerUser = async (
     next(error);
   }
 };
+/**
+ * Get all Registered Users
+ */
+
+export const getAllRegisteredUsers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { users, docs } = await UserService.getAllRegisteredUsers(req.query);
+    res.send(
+      new HttpResponse({
+        message: 'Registered users fetched successfully',
+        data: users,
+        docs,
+      }),
+    );
+  } catch (error) {
+    next(error);
+  }
+};
 
 /**
  * Verify Email
