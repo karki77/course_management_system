@@ -9,6 +9,7 @@ import {
   deleteCourse,
   createModule,
 } from '../modules/course/courseController';
+
 import {
   createCourseSchema,
   updateCourseSchema,
@@ -18,7 +19,14 @@ import {
 
 import { authMiddleware } from '../middleware/authMiddleware';
 import { roleMiddleware } from '../middleware/rolemiddleware';
+
+import queryValidator from '#utils/validators/queryValidator';
 import paramValidator from '../utils/validators/paramValidator';
+
+import {
+  paginationSchema,
+  paramIdSchema,
+} from '#utils/validators/commonValidation';
 
 const courseRouter = Router();
 
@@ -155,10 +163,11 @@ courseRouter.delete(
  *         description: List of enrolled users
  */
 courseRouter.get(
-  '/enroll/:courseId',
+  '/enroll/:id',
   authMiddleware,
   roleMiddleware([UserRole.INSTRUCTOR]),
-  paramValidator(paramsCourseSchema),
+  paramValidator(paramIdSchema),
+  queryValidator(paginationSchema),
   getAllEnrolledUsers,
 );
 

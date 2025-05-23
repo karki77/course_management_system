@@ -6,24 +6,10 @@ import type {
   IParamsStudentSchema,
 } from './enrollmentValidation';
 import EnrollmentService from './enrollmentService';
-import { IParamsSchema } from '#modules/course/courseValidation';
-import { pagination as getPagination } from '../../utils/pagination/pagination';
-import { ZodError } from 'zod';
-
-/**
- * Format Zod validation errors into user-friendly messages
- */
-function formatZodError(error: unknown): string {
-  if (error instanceof ZodError) {
-    // Extract just the messages from the errors and join them
-    return error.errors
-      .map((err) => `${err.path.join('.')}: ${err.message}`)
-      .join(', ');
-  }
-
-  // If it's another kind of error, return its message or a default
-  return error instanceof Error ? error.message : 'Invalid parameters';
-}
+import type {
+  IPaginationSchema,
+  IParamIdSchema,
+} from '#utils/validators/commonValidation';
 
 export const enroll = async (
   req: Request<unknown, unknown, ICreateEnrollmentSchema>,
@@ -31,12 +17,7 @@ export const enroll = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const instructorId = req.user?.id;
-    if (!instructorId) {
-      throw new HttpException(401, 'User not authenticated');
-    }
-
-    const enrollment = await EnrollmentService.enroll(instructorId, req.body);
+    const enrollment = await EnrollmentService.enroll(req.body);
 
     res.send(
       new HttpResponse({
@@ -50,53 +31,23 @@ export const enroll = async (
 };
 
 export const getAllEnrolledUsers = async (
-  req: Request<{ courseId: string }>,
+  req: Request<IParamIdSchema, unknown, unknown, IPaginationSchema>,
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const courseId = req.params.courseId;
-    const totalCount = await EnrollmentService.countEnrolledUsers(courseId);
+    const { enrollments, docs } = await EnrollmentService.getAllEnrolledUsers(
+      req.params.id,
+      req.query,
+    );
 
-    // Validate the query parameters for pagination
-    try {
-      const paginationResult = getPagination(req.query, totalCount);
-
-      // Check if pagination validation failed
-      if (!paginationResult.success) {
-        // Simple error response with just the validation message
-        res.status(400).json({
-          success: false,
-          message: paginationResult.error,
-        });
-        return;
-      }
-
-      const enrollments = await EnrollmentService.getAllEnrolledUsers(
-        courseId,
-        {
-          skip: paginationResult.pagination!.skip,
-          limit: paginationResult.pagination!.limit,
-        },
-      );
-      res.send(
-        new HttpResponse({
-          message: 'Enrollment fetched successfully',
-          data: enrollments,
-          pagination: paginationResult.meta,
-        }),
-      );
-    } catch (paginationError) {
-      // Format the error message to be user-friendly
-      const errorMessage = formatZodError(paginationError);
-
-      // Simple error response with just the validation message
-      console.error('Pagination validation error:', paginationError);
-      res.status(400).json({
-        success: false,
-        message: errorMessage,
-      });
-    }
+    res.send(
+      new HttpResponse({
+        message: 'Enrollment fetched successfully',
+        data: enrollments,
+        docs,
+      }),
+    );
   } catch (error) {
     next(error);
   }

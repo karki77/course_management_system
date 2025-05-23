@@ -1,24 +1,14 @@
-import { title } from 'process';
 import { prisma } from '../../config/setup/dbSetup';
 import HttpException from '../../utils/api/httpException';
-import { sendEmail } from '../../utils/email/service';
 import { ICreateEnrollmentSchema } from './enrollmentValidation';
-
+import { pagination, getPageDocs } from '../../utils/pagination/pagination';
+import { IPaginationSchema } from '#utils/validators/commonValidation';
 class EnrollmentService {
-  async enroll(instructorId: string, data: ICreateEnrollmentSchema) {
-    // Check if the user is an instructor
-    const instructor = await prisma.user.findUnique({
-      where: { id: instructorId },
-    });
-
-    if (!instructor || instructor.role !== 'INSTRUCTOR') {
-      throw new HttpException(403, 'User is not an instructor');
-    }
-
-    // check student is exist or not in database
+  async enroll(data: ICreateEnrollmentSchema) {
     const student = await prisma.user.findUnique({
       where: { id: data.studentId },
     });
+
     if (!student) {
       throw new HttpException(404, 'Student not found');
     }
@@ -30,7 +20,6 @@ class EnrollmentService {
       throw new HttpException(404, 'Course not found');
     }
 
-    // Check for duplicate enrollment
     const existingEnrollment = await prisma.courseEnrollment.findUnique({
       where: {
         userId_courseId: {
@@ -57,40 +46,60 @@ class EnrollmentService {
     });
   }
 
-  async getAllEnrolledUsers(
-    courseId: string,
-    pagination: { skip: number; limit: number },
-  ) {
-    const enrollments = await prisma.courseEnrollment.findMany({
-      where: { courseId },
-      include: {
-        user: true,
-        course: {
-          select: {
-            id: true,
-            title: true,
-            duration: true,
-            period: true,
-            module: {
-              select: {
-                id: true,
-                title: true,
+  async getAllEnrolledUsers(courseId: string, query: IPaginationSchema) {
+    const { skip, limit, page } = pagination({
+      limit: query.limit,
+      page: query.page,
+    });
+
+    const [enrollments, count] = await Promise.all([
+      await prisma.courseEnrollment.findMany({
+        where: { courseId },
+        select: {
+          user: {
+            select: {
+              id: true,
+              email: true,
+            },
+          },
+          course: {
+            select: {
+              id: true,
+              title: true,
+              duration: true,
+              period: true,
+              module: {
+                select: {
+                  id: true,
+                  title: true,
+                },
               },
             },
           },
         },
-      },
-      skip: pagination.skip,
-      take: pagination.limit,
+        take: limit,
+        skip,
+        orderBy: {
+          createdAt: 'desc',
+        },
+      }),
+
+      await prisma.courseEnrollment.count({
+        where: { courseId },
+      }),
+    ]);
+
+    const docs = getPageDocs({
+      page,
+      limit,
+      count,
     });
 
-    return enrollments.map((enrollment) => ({
-      student: enrollment.user,
-      course: enrollment.course.title,
-      duration: enrollment.course.duration,
-      period: enrollment.course.period,
-      modules: enrollment.course.module,
-    }));
+    //
+    return {
+      enrollments,
+      docs,
+    };
   }
 
   async viewAllEnrolledCourses(studentId: string) {
@@ -114,14 +123,7 @@ class EnrollmentService {
         },
       },
     });
-
-    return enrollments.map((enrollment) => ({
-      courseId: enrollment.course.id,
-      courseTitle: enrollment.course.title,
-      duration: enrollment.course.duration,
-      period: enrollment.course.period,
-      modules: enrollment.course.module,
-    }));
+    return enrollments;
   }
 }
 
