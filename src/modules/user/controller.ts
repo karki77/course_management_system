@@ -198,10 +198,15 @@ export const getUserWithProfile = async (
       throw new HttpException(404, 'User not found');
     }
     const user = await UserService.getUserWithProfile(req.user.id);
+    const filteredUsers = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    };
     res.send(
       new HttpResponse({
         message: 'user with profile fetched successfully',
-        data: user,
+        data: filteredUsers,
       }),
     );
   } catch (error) {
