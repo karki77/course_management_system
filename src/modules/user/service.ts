@@ -125,6 +125,31 @@ class UserService {
     };
   }
 
+  async getUserById(userId: string) {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        role: true,
+        isEmailVerified: true,
+        profile: {
+          select: {
+            bio: true,
+            image: true,
+          },
+        },
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+    if (!user) {
+      throw new HttpException(404, 'User not found');
+    }
+    return user;
+  }
+
   async login(data: ILoginSchema) {
     const user = await prisma.user.findUnique({
       where: { email: data.email },

@@ -21,11 +21,15 @@ export const registerUser = async (
   next: NextFunction,
 ) => {
   try {
-    const data = await UserService.register(req.body);
+    const user = await UserService.register(req.body);
+    const filteredUsers = {
+      id: user.id,
+      email: user.email,
+    };
     res.send(
       new HttpResponse({
         message: 'User registered successfully',
-        data,
+        data: filteredUsers,
       }),
     );
   } catch (error) {
@@ -43,11 +47,38 @@ export const getAllRegisteredUsers = async (
 ) => {
   try {
     const { users, docs } = await UserService.getAllRegisteredUsers(req.query);
+    const filteredUsers = users.map((user) => ({
+      id: user.id,
+      email: user.email,
+    }));
     res.send(
       new HttpResponse({
         message: 'Registered users fetched successfully',
-        data: users,
+        data: filteredUsers,
         docs,
+      }),
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Get User by Id
+ */
+
+export const getUserById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const userId = req.params.userId;
+    const user = await UserService.getUserById(userId);
+    res.send(
+      new HttpResponse({
+        message: 'User with valid Id fetched successfully',
+        data: user,
       }),
     );
   } catch (error) {

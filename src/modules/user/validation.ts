@@ -107,6 +107,16 @@ export const resetPasswordSchema = z
     message: 'Extra fields are not allowed in the reset password data',
   });
 
+export const paramsUserSchema = z
+  .object({
+    userId: z
+      .string({ required_error: 'UserId is required' })
+      .uuid({ message: 'UserId must be a valid UUID' }),
+  })
+  .strict({
+    message: 'Extra fields are not allowed in UserID parameter',
+  });
+
 // validation for all users were initialized in the userValidation.ts file
 
 export type IRegisterSchema = z.infer<typeof registerUserSchema>;
@@ -116,3 +126,4 @@ export type IChangePassword = z.infer<typeof changePasswordSchema>;
 export type IUpdateProfile = z.infer<typeof updateProfileSchema>;
 export type IForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>;
 export type IResetPasswordSchema = z.infer<typeof resetPasswordSchema>;
+export type IParamsUserSchema = z.infer<typeof paramsUserSchema>;

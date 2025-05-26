@@ -9,6 +9,7 @@ import {
   verifyEmailQuerySchema,
   forgotPasswordSchema,
   resetPasswordSchema,
+  paramsUserSchema,
 } from '../modules/user/validation';
 
 import { authMiddleware } from '../middleware/authMiddleware';
@@ -38,6 +39,7 @@ import {
   forgotPassword,
   resetPassword,
   getAllRegisteredUsers,
+  getUserById,
 } from '../modules/user/controller';
 import queryValidator from '#utils/validators/queryValidator';
 import { paramsCourseSchema } from '../modules/course/courseValidation';
@@ -153,6 +155,8 @@ userRouter.get(
   queryValidator(paginationSchema),
   getAllRegisteredUsers,
 );
+
+userRouter.get('/:userId', paramsValidator(paramsUserSchema), getUserById);
 
 userRouter.get('/verify', queryValidator(verifyEmailQuerySchema), verifyEmail);
 
