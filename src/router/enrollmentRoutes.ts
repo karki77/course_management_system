@@ -95,7 +95,7 @@ enrollmentRouter.post(
  *         description: Successfully retrieved enrolled users
  */
 enrollmentRouter.get(
-  '/courses/:courseId/enrollments',
+  '/courses/:courseId',
   authMiddleware,
   roleMiddleware([UserRole.INSTRUCTOR]),
   paramsValidator(paramsCourseSchema),

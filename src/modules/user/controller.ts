@@ -118,11 +118,22 @@ export const loginUser = async (
   next: NextFunction,
 ) => {
   try {
-    const data = await UserService.login(req.body);
+    const { user, accessToken, refreshToken } = await UserService.login(
+      req.body,
+    );
+    const filteredUsers = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    };
     res.send(
       new HttpResponse({
         message: 'User login successfully',
-        data,
+        data: {
+          users: filteredUsers,
+          accessToken,
+          refreshToken,
+        },
       }),
     );
   } catch (error) {
