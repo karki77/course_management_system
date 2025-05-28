@@ -30,16 +30,14 @@ export const enroll = async (
   }
 };
 
-export const getAllEnrolledUsers = async (
+export const getAllEnrolledStudents = async (
   req: Request<IParamIdSchema, unknown, unknown, IPaginationSchema>,
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const { enrollments, docs } = await EnrollmentService.getAllEnrolledUsers(
-      req.params.id,
-      req.query,
-    );
+    const { enrollments, docs } =
+      await EnrollmentService.getAllEnrolledStudents(req.params.id, req.query);
 
     res.send(
       new HttpResponse({
@@ -64,14 +62,16 @@ export const viewAllEnrolledCourses = async (
       throw new HttpException(401, 'User not authenticated');
     }
 
-    const enrollsubjects = await EnrollmentService.viewAllEnrolledCourses(
+    const { enrollment, docs } = await EnrollmentService.viewAllEnrolledCourses(
       req.params.studentId,
+      req.query,
     );
 
     res.send(
       new HttpResponse({
         message: 'Courses fetched successfully',
-        data: enrollsubjects,
+        data: enrollment,
+        docs,
       }),
     );
   } catch (error) {

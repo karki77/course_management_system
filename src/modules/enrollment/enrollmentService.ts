@@ -40,7 +40,7 @@ class EnrollmentService {
     });
   }
 
-  async getAllEnrolledUsers(courseId: string, query: IPaginationSchema) {
+  async getAllEnrolledStudents(courseId: string, query: IPaginationSchema) {
     const { skip, limit, page } = pagination({
       limit: query.limit,
       page: query.page,
@@ -95,28 +95,51 @@ class EnrollmentService {
     };
   }
 
-  async viewAllEnrolledCourses(studentId: string) {
-    const enrollments = await prisma.courseEnrollment.findMany({
-      where: { userId: studentId },
-      include: {
-        user: true,
-        course: {
-          select: {
-            id: true,
-            title: true,
-            duration: true,
-            period: true,
-            module: {
-              select: {
-                id: true,
-                title: true,
+  async viewAllEnrolledCourses(studentId: string, query: IPaginationSchema) {
+    const { skip, limit, page } = pagination({
+      limit: query.limit,
+      page: query.page,
+    });
+    const [enrollment, count] = await Promise.all([
+      await prisma.courseEnrollment.findMany({
+        where: { userId: studentId },
+        take: limit,
+        skip,
+        orderBy: {
+          createdAt: 'desc',
+        },
+        select: {
+          course: {
+            select: {
+              id: true,
+              title: true,
+              duration: true,
+              period: true,
+              module: {
+                select: {
+                  id: true,
+                  title: true,
+                },
               },
             },
           },
         },
-      },
+      }),
+
+      await prisma.courseEnrollment.count({
+        where: { userId: studentId },
+      }),
+    ]);
+    const docs = getPageDocs({
+      page,
+      limit,
+      count,
     });
-    return enrollments;
+
+    return {
+      enrollment,
+      docs,
+    };
   }
 }
 

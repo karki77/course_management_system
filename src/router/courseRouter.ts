@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { UserRole } from '@prisma/client';
 
 import bodyValidator from '../utils/validators/bodyValidator';
-import { getAllEnrolledUsers } from '../modules/enrollment/enrollmentController';
+import { getAllEnrolledStudents } from '../modules/enrollment/enrollmentController';
 import {
   createCourse,
   updateCourse,
@@ -168,7 +168,7 @@ courseRouter.get(
   roleMiddleware([UserRole.INSTRUCTOR]),
   paramValidator(paramIdSchema),
   queryValidator(paginationSchema),
-  getAllEnrolledUsers,
+  getAllEnrolledStudents,
 );
 
 /**

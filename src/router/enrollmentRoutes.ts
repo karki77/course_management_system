@@ -2,7 +2,7 @@ import { Router } from 'express';
 import {
   enroll,
   viewAllEnrolledCourses,
-  getAllEnrolledUsers,
+  getAllEnrolledStudents,
 } from '../modules/enrollment/enrollmentController';
 import { authMiddleware } from '../middleware/authMiddleware';
 import { roleMiddleware } from '../middleware/rolemiddleware';
@@ -100,7 +100,7 @@ enrollmentRouter.get(
   roleMiddleware([UserRole.INSTRUCTOR]),
   paramsValidator(paramsCourseSchema),
   queryValidator(paginationSchema),
-  getAllEnrolledUsers,
+  getAllEnrolledStudents,
 );
 
 // GET /viewcourses/:userId - Student views own enrolled courses
