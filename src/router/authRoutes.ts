@@ -153,4 +153,33 @@ authRouter.patch(
   changePassword,
 );
 
+// Swagger documentation for change password
+/**
+ * @swagger
+ * /api/v1/user/change-password:
+ *   patch:
+ *     summary: Change user password
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - oldPassword
+ *               - newPassword
+ *             properties:
+ *               oldPassword:
+ *                 type: string
+ *                 format: password
+ *                 example: strongpassword123
+ *               newPassword:
+ *                 type: string
+ *                 format: password
+ *                 example: newstrongpassword123
+ *     responses:
+ *       200:
+ *         description: Password changed successfully
+ */
 export default authRouter;
