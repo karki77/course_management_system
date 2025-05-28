@@ -1147,3 +1147,38 @@ Please make sure your database server is running at `dpg-d0gpmobe5dus73aiqdh0-a.
 2025-05-27 16:22:06 [info]: Database connected successfully.
 2025-05-27 16:29:18 [info]: Server is running at port 9000
 2025-05-27 16:29:18 [info]: Database connected successfully.
+2025-05-27 16:56:35 [info]: Server is running at port 9000
+2025-05-27 16:56:35 [info]: Database connected successfully.
+2025-05-27 16:57:42 [info]: Server is running at port 9000
+2025-05-27 16:57:42 [info]: Database connected successfully.
+2025-05-27 16:58:04 [info]: Server is running at port 9000
+2025-05-27 16:58:04 [info]: Database connected successfully.
+2025-05-28 12:15:54 [info]: Server is running at port 9000
+2025-05-28 12:15:54 [info]: Database connected successfully.
+2025-05-28 12:31:29 [info]: Server is running at port 9000
+2025-05-28 12:31:29 [info]: Database connected successfully.
+2025-05-28 12:34:25 [info]: Server is running at port 9000
+2025-05-28 12:34:25 [info]: Database connected successfully.
+2025-05-28 12:40:44 [error]: {"method":"PATCH","url":"/api/v1/user/auth/change-password","message":"Old password is incorrect","status":400,"stack":"Error: Old password is incorrect\n    at UserService.changePassword (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\src\\modules\\user\\service.ts:197:13)\n    at async changePassword (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\src\\modules\\user\\controller.ts:158:5)"}
+2025-05-28 12:43:38 [error]: {"method":"POST","url":"/api/v1/course/create","message":"Course with this title already exists","status":400,"stack":"Error: Course with this title already exists\n    at CourseService.createCourse (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\src\\modules\\course\\courseService.ts:31:13)\n    at async createCourse (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\src\\modules\\course\\courseController.ts:26:20)"}
+2025-05-28 12:47:33 [error]: {"method":"GET","url":"/api/v1/user/enrollment/viewCourses/a865ead6-9d8a-4561-90e6-755fb2b2346f","message":"Forbidden","status":403,"stack":"Error: Forbidden\n    at C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\src\\middleware\\rolemiddleware.ts:32:15"}
+2025-05-28 12:55:41 [info]: Server is running at port 9000
+2025-05-28 12:55:41 [info]: Database connected successfully.
+2025-05-28 12:55:46 [info]: Server is running at port 9000
+2025-05-28 12:55:46 [info]: Database connected successfully.
+2025-05-28 13:59:59 [info]: Server is running at port 9000
+2025-05-28 13:59:59 [info]: Database connected successfully.
+2025-05-28 14:24:25 [info]: Server is running at port 9000
+2025-05-28 14:24:25 [info]: Database connected successfully.
+2025-05-28 14:24:53 [info]: Server is running at port 9000
+2025-05-28 14:24:53 [info]: Database connected successfully.
+2025-05-28 14:24:59 [info]: Server is running at port 9000
+2025-05-28 14:24:59 [info]: Database connected successfully.
+2025-05-28 14:25:04 [info]: Server is running at port 9000
+2025-05-28 14:25:04 [info]: Database connected successfully.
+2025-05-28 14:25:25 [info]: Server is running at port 9000
+2025-05-28 14:25:25 [info]: Database connected successfully.
+2025-05-28 14:31:00 [info]: Server is running at port 9000
+2025-05-28 14:31:00 [info]: Database connected successfully.
+2025-05-28 14:33:11 [info]: Server is running at port 9000
+2025-05-28 14:33:11 [info]: Database connected successfully.

@@ -6,7 +6,7 @@ import { PrismaClient } from '@prisma/client';
 import config from './config/setup/envConfig';
 import router from './router';
 import globalErrorHandler from './middleware/globalErrorHandler';
-import { setupSwagger } from './utils/swagger/swaggerUi'; // 👈 one simple import
+import { setupSwagger } from './utils/swagger/swaggerUi';
 import path from 'path';
 
 const prisma = new PrismaClient();
@@ -20,12 +20,9 @@ const projectRoot = path.join(__dirname, '..');
 const uploadsPath = path.join(projectRoot, 'uploads');
 app.use('/uploads', serveStatic(uploadsPath));
 
-//  Custom morgan token for timestamp
-morgan.token('timestamp', () => new Date().toISOString());
-
 //  Morgan format string
 const morganFormat =
-  ':method :url :status :res[content-length] - :response-time ms [:timestamp]';
+  ':method :url :status :res[content-length] - :response-time ms :date[iso]';
 
 //  Enable morgan logging for all requests
 app.use(morgan(morganFormat));

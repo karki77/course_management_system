@@ -125,7 +125,7 @@ enrollmentRouter.get(
  */
 
 enrollmentRouter.get(
-  '/viewcourses/:userId',
+  '/viewcourses/:studentId',
   authMiddleware,
   roleMiddleware([UserRole.STUDENT]),
   paramsValidator(paramStudentSchema),
