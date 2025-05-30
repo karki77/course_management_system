@@ -11,6 +11,7 @@ import {
   verifyEmailQuerySchema,
   forgotPasswordSchema,
   resetPasswordSchema,
+  tokenSchema,
 } from '../modules/user/validation';
 
 import { authMiddleware } from '../middleware/authMiddleware';
@@ -26,10 +27,9 @@ import {
 
 const authRouter = Router();
 
-// Register
 /**
  * @swagger
- * /api/v1/user/register:
+ * /api/v1/auth/register:
  *   post:
  *     summary: Register a new user
  *     tags: [Auth]
@@ -64,7 +64,7 @@ authRouter.post('/register', bodyValidator(registerUserSchema), registerUser);
 // Login
 /**
  * @swagger
- * /api/v1/user/login:
+ * /api/v1/auth/login:
  *   post:
  *     summary: User login
  *     tags: [Auth]
@@ -132,6 +132,12 @@ authRouter.post('/login', bodyValidator(loginUserSchema), loginUser);
 authRouter.get('/verify', queryValidator(verifyEmailQuerySchema), verifyEmail);
 
 // Forgot Password
+/**
+ * @swagger
+ * /api/v1/auth/forgot-password:
+ *   post:
+ *
+ */
 authRouter.post(
   '/forgot-password',
   bodyValidator(forgotPasswordSchema),
@@ -141,25 +147,21 @@ authRouter.post(
 // Reset Password
 authRouter.post(
   '/reset-password',
+  queryValidator(tokenSchema),
   bodyValidator(resetPasswordSchema),
   resetPassword,
 );
 
-// Change Password
-authRouter.patch(
-  '/change-password',
-  authMiddleware,
-  bodyValidator(changePasswordSchema),
-  changePassword,
-);
-
-// Swagger documentation for change password
 /**
  * @swagger
- * /api/v1/user/change-password:
+ * /api/v1/auth/change-password:
  *   patch:
  *     summary: Change user password
- *     tags: [Auth]
+ *     description: Change the password for the authenticated user
+ *     tags:
+ *       - Auth
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -170,16 +172,23 @@ authRouter.patch(
  *               - oldPassword
  *               - newPassword
  *             properties:
- *               oldPassword:
+ *               currentPassword:
  *                 type: string
- *                 format: password
- *                 example: strongpassword123
+ *                 description: Current password
  *               newPassword:
  *                 type: string
- *                 format: password
- *                 example: newstrongpassword123
+ *                 minLength: 6
+ *                 maxLength: 20
+ *                 description: New password
  *     responses:
  *       200:
  *         description: Password changed successfully
  */
+authRouter.patch(
+  '/change-password',
+  authMiddleware,
+  bodyValidator(changePasswordSchema),
+  changePassword,
+);
+
 export default authRouter;

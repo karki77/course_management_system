@@ -29,6 +29,7 @@ export const authMiddleware = async (
 ) => {
   try {
     const authHeader = req.headers.authorization;
+    console.log(authHeader, 'check auth header');
     if (!authHeader || !authHeader.startsWith('Bearer')) {
       throw new HttpException(401, 'Authentication required');
     }

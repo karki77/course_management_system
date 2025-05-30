@@ -98,10 +98,41 @@ export const forgotPasswordSchema = z
     message: 'Extra fields are not allowed in the forgot password data',
   });
 
+// export const resetPasswordSchema = z
+//   .object({
+//     token: z.string({
+//       required_error:"Token is required",
+//       invalid_type_error:"Token should be string"
+//     }),
+//     password: z.string({
+//       required_error:"Password is required",
+//       invalid_type_error:"Password should be string"
+//     }).min(6, "Password can not be less than 6 character").max(20, "Password can not be more than 20 character"),
+//   })
+//   .strict({
+//     message: 'Extra fields are not allowed in the reset password data',
+//   });
+
+export const tokenSchema = z
+  .object({
+    token: z.string({
+      required_error: 'Token is required',
+      invalid_type_error: 'Token should be string',
+    }),
+  })
+  .strict({
+    message: 'Extra fields are not allowed in the reset password data',
+  });
+
 export const resetPasswordSchema = z
   .object({
-    token: z.string(),
-    password: z.string().min(6),
+    password: z
+      .string({
+        required_error: 'Password is required',
+        invalid_type_error: 'Password should be string',
+      })
+      .min(6, 'Password can not be less than 6 character')
+      .max(20, 'Password can not be more than 20 character'),
   })
   .strict({
     message: 'Extra fields are not allowed in the reset password data',
@@ -118,12 +149,16 @@ export const paramsUserSchema = z
   });
 
 // validation for all users were initialized in the userValidation.ts file
-
-export type IRegisterSchema = z.infer<typeof registerUserSchema>;
-export type IVerifyEmailSchema = z.infer<typeof verifyEmailQuerySchema>;
-export type ILoginSchema = z.infer<typeof loginUserSchema>;
-export type IChangePassword = z.infer<typeof changePasswordSchema>;
-export type IUpdateProfile = z.infer<typeof updateProfileSchema>;
-export type IForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>;
-export type IResetPasswordSchema = z.infer<typeof resetPasswordSchema>;
 export type IParamsUserSchema = z.infer<typeof paramsUserSchema>;
+
+export type ILoginSchema = z.infer<typeof loginUserSchema>;
+export type IRegisterSchema = z.infer<typeof registerUserSchema>;
+
+export type IUpdateProfile = z.infer<typeof updateProfileSchema>;
+export type IChangePassword = z.infer<typeof changePasswordSchema>;
+
+export type IVerifyEmailSchema = z.infer<typeof verifyEmailQuerySchema>;
+export type IForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>;
+
+export type ITokenSchema = z.infer<typeof tokenSchema>;
+export type IResetPasswordSchema = z.infer<typeof resetPasswordSchema>;

@@ -1,13 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
 import { HttpResponse } from '../../utils/api/httpResponse';
-import type {
-  IChangePassword,
-  IForgotPasswordSchema,
-  ILoginSchema,
-  IRegisterSchema,
-  IResetPasswordSchema,
-  IUpdateProfile,
-  IVerifyEmailSchema,
+import {
+  ITokenSchema,
+  resetPasswordSchema,
+  type IChangePassword,
+  type IForgotPasswordSchema,
+  type ILoginSchema,
+  type IRegisterSchema,
+  type IResetPasswordSchema,
+  type IUpdateProfile,
+  type IVerifyEmailSchema,
 } from './validation';
 import HttpException from '../../utils/api/httpException';
 import UserService from './service';
@@ -251,12 +253,13 @@ export const forgotPassword = async (
  */
 
 export const resetPassword = async (
-  req: Request<unknown, unknown, IResetPasswordSchema>,
+  req: Request<unknown, unknown, IResetPasswordSchema, ITokenSchema>,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    await UserService.resetPassword(req.body);
+    // function ko parameter 3 ya 3+ objects pass
+    await UserService.resetPassword(req.query.token, req.body.password);
     res.send(
       new HttpResponse({
         message: 'Password reset successfully',
