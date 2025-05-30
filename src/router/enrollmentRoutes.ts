@@ -24,7 +24,7 @@ const enrollmentRouter = Router();
 // POST /enroll - Instructor enrolls student in course
 /**
  * @swagger
- * /api/v1/user/enroll:
+ * /api/v1/enrollment/enroll:
  *   post:
  *     summary: Enroll in a course
  *     tags: [Enrollment]
@@ -63,9 +63,9 @@ enrollmentRouter.post(
 
 /**
  * @swagger
- * /api/v1/user/courses/{courseId}/enrollments:
+ * /api/v1/enrollment/courses/{courseId}:
  *   get:
- *     summary: Get all enrolled users for a course with pagination
+ *     summary: Get all enrolled students for a course with pagination
  *     tags: [Enrollment]
  *     security:
  *      - bearerAuth: []
@@ -92,7 +92,7 @@ enrollmentRouter.post(
  *           default: 10
  *     responses:
  *       200:
- *         description: Successfully retrieved enrolled users
+ *         description: Successfully retrieved enrolled students
  */
 enrollmentRouter.get(
   '/courses/:courseId',
@@ -103,20 +103,20 @@ enrollmentRouter.get(
   getAllEnrolledStudents,
 );
 
-// GET /viewcourses/:userId - Student views own enrolled courses
+// GET /viewcourses/:studentId - Student views own enrolled courses
 /**
  * @swagger
- * /api/v1/user/viewcourses/{userId}:
+ * /api/v1/enrollment/viewcourses/{studentId}:
  *   get:
- *     summary: View all enrolled courses for a user
+ *     summary: View all enrolled courses for a student
  *     tags: [Enrollment]
  *     security:
  *      - bearerAuth: []
  *     parameters:
- *       - name: userId
+ *       - name: studentId
  *         in: path
  *         required: true
- *         description: ID of the user
+ *         description: ID of the student
  *         schema:
  *           type: string
  *     responses:

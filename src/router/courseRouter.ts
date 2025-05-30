@@ -145,34 +145,6 @@ courseRouter.delete(
 
 /**
  * @swagger
- * /api/v1/course/enroll/{courseId}:
- *   get:
- *     summary: Get all enrolled users for a course
- *     tags: [Enrollment]
- *     security:
- *      - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: courseId
- *         required: true
- *         description: ID of the course
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: List of enrolled users
- */
-courseRouter.get(
-  '/enroll/:id',
-  authMiddleware,
-  roleMiddleware([UserRole.INSTRUCTOR]),
-  paramValidator(paramIdSchema),
-  queryValidator(paginationSchema),
-  getAllEnrolledStudents,
-);
-
-/**
- * @swagger
  * /api/v1/course/create-module:
  *   post:
  *     summary: Create a new module for a course

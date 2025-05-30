@@ -98,21 +98,6 @@ export const forgotPasswordSchema = z
     message: 'Extra fields are not allowed in the forgot password data',
   });
 
-// export const resetPasswordSchema = z
-//   .object({
-//     token: z.string({
-//       required_error:"Token is required",
-//       invalid_type_error:"Token should be string"
-//     }),
-//     password: z.string({
-//       required_error:"Password is required",
-//       invalid_type_error:"Password should be string"
-//     }).min(6, "Password can not be less than 6 character").max(20, "Password can not be more than 20 character"),
-//   })
-//   .strict({
-//     message: 'Extra fields are not allowed in the reset password data',
-//   });
-
 export const tokenSchema = z
   .object({
     token: z.string({
@@ -132,7 +117,11 @@ export const resetPasswordSchema = z
         invalid_type_error: 'Password should be string',
       })
       .min(6, 'Password can not be less than 6 character')
-      .max(20, 'Password can not be more than 20 character'),
+      .max(20, 'Password can not be more than 20 character')
+      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/, {
+        message:
+          'Password must include at least one uppercase letter, one lowercase letter, one number, and one special character',
+      }),
   })
   .strict({
     message: 'Extra fields are not allowed in the reset password data',

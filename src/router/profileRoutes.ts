@@ -18,10 +18,10 @@ const profileRouter = Router();
 
 /**
  * @swagger
- * /api/v1/user/update-profile:
+ * /api/v1/profile/update-profile:
  *   patch:
  *     summary: Update user profile with bio and profile picture
- *     tags: [Auth]
+ *     tags: [Profile]
  *     description: Update the user's bio and optionally upload a profile picture
  *     security:
  *       - bearerAuth: []
@@ -56,20 +56,32 @@ profileRouter.patch(
 
 /**
  * @swagger
- * /api/v1/user/profile:
+ * /api/v1/profile/get-profile:
  *   get:
  *     summary: Get user profile
- *     tags: [Auth]
+ *     tags: [Profile]
  *     security:
  *      - bearerAuth: []
  *     responses:
  *       200:
  *         description: User profile retrieved successfully
  */
-profileRouter.get('/profile', authMiddleware, getUserWithProfile);
+profileRouter.get('/userprofile', authMiddleware, getUserWithProfile);
 
 // GET /getallusers
 
+/**
+ * @swagger
+ * /api/v1/profile/getallusers:
+ *   get:
+ *     summary: Get all registered users
+ *     tags: [Profile]
+ *     security:
+ *      - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: All registered users retrieved successfully
+ */
 profileRouter.get(
   '/getallusers',
   queryValidator(paginationSchema),

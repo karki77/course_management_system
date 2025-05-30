@@ -129,6 +129,25 @@ authRouter.post('/login', bodyValidator(loginUserSchema), loginUser);
 
 // Verify Email
 
+/**
+ * @swagger
+ * /api/v1/auth/verify:
+ *   get:
+ *     summary: Verify email
+ *     tags: [Auth]
+ *     parameters:
+ *       - name: token
+ *         in: query
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "1234567890"
+ *     responses:
+ *       200:
+ *         description: Email verified successfully
+ *       400:
+ *         description: Invalid token
+ */
 authRouter.get('/verify', queryValidator(verifyEmailQuerySchema), verifyEmail);
 
 // Forgot Password
@@ -136,7 +155,23 @@ authRouter.get('/verify', queryValidator(verifyEmailQuerySchema), verifyEmail);
  * @swagger
  * /api/v1/auth/forgot-password:
  *   post:
- *
+ *     summary: Forgot password
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *     responses:
+ *       200:
+ *         description: Password reset email sent
  */
 authRouter.post(
   '/forgot-password',
@@ -145,6 +180,37 @@ authRouter.post(
 );
 
 // Reset Password
+/**
+ * @swagger
+ * /api/v1/auth/reset-password:
+ *   post:
+ *     summary: Reset password
+ *     tags: [Auth]
+ *     parameters:
+ *       - name: token
+ *         in: query
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "1234567890"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - newPassword
+ *             properties:
+ *               newPassword:
+ *                 type: string
+ *                 minLength: 6
+ *                 maxLength: 20
+ *                 description: New password
+ *     responses:
+ *       200:
+ *         description: Password reset successfully
+ */
 authRouter.post(
   '/reset-password',
   queryValidator(tokenSchema),
