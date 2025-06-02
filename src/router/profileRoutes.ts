@@ -1,9 +1,5 @@
 import { Router } from 'express';
-import {
-  updateProfile,
-  getUserWithProfile,
-  getAllRegisteredUsers,
-} from '../modules/user/controller';
+import UserController from '../modules/user/controller';
 import { authMiddleware } from '../middleware/authMiddleware';
 import upload from '../utils/multer';
 import { updateProfileSchema } from '../modules/user/validation';
@@ -13,6 +9,7 @@ import queryValidator from '../utils/validators/queryValidator';
 import { paginationSchema } from '../utils/validators/commonValidation';
 
 const profileRouter = Router();
+const userController = new UserController();
 
 // PATCH /update-profile
 
@@ -49,7 +46,7 @@ profileRouter.patch(
   upload.single('file'),
   mediaRequest,
   bodyValidator(updateProfileSchema),
-  updateProfile,
+  userController.updateProfile.bind(userController),
 );
 
 // GET /profile
@@ -66,7 +63,11 @@ profileRouter.patch(
  *       200:
  *         description: User profile retrieved successfully
  */
-profileRouter.get('/userprofile', authMiddleware, getUserWithProfile);
+profileRouter.get(
+  '/userprofile',
+  authMiddleware,
+  userController.getUserWithProfile.bind(userController),
+);
 
 // GET /getallusers
 
@@ -85,7 +86,7 @@ profileRouter.get('/userprofile', authMiddleware, getUserWithProfile);
 profileRouter.get(
   '/getallusers',
   queryValidator(paginationSchema),
-  getAllRegisteredUsers,
+  userController.getAllRegisteredUsers.bind(userController),
 );
 
 export default profileRouter;

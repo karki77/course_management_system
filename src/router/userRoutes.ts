@@ -2,13 +2,15 @@ import { Router } from 'express';
 import { UserRole } from '@prisma/client';
 import { roleMiddleware } from '../middleware/rolemiddleware';
 import { authMiddleware } from '../middleware/authMiddleware';
-import { getUserById, getAllRegisteredUsers } from '../modules/user/controller';
+import UserController from '../modules/user/controller';
 import paramsValidator from '../utils/validators/paramValidator';
 import queryValidator from '#utils/validators/queryValidator';
 import { paginationSchema } from '#utils/validators/commonValidation';
 import { paramsUserSchema } from '../modules/user/validation';
 
 const userRoutes = Router();
+const userController = new UserController();
+
 /**
  * @swagger
  * /api/v1/user/getallusers:
@@ -25,8 +27,9 @@ userRoutes.get(
   authMiddleware,
   roleMiddleware([UserRole.ADMIN]),
   queryValidator(paginationSchema),
-  getAllRegisteredUsers,
+  userController.getAllRegisteredUsers.bind(userController),
 );
+
 /**
  * @swagger
  * /api/v1/user/{userId}:
@@ -45,6 +48,10 @@ userRoutes.get(
  *       200:
  *         description: User retrieved successfully
  */
-userRoutes.get('/:userId', paramsValidator(paramsUserSchema), getUserById);
+userRoutes.get(
+  '/:userId',
+  paramsValidator(paramsUserSchema),
+  userController.getUserById.bind(userController),
+);
 
 export default userRoutes;

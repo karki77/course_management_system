@@ -21,6 +21,7 @@ import { IPaginationSchema } from '../../utils/validators/commonValidation';
  * User Service
  */
 class UserService {
+  getInstance: any;
   async register(data: IRegisterSchema) {
     const existingUser = await prisma.user.findFirst({
       where: {

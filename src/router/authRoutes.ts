@@ -1,9 +1,7 @@
 // src/routes/authRouter.ts
 import { Router } from 'express';
-
 import bodyValidator from '../utils/validators/bodyValidator';
 import queryValidator from '#utils/validators/queryValidator';
-
 import {
   registerUserSchema,
   loginUserSchema,
@@ -13,19 +11,11 @@ import {
   resetPasswordSchema,
   tokenSchema,
 } from '../modules/user/validation';
-
 import { authMiddleware } from '../middleware/authMiddleware';
-
-import {
-  registerUser,
-  loginUser,
-  changePassword,
-  verifyEmail,
-  forgotPassword,
-  resetPassword,
-} from '../modules/user/controller';
+import UserController from '../modules/user/controller';
 
 const authRouter = Router();
+const userController = new UserController();
 
 /**
  * @swagger
@@ -59,7 +49,11 @@ const authRouter = Router();
  *       200:
  *         description: User registered successfully
  */
-authRouter.post('/register', bodyValidator(registerUserSchema), registerUser);
+authRouter.post(
+  '/register',
+  bodyValidator(registerUserSchema),
+  userController.registerUser.bind(userController),
+);
 
 // Login
 /**
@@ -125,10 +119,13 @@ authRouter.post('/register', bodyValidator(registerUserSchema), registerUser);
  *                       type: string
  *                       example: "dGhpc2lzYXJlZnJlc2h0b2tlbg=="
  */
-authRouter.post('/login', bodyValidator(loginUserSchema), loginUser);
+authRouter.post(
+  '/login',
+  bodyValidator(loginUserSchema),
+  userController.loginUser.bind(userController),
+);
 
 // Verify Email
-
 /**
  * @swagger
  * /api/v1/auth/verify:
@@ -148,7 +145,11 @@ authRouter.post('/login', bodyValidator(loginUserSchema), loginUser);
  *       400:
  *         description: Invalid token
  */
-authRouter.get('/verify', queryValidator(verifyEmailQuerySchema), verifyEmail);
+authRouter.get(
+  '/verify',
+  queryValidator(verifyEmailQuerySchema),
+  userController.verifyEmail.bind(userController),
+);
 
 // Forgot Password
 /**
@@ -176,7 +177,7 @@ authRouter.get('/verify', queryValidator(verifyEmailQuerySchema), verifyEmail);
 authRouter.post(
   '/forgot-password',
   bodyValidator(forgotPasswordSchema),
-  forgotPassword,
+  userController.forgotPassword.bind(userController),
 );
 
 // Reset Password
@@ -215,7 +216,7 @@ authRouter.post(
   '/reset-password',
   queryValidator(tokenSchema),
   bodyValidator(resetPasswordSchema),
-  resetPassword,
+  userController.resetPassword.bind(userController),
 );
 
 /**
@@ -254,7 +255,7 @@ authRouter.patch(
   '/change-password',
   authMiddleware,
   bodyValidator(changePasswordSchema),
-  changePassword,
+  userController.changePassword.bind(userController),
 );
 
 export default authRouter;
