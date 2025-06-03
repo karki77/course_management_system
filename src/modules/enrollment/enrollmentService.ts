@@ -136,11 +136,6 @@ class EnrollmentService implements IEnrollmentService {
     const [enrollments, count] = await Promise.all([
       await prisma.courseEnrollment.findMany({
         where: { userId: studentId },
-        take: limit,
-        skip,
-        orderBy: {
-          createdAt: 'desc',
-        },
         select: {
           id: true,
           userId: true,
@@ -161,6 +156,11 @@ class EnrollmentService implements IEnrollmentService {
               },
             },
           },
+        },
+        take: limit,
+        skip,
+        orderBy: {
+          createdAt: 'desc',
         },
       }),
 

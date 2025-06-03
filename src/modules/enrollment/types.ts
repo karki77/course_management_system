@@ -11,7 +11,7 @@ export interface IApiPaginationResponse<T, K> {
   docs: K;
   metadata?: Record<string, unknown>;
 }
-// used to get all enrolled students
+// for all enrolled students
 export interface EnrollmentWithUser {
   id: string;
   userId: string;
@@ -26,7 +26,7 @@ export interface EnrollmentWithUser {
   };
 }
 
-// used to get all enrolled courses by a student
+// for all enrolled courses by a student
 export interface EnrollmentWithCourse {
   id: string;
   userId: string;
@@ -44,7 +44,7 @@ export interface EnrollmentWithCourse {
     }[];
   };
 }
-// we are currently using this for getallEnrolled Students
+//  for allEnrolled Students with student, course and module details
 export interface EnrollmentWithDetails {
   id: string;
   userId: string;
