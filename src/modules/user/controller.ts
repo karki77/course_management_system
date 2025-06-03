@@ -5,7 +5,6 @@ import UserService from './service';
 import { IPaginationSchema } from '../../utils/validators/commonValidation';
 import type {
   ITokenSchema,
-  resetPasswordSchema,
   IChangePassword,
   IForgotPasswordSchema,
   ILoginSchema,
@@ -127,22 +126,12 @@ export class UserController {
     next: NextFunction,
   ): Promise<void> {
     try {
-      const { user, accessToken, refreshToken } = await this.userService.login(
-        req.body,
-      );
-      const filteredUsers = {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-      };
+      const response = await this.userService.login(req.body);
+
       res.send(
         new HttpResponse({
           message: 'User login successfully',
-          data: {
-            users: filteredUsers,
-            accessToken,
-            refreshToken,
-          },
+          data: response,
         }),
       );
     } catch (error) {
@@ -261,7 +250,6 @@ export class UserController {
     next: NextFunction,
   ): Promise<void> {
     try {
-      // function ko parameter 3 ya 3+ objects pass
       await this.userService.resetPassword(req.query.token, req.body.password);
       res.send(
         new HttpResponse({

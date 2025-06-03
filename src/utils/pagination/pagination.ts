@@ -1,4 +1,8 @@
-import { PageDocProps, PaginationProps } from './types';
+import type {
+  PageDocProps,
+  PaginationProps,
+  IPaginationResponse,
+} from './types';
 
 /**
  * Pagination Utility function
@@ -15,7 +19,7 @@ export const pagination = (data: PaginationProps) => {
 /**
  * Calculate pagination including total, next and previous page information
  */
-export const getPageDocs = (data: PageDocProps) => {
+export const getPageDocs = (data: PageDocProps): IPaginationResponse => {
   const page = Math.ceil(data.count / data.limit);
 
   return {

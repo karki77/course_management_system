@@ -1,10 +1,11 @@
+import { IPaginationResponse } from '#utils/pagination/types';
 import { HTTPSTATUS } from '../enums/httpResponse';
 
 export interface HttpResponseProps {
   message?: string;
   statusCode?: HTTPSTATUS;
   data?: Record<string, unknown> | unknown[] | string;
-  docs?: Record<string, unknown>;
+  docs?: IPaginationResponse | Record<string, unknown> | undefined;
   others?: Record<string, unknown>;
   stack?: Record<string, unknown> | string;
   pagination?: Record<string, unknown> | string;
@@ -13,7 +14,10 @@ export interface HttpResponseProps {
 export class HttpResponse {
   public readonly success: boolean;
   public readonly message: string | undefined;
-  public readonly docs: Record<string, unknown> | undefined;
+  public readonly docs:
+    | IPaginationResponse
+    | Record<string, unknown>
+    | undefined;
   public readonly data:
     | Record<string, unknown>
     | unknown[]

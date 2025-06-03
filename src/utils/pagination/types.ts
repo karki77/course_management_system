@@ -8,3 +8,18 @@ export interface PageDocProps {
   limit: number;
   count: number;
 }
+
+export interface IPaginationResponse {
+  total: {
+    page: number;
+    limit: number;
+  };
+  next: {
+    page: number | null;
+    limit: number;
+  };
+  prev: {
+    page: number | null;
+    limit: number;
+  };
+}

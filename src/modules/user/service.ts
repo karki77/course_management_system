@@ -12,7 +12,6 @@ import type {
   IUpdateProfile,
   IVerifyEmailSchema,
   IForgotPasswordSchema,
-  IResetPasswordSchema,
 } from './validation';
 import { pagination, getPageDocs } from '#utils/pagination/pagination';
 import { IPaginationSchema } from '../../utils/validators/commonValidation';
@@ -170,7 +169,6 @@ class UserService {
       user: {
         id: user.id,
         email: user.email,
-        username: user.username,
         role: user.role,
       },
       accessToken,
@@ -183,12 +181,10 @@ class UserService {
       where: { id: userId },
     });
 
-    // !USER THROW -> HTTPEXCEPTION
     if (!user) {
       throw new HttpException(404, 'User not found');
     }
 
-    // user.password, data.oldPassword -> check compare.
     const isOldPassordValid = await verifyPassword(
       user.password,
       data.oldPassword,

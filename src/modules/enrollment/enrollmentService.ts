@@ -3,8 +3,20 @@ import HttpException from '../../utils/api/httpException';
 import { ICreateEnrollmentSchema } from './enrollmentValidation';
 import { pagination, getPageDocs } from '../../utils/pagination/pagination';
 import { IPaginationSchema } from '../../utils/validators/commonValidation';
-class EnrollmentService {
-  async enroll(data: ICreateEnrollmentSchema) {
+import {
+  IApiPaginationResponse,
+  IApiResponse,
+  IEnrollmentService,
+  EnrollmentWithDetails,
+  EnrollmentWithCourse,
+} from './types';
+import { CourseEnrollment } from '@prisma/client';
+import { IPaginationResponse } from '#utils/pagination/types';
+
+class EnrollmentService implements IEnrollmentService {
+  async enroll(
+    data: ICreateEnrollmentSchema,
+  ): Promise<IApiResponse<CourseEnrollment>> {
     const student = await prisma.user.findUnique({
       where: { id: data.studentId },
     });
@@ -12,6 +24,7 @@ class EnrollmentService {
     if (!student) {
       throw new HttpException(404, 'Student not found');
     }
+
     const course = await prisma.course.findUnique({
       where: { id: data.courseId },
     });
@@ -32,15 +45,24 @@ class EnrollmentService {
       throw new HttpException(400, 'You are already enrolled in this course');
     }
 
-    return await prisma.courseEnrollment.create({
+    const response = await prisma.courseEnrollment.create({
       data: {
         userId: data.studentId,
         courseId: data.courseId,
       },
     });
+
+    return {
+      data: response,
+    };
   }
 
-  async getAllEnrolledStudents(courseId: string, query: IPaginationSchema) {
+  async getAllEnrolledStudents(
+    courseId: string,
+    query: IPaginationSchema,
+  ): Promise<
+    IApiPaginationResponse<EnrollmentWithDetails, IPaginationResponse>
+  > {
     const { skip, limit, page } = pagination({
       limit: query.limit,
       page: query.page,
@@ -50,6 +72,11 @@ class EnrollmentService {
       await prisma.courseEnrollment.findMany({
         where: { courseId },
         select: {
+          id: true,
+          userId: true,
+          courseId: true,
+          createdAt: true,
+          updatedAt: true,
           user: {
             select: {
               id: true,
@@ -90,17 +117,23 @@ class EnrollmentService {
     });
 
     return {
-      enrollments,
+      data: enrollments,
       docs,
     };
   }
 
-  async viewAllEnrolledCourses(studentId: string, query: IPaginationSchema) {
+  async viewAllEnrolledCourses(
+    studentId: string,
+    query: IPaginationSchema,
+  ): Promise<
+    IApiPaginationResponse<EnrollmentWithCourse, IPaginationResponse>
+  > {
     const { skip, limit, page } = pagination({
       limit: query.limit,
       page: query.page,
     });
-    const [enrollment, count] = await Promise.all([
+
+    const [enrollments, count] = await Promise.all([
       await prisma.courseEnrollment.findMany({
         where: { userId: studentId },
         take: limit,
@@ -109,6 +142,11 @@ class EnrollmentService {
           createdAt: 'desc',
         },
         select: {
+          id: true,
+          userId: true,
+          courseId: true,
+          createdAt: true,
+          updatedAt: true,
           course: {
             select: {
               id: true,
@@ -130,6 +168,7 @@ class EnrollmentService {
         where: { userId: studentId },
       }),
     ]);
+
     const docs = getPageDocs({
       page,
       limit,
@@ -137,7 +176,7 @@ class EnrollmentService {
     });
 
     return {
-      enrollment,
+      data: enrollments,
       docs,
     };
   }

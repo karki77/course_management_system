@@ -1731,3 +1731,51 @@ Please make sure your database server is running at `dpg-d0gpmobe5dus73aiqdh0-a.
 2025-06-02 16:45:10 [info]: Database connected successfully.
 2025-06-02 17:23:27 [info]: Server is running at port 9000
 2025-06-02 17:23:27 [info]: Database connected successfully.
+2025-06-03 10:00:04 [info]: Server is running at port 9000
+2025-06-03 10:00:04 [info]: Database connected successfully.
+2025-06-03 10:27:26 [info]: Server is running at port 9000
+2025-06-03 10:27:26 [info]: Database connected successfully.
+2025-06-03 10:27:40 [error]: {"method":"POST","url":"/api/v1/enrollment/enroll","message":"You are already enrolled in this course","status":400,"stack":"Error: You are already enrolled in this course\n    at EnrollmentService.enroll (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\src\\modules\\enrollment\\enrollmentService.ts:37:13)\n    at async enroll (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\src\\modules\\enrollment\\enrollmentController.ts:20:24)"}
+2025-06-03 10:28:49 [info]: Server is running at port 9000
+2025-06-03 10:28:49 [info]: Database connected successfully.
+2025-06-03 11:02:30 [info]: Server is running at port 9000
+2025-06-03 11:02:30 [info]: Database connected successfully.
+2025-06-03 11:04:38 [info]: Server is running at port 9000
+2025-06-03 11:04:38 [info]: Database connected successfully.
+2025-06-03 11:05:03 [info]: Server is running at port 9000
+2025-06-03 11:05:03 [info]: Database connected successfully.
+2025-06-03 11:05:11 [info]: Server is running at port 9000
+2025-06-03 11:05:11 [info]: Database connected successfully.
+2025-06-03 12:32:52 [info]: Server is running at port 9000
+2025-06-03 12:32:52 [info]: Database connected successfully.
+2025-06-03 12:51:29 [info]: Server is running at port 9000
+2025-06-03 12:51:29 [info]: Database connected successfully.
+2025-06-03 12:52:09 [info]: Server is running at port 9000
+2025-06-03 12:52:09 [info]: Database connected successfully.
+2025-06-03 12:53:52 [info]: Server is running at port 9000
+2025-06-03 12:53:52 [info]: Database connected successfully.
+2025-06-03 12:54:10 [info]: Server is running at port 9000
+2025-06-03 12:54:10 [info]: Database connected successfully.
+2025-06-03 15:04:10 [info]: Server is running at port 9000
+2025-06-03 15:04:10 [info]: Database connected successfully.
+2025-06-03 15:04:49 [info]: Server is running at port 9000
+2025-06-03 15:04:49 [info]: Database connected successfully.
+2025-06-03 15:04:53 [error]: {"method":"GET","url":"/api/v1/enrollment/viewCourses/8024e008-421d-4d49-a23f-3bebd06ef312?page=1&limit=2","message":"Authentication required","status":401,"stack":"Error: Authentication required\n    at authMiddleware (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\src\\middleware\\authMiddleware.ts:33:13)\n    at Layer.handleRequest (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\lib\\layer.js:152:17)\n    at C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\index.js:295:15\n    at param (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\index.js:600:14)\n    at param (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\index.js:610:14)\n    at processParams (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\index.js:664:3)"}
+2025-06-03 15:05:42 [info]: Server is running at port 9000
+2025-06-03 15:05:42 [info]: Database connected successfully.
+2025-06-03 15:05:48 [error]: {"method":"POST","url":"/api/v1/auth/login","message":"Invalid credentials","status":401,"stack":"Error: Invalid credentials\n    at UserService.login (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\src\\modules\\user\\service.ts:164:13)\n    at async UserController.loginUser (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\src\\modules\\user\\controller.ts:129:24)"}
+2025-06-03 15:07:51 [info]: Server is running at port 9000
+2025-06-03 15:07:51 [info]: Database connected successfully.
+2025-06-03 15:07:51 [info]: Server is running at port 9000
+2025-06-03 15:07:51 [info]: Database connected successfully.
+2025-06-03 15:08:07 [info]: Server is running at port 9000
+2025-06-03 15:08:07 [info]: Server is running at port 9000
+2025-06-03 15:08:07 [info]: Database connected successfully.
+2025-06-03 15:08:07 [info]: Database connected successfully.
+2025-06-03 15:08:42 [info]: Server is running at port 9000
+2025-06-03 15:08:43 [info]: Server is running at port 9000
+2025-06-03 15:08:43 [info]: Database connected successfully.
+2025-06-03 15:08:43 [info]: Database connected successfully.
+2025-06-03 15:15:06 [error]: {"method":"POST","url":"/api/v1/enrollment/enroll","message":"You are already enrolled in this course","status":400,"stack":"Error: You are already enrolled in this course\n    at EnrollmentService.enroll (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\src\\modules\\enrollment\\enrollmentService.ts:38:13)\n    at async enroll (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\src\\modules\\enrollment\\enrollmentController.ts:20:20)"}
+2025-06-03 15:15:43 [info]: Server is running at port 9000
+2025-06-03 15:15:43 [info]: Database connected successfully.

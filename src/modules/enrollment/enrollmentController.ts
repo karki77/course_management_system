@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { HttpResponse } from '../../utils/api/httpResponse';
-import HttpException from '../../utils/api/httpException';
+
 import type {
   ICreateEnrollmentSchema,
   IParamsStudentSchema,
@@ -17,12 +17,12 @@ export const enroll = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const enrollment = await EnrollmentService.enroll(req.body);
+    const { data } = await EnrollmentService.enroll(req.body);
 
     res.send(
       new HttpResponse({
         message: 'enrollment created successfully',
-        data: enrollment,
+        data,
       }),
     );
   } catch (error) {
@@ -36,13 +36,15 @@ export const getAllEnrolledStudents = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const { enrollments, docs } =
-      await EnrollmentService.getAllEnrolledStudents(req.params.id, req.query);
+    const { data, docs } = await EnrollmentService.getAllEnrolledStudents(
+      req.params.id,
+      req.query,
+    );
 
     res.send(
       new HttpResponse({
         message: 'Enrollment fetched successfully',
-        data: enrollments,
+        data,
         docs,
       }),
     );
@@ -57,12 +59,7 @@ export const viewAllEnrolledCourses = async (
   next: NextFunction,
 ) => {
   try {
-    const studentId = req.user?.id;
-    if (!studentId) {
-      throw new HttpException(401, 'User not authenticated');
-    }
-
-    const { enrollment, docs } = await EnrollmentService.viewAllEnrolledCourses(
+    const { data, docs } = await EnrollmentService.viewAllEnrolledCourses(
       req.params.studentId,
       req.query,
     );
@@ -70,7 +67,7 @@ export const viewAllEnrolledCourses = async (
     res.send(
       new HttpResponse({
         message: 'Courses fetched successfully',
-        data: enrollment,
+        data,
         docs,
       }),
     );
