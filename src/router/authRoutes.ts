@@ -1,5 +1,6 @@
 // src/routes/authRouter.ts
 import { Router } from 'express';
+import { loginRateLimiter } from '../middleware/loginRateLimiter';
 import bodyValidator from '../utils/validators/bodyValidator';
 import queryValidator from '#utils/validators/queryValidator';
 import {
@@ -121,6 +122,7 @@ authRouter.post(
  */
 authRouter.post(
   '/login',
+  loginRateLimiter,
   bodyValidator(loginUserSchema),
   userController.loginUser.bind(userController),
 );
