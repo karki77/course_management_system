@@ -7,6 +7,7 @@ import type {
   ICreateModuleSchema,
   IUpdatedCourseSchema,
   ICreateLessonSchema,
+  ILessonProgressSchema,
 } from './courseValidation';
 
 import courseService from './courseService';
@@ -170,6 +171,36 @@ export class CourseController {
         new HttpResponse({
           message: 'Lesson created successfully',
           data: lesson,
+        }),
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * Update Lesson Progress
+   */
+  public async LessonProgress(
+    req: Request<unknown, unknown, ILessonProgressSchema>,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const userId = req.user?.id;
+      if (!userId) {
+        throw new HttpException(401, 'User not authenticated');
+      }
+
+      const progress = await this.courseService.LessonProgress(
+        userId,
+        req.body,
+      );
+
+      res.send(
+        new HttpResponse({
+          message: 'Lesson progress updated successfully',
+          data: progress,
         }),
       );
     } catch (error) {

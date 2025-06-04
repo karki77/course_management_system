@@ -152,6 +152,13 @@ class EnrollmentService implements IEnrollmentService {
                 select: {
                   id: true,
                   title: true,
+                  lessons: {
+                    select: {
+                      id: true,
+                      title: true,
+                      content: true,
+                    },
+                  },
                 },
               },
             },

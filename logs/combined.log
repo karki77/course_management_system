@@ -1939,3 +1939,56 @@ Please make sure your database server is running at `dpg-d0gpmobe5dus73aiqdh0-a.
 2025-06-04 12:25:08 [info]: Database connected successfully.
 2025-06-04 12:25:15 [info]: Server is running at port 9000
 2025-06-04 12:25:15 [info]: Database connected successfully.
+2025-06-04 12:30:34 [info]: Server is running at port 9000
+2025-06-04 12:30:34 [info]: Database connected successfully.
+2025-06-04 12:34:53 [info]: Server is running at port 9000
+2025-06-04 12:34:53 [info]: Database connected successfully.
+2025-06-04 12:35:02 [info]: Server is running at port 9000
+2025-06-04 12:35:02 [info]: Database connected successfully.
+2025-06-04 12:35:32 [info]: Server is running at port 9000
+2025-06-04 12:35:32 [info]: Database connected successfully.
+2025-06-04 12:37:13 [info]: Server is running at port 9000
+2025-06-04 12:37:13 [info]: Database connected successfully.
+2025-06-04 12:37:47 [info]: Server is running at port 9000
+2025-06-04 12:37:47 [info]: Database connected successfully.
+2025-06-04 12:38:06 [info]: Server is running at port 9000
+2025-06-04 12:38:06 [info]: Database connected successfully.
+2025-06-04 12:45:30 [info]: Server is running at port 9000
+2025-06-04 12:45:30 [info]: Database connected successfully.
+2025-06-04 12:45:45 [info]: Server is running at port 9000
+2025-06-04 12:45:45 [info]: Database connected successfully.
+2025-06-04 12:50:18 [info]: Server is running at port 9000
+2025-06-04 12:50:18 [info]: Database connected successfully.
+2025-06-04 12:50:42 [info]: Server is running at port 9000
+2025-06-04 12:50:43 [info]: Database connected successfully.
+2025-06-04 12:50:46 [info]: Server is running at port 9000
+2025-06-04 12:50:46 [info]: Database connected successfully.
+2025-06-04 12:51:05 [info]: Server is running at port 9000
+2025-06-04 12:51:05 [info]: Database connected successfully.
+2025-06-04 13:57:16 [info]: Server is running at port 9000
+2025-06-04 13:57:16 [info]: Database connected successfully.
+2025-06-04 13:58:09 [info]: Server is running at port 9000
+2025-06-04 13:58:09 [info]: Database connected successfully.
+2025-06-04 14:00:39 [info]: Server is running at port 9000
+2025-06-04 14:00:39 [info]: Database connected successfully.
+2025-06-04 14:38:50 [info]: Server is running at port 9000
+2025-06-04 14:38:50 [info]: Database connected successfully.
+2025-06-04 14:42:02 [info]: Server is running at port 9000
+2025-06-04 14:42:03 [info]: Database connected successfully.
+2025-06-04 14:42:04 [error]: {"method":"GET","url":"/api/v1/enrollment/viewCourses/18deab4b-69df-4a10-a501-8a04f22ca9f1?limit=1","message":"Authentication required","status":401,"stack":"Error: Authentication required\n    at authMiddleware (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\src\\middleware\\authMiddleware.ts:33:13)\n    at Layer.handleRequest (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\lib\\layer.js:152:17)\n    at C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\index.js:295:15\n    at param (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\index.js:600:14)\n    at param (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\index.js:610:14)\n    at processParams (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\index.js:664:3)"}
+2025-06-04 14:42:48 [error]: {"method":"GET","url":"/api/v1/enrollment/viewCourses/18deab4b-69df-4a10-a501-8a04f22ca9f1?limit=1","message":"Authentication required","status":401,"stack":"Error: Authentication required\n    at authMiddleware (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\src\\middleware\\authMiddleware.ts:33:13)\n    at Layer.handleRequest (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\lib\\route.js:117:3)\n    at handle (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\index.js:435:11)\n    at Layer.handleRequest (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\lib\\layer.js:152:17)\n    at C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\index.js:295:15\n    at param (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\index.js:600:14)\n    at param (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\index.js:610:14)\n    at processParams (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\node_modules\\router\\index.js:664:3)"}
+2025-06-04 14:44:10 [error]: {"method":"POST","url":"/api/v1/auth/login","message":"Invalid credentials","status":401,"stack":"Error: Invalid credentials\n    at UserService.login (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\src\\modules\\user\\service.ts:163:13)\n    at async UserController.loginUser (C:\\Users\\user\\OneDrive - Amazing IT Centre\\Desktop\\Course_Management_System\\src\\modules\\user\\controller.ts:129:24)"}
+2025-06-04 15:02:26 [info]: Server is running at port 9000
+2025-06-04 15:02:26 [info]: Database connected successfully.
+2025-06-04 15:04:45 [info]: Server is running at port 9000
+2025-06-04 15:04:45 [info]: Database connected successfully.
+2025-06-04 15:04:50 [info]: Server is running at port 9000
+2025-06-04 15:04:50 [info]: Database connected successfully.
+2025-06-04 15:10:50 [info]: Server is running at port 9000
+2025-06-04 15:10:50 [info]: Database connected successfully.
+2025-06-04 16:37:44 [info]: Server is running at port 9000
+2025-06-04 16:37:44 [info]: Database connected successfully.
+2025-06-04 16:38:29 [info]: Server is running at port 9000
+2025-06-04 16:38:29 [info]: Database connected successfully.
+2025-06-04 16:39:21 [info]: Server is running at port 9000
+2025-06-04 16:39:21 [info]: Database connected successfully.

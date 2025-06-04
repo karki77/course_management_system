@@ -91,9 +91,20 @@ export const createLessonSchema = z
   .strict({
     message: 'Extra fields are not allowed in the lesson data',
   });
+
+export const lessonProgressSchema = z
+  .object({
+    courseId: z.string().uuid('Invalid course ID format'),
+    lessonId: z.string().uuid('Invalid lesson ID format'),
+  })
+  .strict({
+    message: 'Extra fields are not allowed in the lesson progress data',
+  });
+
 // Exporting the types for the schemase
 export type ICreateCourseSchema = z.infer<typeof createCourseSchema>;
 export type IUpdatedCourseSchema = z.infer<typeof updateCourseSchema>;
 export type IParamsSchema = z.infer<typeof paramsCourseSchema>;
 export type ICreateModuleSchema = z.infer<typeof createModuleSchema>;
 export type ICreateLessonSchema = z.infer<typeof createLessonSchema>;
+export type ILessonProgressSchema = z.infer<typeof lessonProgressSchema>;

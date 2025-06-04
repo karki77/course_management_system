@@ -9,6 +9,7 @@ import {
   paramsCourseSchema,
   createModuleSchema,
   createLessonSchema,
+  lessonProgressSchema,
 } from '../modules/course/courseValidation';
 
 import { authMiddleware } from '../middleware/authMiddleware';
@@ -188,6 +189,14 @@ courseRouter.post(
   roleMiddleware([UserRole.INSTRUCTOR]),
   bodyValidator(createLessonSchema),
   courseController.createLesson.bind(courseController),
+);
+
+// Update lesson progress
+courseRouter.post(
+  '/lesson-progress',
+  authMiddleware,
+  bodyValidator(lessonProgressSchema),
+  courseController.LessonProgress.bind(courseController),
 );
 
 //

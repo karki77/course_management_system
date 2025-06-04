@@ -6,6 +6,7 @@ import type {
   IUpdatedCourseSchema,
   ICreateModuleSchema,
   ICreateLessonSchema,
+  ILessonProgressSchema,
 } from '../course/courseValidation';
 
 /**
@@ -83,6 +84,7 @@ class CourseService {
       where: { id: courseId },
     });
   }
+
   async createModule(data: ICreateModuleSchema) {
     const { title, courseId } = data;
 
@@ -127,6 +129,75 @@ class CourseService {
         videoUrl,
       },
     });
+  }
+
+  async LessonProgress(userId: string, data: ILessonProgressSchema) {
+    const { courseId, lessonId } = data;
+
+    // Verify the lesson exists and belongs to the course
+    const lesson = await prisma.lesson.findFirst({
+      where: {
+        id: lessonId,
+        module: {
+          courseId,
+        },
+      },
+    });
+
+    if (!lesson) {
+      throw new HttpException(404, 'Lesson not found in this course');
+    }
+
+    // Get or create progress record
+    const progress =
+      (await prisma.lessonProgress.findUnique({
+        where: {
+          userId_courseId: {
+            userId,
+            courseId,
+          },
+        },
+      })) ||
+      (await prisma.lessonProgress.create({
+        data: {
+          userId,
+          courseId,
+          completedLessons: [],
+          progressPercentage: 0,
+        },
+      }));
+
+    // Update completed lessons if not already completed
+    if (!progress.completedLessons.includes(lessonId)) {
+      // Get total lesson count for the course
+      const totalLessons = await prisma.lesson.count({
+        where: {
+          module: {
+            courseId,
+          },
+        },
+      });
+
+      const updatedCompletedLessons = [...progress.completedLessons, lessonId];
+      const progressPercentage =
+        (updatedCompletedLessons.length / totalLessons) * 100;
+
+      return await prisma.lessonProgress.update({
+        where: {
+          userId_courseId: {
+            userId,
+            courseId,
+          },
+        },
+        data: {
+          completedLessons: updatedCompletedLessons,
+          progressPercentage,
+          lastAccessDate: new Date(),
+        },
+      });
+    }
+
+    return progress;
   }
 }
 
