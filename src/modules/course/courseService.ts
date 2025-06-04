@@ -5,19 +5,24 @@ import type {
   ICreateCourseSchema,
   IUpdatedCourseSchema,
   ICreateModuleSchema,
+  ICreateLessonSchema,
 } from '../course/courseValidation';
 
 /**
  * Course Service
  */
 class CourseService {
-  // Removed duplicate createModule method
-  /**
-   * Private Function
-   * Get course details by courseId and InstructorId
-   */
   async _getCourse(courseId: string, instructorId: string) {
-    // return course
+    const course = await prisma.course.findFirst({
+      where: {
+        id: courseId,
+        instructorId: instructorId,
+      },
+    });
+    if (!course) {
+      throw new HttpException(404, 'Course not found!');
+    }
+    return course;
   }
 
   async createCourse(instructorId: string, data: ICreateCourseSchema) {
@@ -96,6 +101,30 @@ class CourseService {
       data: {
         title,
         courseId,
+      },
+    });
+  }
+
+  async createLesson(data: ICreateLessonSchema) {
+    const { title, moduleId, content, videoUrl } = data;
+
+    const existingLesson = await prisma.lesson.findFirst({
+      where: { title, moduleId, content, videoUrl },
+    });
+
+    if (existingLesson) {
+      throw new HttpException(
+        400,
+        'Lesson with this title already exists in the module',
+      );
+    }
+
+    return await prisma.lesson.create({
+      data: {
+        title,
+        moduleId,
+        content,
+        videoUrl,
       },
     });
   }

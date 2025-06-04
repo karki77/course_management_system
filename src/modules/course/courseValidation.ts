@@ -78,8 +78,22 @@ export const createModuleSchema = z
     message: 'Extra fields are not allowed in the module data',
   });
 
-// Exporting the types for the schemas
+export const createLessonSchema = z
+  .object({
+    title: z
+      .string()
+      .min(1, 'Title is required')
+      .max(100, 'Title must be at most 100 characters long'),
+    moduleId: z.string().uuid('Invalid module ID format'),
+    content: z.string().min(1, 'Content is required'),
+    videoUrl: z.string().optional(),
+  })
+  .strict({
+    message: 'Extra fields are not allowed in the lesson data',
+  });
+// Exporting the types for the schemase
 export type ICreateCourseSchema = z.infer<typeof createCourseSchema>;
 export type IUpdatedCourseSchema = z.infer<typeof updateCourseSchema>;
 export type IParamsSchema = z.infer<typeof paramsCourseSchema>;
 export type ICreateModuleSchema = z.infer<typeof createModuleSchema>;
+export type ICreateLessonSchema = z.infer<typeof createLessonSchema>;

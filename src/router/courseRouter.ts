@@ -2,19 +2,13 @@ import { Router } from 'express';
 import { UserRole } from '@prisma/client';
 
 import bodyValidator from '../utils/validators/bodyValidator';
-import { getAllEnrolledStudents } from '../modules/enrollment/enrollmentController';
-import {
-  createCourse,
-  updateCourse,
-  deleteCourse,
-  createModule,
-} from '../modules/course/courseController';
 
 import {
   createCourseSchema,
   updateCourseSchema,
   paramsCourseSchema,
   createModuleSchema,
+  createLessonSchema,
 } from '../modules/course/courseValidation';
 
 import { authMiddleware } from '../middleware/authMiddleware';
@@ -27,6 +21,8 @@ import {
   paginationSchema,
   paramIdSchema,
 } from '#utils/validators/commonValidation';
+
+import courseController from '../modules/course/courseController';
 
 const courseRouter = Router();
 
@@ -67,7 +63,7 @@ courseRouter.post(
   authMiddleware,
   roleMiddleware([UserRole.INSTRUCTOR]),
   bodyValidator(createCourseSchema),
-  createCourse,
+  courseController.createCourse.bind(courseController),
 );
 
 /**
@@ -108,12 +104,12 @@ courseRouter.post(
  *         description: course updated successfully
  */
 courseRouter.patch(
-  '/update/:courseId',
+  '/:courseId',
   authMiddleware,
   roleMiddleware([UserRole.INSTRUCTOR]),
   paramValidator(paramsCourseSchema),
   bodyValidator(updateCourseSchema),
-  updateCourse,
+  courseController.updateCourse.bind(courseController),
 );
 
 /**
@@ -136,11 +132,11 @@ courseRouter.patch(
  *         description: Course deleted successfully
  */
 courseRouter.delete(
-  '/delete/:courseId',
+  '/:courseId',
   authMiddleware,
   roleMiddleware([UserRole.INSTRUCTOR]),
   paramValidator(paramsCourseSchema),
-  deleteCourse,
+  courseController.deleteCourse.bind(courseController),
 );
 
 /**
@@ -173,7 +169,25 @@ courseRouter.post(
   authMiddleware,
   roleMiddleware([UserRole.INSTRUCTOR]),
   bodyValidator(createModuleSchema),
-  createModule,
+  courseController.createModule.bind(courseController),
+);
+
+// Get course
+courseRouter.get(
+  '/:courseId',
+  authMiddleware,
+  roleMiddleware([UserRole.INSTRUCTOR]),
+  paramValidator(paramsCourseSchema),
+  courseController.getCourse.bind(courseController),
+);
+
+// Create lesson
+courseRouter.post(
+  '/create-lesson',
+  authMiddleware,
+  roleMiddleware([UserRole.INSTRUCTOR]),
+  bodyValidator(createLessonSchema),
+  courseController.createLesson.bind(courseController),
 );
 
 //
