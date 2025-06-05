@@ -2,7 +2,7 @@ const eslintPluginPrettier = require('eslint-plugin-prettier');
 const tsPlugin = require('@typescript-eslint/eslint-plugin');
 const tsParser = require('@typescript-eslint/parser');
 
-/** @type {import("eslint").Linter.FlatConfig} */
+/** @type {import("eslint").Config[]} */
 module.exports = [
   {
     files: ['**/*.ts', '**/*.tsx'],
