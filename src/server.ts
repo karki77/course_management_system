@@ -10,7 +10,7 @@ import { setupSwagger } from './utils/swagger/swaggerUi';
 import path from 'path';
 
 const prisma = new PrismaClient();
-const PORT = config.server.port || 9000;
+const PORT = config.server.port || 900;
 const app = express();
 
 setupSwagger(app);
@@ -40,7 +40,7 @@ void (async (): Promise<void> => {
 
 app.use(express.json());
 
-app.get('/health', (req, res) => {
+app.get('/health', (_req, res) => {
   res.status(200).send('OK');
 });
 app.use('/api/v1', router);

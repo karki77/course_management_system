@@ -190,13 +190,13 @@ class UserService {
     );
 
     if (!isOldPassordValid) {
-      throw new HttpException(400, 'Old password is incorrect');
+      throw new HttpException(401, 'Old password is incorrect');
     }
 
     // Check if oldPassword and newPassword are same
     if (data.oldPassword === data.newPassword) {
       throw new HttpException(
-        400,
+        401,
         'New password cannot be the same as the old password',
       );
     }

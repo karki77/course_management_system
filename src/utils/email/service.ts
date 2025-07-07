@@ -6,17 +6,17 @@ export const sendEmail = async (payload: IEmailSend) => {
   try {
     const transporter = nodemailer.createTransport({
       host: 'sandbox.smtp.mailtrap.io',
-      port: 587,
+      port: 2525,
       secure: false, // true for 465, false for other ports
 
       auth: {
-        user: '3cac6fe40e5bba', // generated ethereal user
-        pass: '69fd33c9d9a55b', // NOT your Gmail password! //use app password instead
+        user: '631dea782056d1', // generated ethereal user
+        pass: '529ee0c4d01ac0', // NOT your Gmail password! //use app password instead
       },
     });
 
     const mailOptions = {
-      from: 'courseplatform.noreply@gmail.com',
+      from: 'expensetracker1029@gmail.com',
       to: payload.to,
       subject: payload.subject,
       text: payload.text,

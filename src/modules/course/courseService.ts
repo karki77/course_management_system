@@ -72,8 +72,6 @@ class CourseService {
         ...data,
       },
     });
-
-    //
     return updatedCourse;
   }
 

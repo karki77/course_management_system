@@ -105,7 +105,7 @@ courseRouter.post(
  *         description: course updated successfully
  */
 courseRouter.patch(
-  '/:courseId',
+  '/update/:courseId',
   authMiddleware,
   roleMiddleware([UserRole.INSTRUCTOR]),
   paramValidator(paramsCourseSchema),

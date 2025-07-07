@@ -110,4 +110,3 @@ model LessonProgress {
   @@unique([userId, courseId])
 }
 
-

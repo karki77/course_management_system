@@ -205,15 +205,15 @@ export class UserController {
         throw new HttpException(404, 'User not found');
       }
       const user = await this.userService.getUserWithProfile(req.user.id);
-      const filteredUsers = {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-      };
+      // const filteredUsers = {
+      //   id: user.id,
+      //   email: user.email,
+      //   role: user.role,
+      // };
       res.send(
         new HttpResponse({
           message: 'user with profile fetched successfully',
-          data: filteredUsers,
+          data: user,
         }),
       );
     } catch (error) {
