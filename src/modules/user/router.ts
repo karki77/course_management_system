@@ -1,8 +1,8 @@
 // src/routes/authRouter.ts
 import { Router } from 'express';
-import { loginRateLimiter } from '../middleware/loginRateLimiter';
-import bodyValidator from '../utils/validators/bodyValidator';
-import queryValidator from '#utils/validators/queryValidator';
+import { loginRateLimiter } from '../../middleware/loginRateLimiter';
+import bodyValidator from '../../utils/validators/bodyValidator';
+import queryValidator from '../../utils/validators/queryValidator';
 import {
   registerUserSchema,
   loginUserSchema,
@@ -11,12 +11,11 @@ import {
   forgotPasswordSchema,
   resetPasswordSchema,
   tokenSchema,
-} from '../modules/user/validation';
-import { authMiddleware } from '../middleware/authMiddleware';
-import UserController from '../modules/user/controller';
+} from './validation';
+import { authMiddleware } from '../../middleware/authMiddleware';
+import userController from './controller';
 
 const authRouter = Router();
-const userController = new UserController();
 
 /**
  * @swagger

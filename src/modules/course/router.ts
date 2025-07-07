@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { UserRole } from '@prisma/client';
 
-import bodyValidator from '../utils/validators/bodyValidator';
+import bodyValidator from '../../utils/validators/bodyValidator';
 
 import {
   createCourseSchema,
@@ -10,20 +10,14 @@ import {
   createModuleSchema,
   createLessonSchema,
   lessonProgressSchema,
-} from '../modules/course/courseValidation';
+} from '../../modules/course/courseValidation';
 
-import { authMiddleware } from '../middleware/authMiddleware';
-import { roleMiddleware } from '../middleware/rolemiddleware';
+import { authMiddleware } from '../../middleware/authMiddleware';
+import { roleMiddleware } from '../../middleware/rolemiddleware';
 
-import queryValidator from '#utils/validators/queryValidator';
-import paramValidator from '../utils/validators/paramValidator';
+import paramValidator from '../../utils/validators/paramValidator';
 
-import {
-  paginationSchema,
-  paramIdSchema,
-} from '#utils/validators/commonValidation';
-
-import courseController from '../modules/course/courseController';
+import courseController from './courseController';
 
 const courseRouter = Router();
 

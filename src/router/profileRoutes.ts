@@ -1,16 +1,43 @@
 import { Router } from 'express';
-import UserController from '../modules/user/controller';
+import userController from '../modules/user/controller';
 import { authMiddleware } from '../middleware/authMiddleware';
 import upload from '../utils/multer';
-import { updateProfileSchema } from '../modules/user/validation';
+import {
+  updateProfileSchema,
+  paramsUserSchema,
+} from '../modules/user/validation';
 import { mediaRequest } from '../utils/validators/mediaRequest';
 import bodyValidator from '../utils/validators/bodyValidator';
+import paramsValidator from '../utils/validators/paramValidator';
+
 import queryValidator from '../utils/validators/queryValidator';
 import { paginationSchema } from '../utils/validators/commonValidation';
+import { roleMiddleware } from '../middleware/rolemiddleware';
 
 const profileRouter = Router();
-const userController = new UserController();
-
+/**
+ * @swagger
+ * /api/v1/user/{userId}:
+ *   get:
+ *     tags: [User]
+ *     security:
+ *      - bearerAuth: []
+ *     parameters:
+ *       - name: userId
+ *         in: path
+ *         required: true
+ *         description: ID of the user
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: User retrieved successfully
+ */
+profileRouter.get(
+  '/:userId',
+  paramsValidator(paramsUserSchema),
+  userController.getUserById.bind(userController),
+);
 // PATCH /update-profile
 
 /**
@@ -85,6 +112,8 @@ profileRouter.get(
  */
 profileRouter.get(
   '/getallusers',
+  authMiddleware,
+  roleMiddleware(['ADMIN']),
   queryValidator(paginationSchema),
   userController.getAllRegisteredUsers.bind(userController),
 );

@@ -2,14 +2,13 @@ import { Router } from 'express';
 import { UserRole } from '@prisma/client';
 import { roleMiddleware } from '../middleware/rolemiddleware';
 import { authMiddleware } from '../middleware/authMiddleware';
-import UserController from '../modules/user/controller';
+import userController from '../modules/user/controller';
 import paramsValidator from '../utils/validators/paramValidator';
 import queryValidator from '#utils/validators/queryValidator';
 import { paginationSchema } from '#utils/validators/commonValidation';
 import { paramsUserSchema } from '../modules/user/validation';
 
 const userRoutes = Router();
-const userController = new UserController();
 
 /**
  * @swagger

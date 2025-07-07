@@ -1,23 +1,19 @@
 import { Router } from 'express';
-import {
-  enroll,
-  viewAllEnrolledCourses,
-  getAllEnrolledStudents,
-} from '../modules/enrollment/enrollmentController';
-import { authMiddleware } from '../middleware/authMiddleware';
-import { roleMiddleware } from '../middleware/rolemiddleware';
+import enrollmentController from './enrollmentController';
+import { authMiddleware } from '../../middleware/authMiddleware';
+import { roleMiddleware } from '../../middleware/rolemiddleware';
 import { UserRole } from '@prisma/client';
 
 import {
   createEnrollmentSchema,
   paramStudentSchema,
-} from '../modules/enrollment/enrollmentValidation';
-import { paramsCourseSchema } from '../modules/course/courseValidation';
+} from '../../modules/enrollment/enrollmentValidation';
+import { paramsCourseSchema } from '../../modules/course/courseValidation';
 
-import bodyValidator from '../utils/validators/bodyValidator';
-import paramsValidator from '../utils/validators/paramValidator';
-import queryValidator from '../utils/validators/queryValidator';
-import { paginationSchema } from '../utils/validators/commonValidation';
+import bodyValidator from '../../utils/validators/bodyValidator';
+import paramsValidator from '../../utils/validators/paramValidator';
+import queryValidator from '../../utils/validators/queryValidator';
+import { paginationSchema } from '../../utils/validators/commonValidation';
 
 const enrollmentRouter = Router();
 
@@ -56,7 +52,7 @@ enrollmentRouter.post(
   authMiddleware,
   roleMiddleware([UserRole.INSTRUCTOR]),
   bodyValidator(createEnrollmentSchema),
-  enroll,
+  enrollmentController.enroll.bind(enrollmentController),
 );
 
 // GET /courses/:courseId/enrollments - Instructor views enrolled users
@@ -100,7 +96,7 @@ enrollmentRouter.get(
   roleMiddleware([UserRole.INSTRUCTOR]),
   paramsValidator(paramsCourseSchema),
   queryValidator(paginationSchema),
-  getAllEnrolledStudents,
+  enrollmentController.getAllEnrolledStudents.bind(enrollmentController),
 );
 
 // GET /viewcourses/:studentId - Student views own enrolled courses
@@ -129,7 +125,7 @@ enrollmentRouter.get(
   authMiddleware,
   roleMiddleware([UserRole.STUDENT]),
   paramsValidator(paramStudentSchema),
-  viewAllEnrolledCourses,
+  enrollmentController.viewAllEnrolledCourses.bind(enrollmentController),
 );
 
 export default enrollmentRouter;

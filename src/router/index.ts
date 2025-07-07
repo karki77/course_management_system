@@ -1,20 +1,17 @@
 import { Router } from 'express';
-import courseRouter from './courseRouter';
+import courseRouter from '../modules/course/router';
 import emailRouter from './emailRouter';
 import userRouter from './userRoutes';
-import authRouter from './authRoutes';
 import profileRouter from './profileRoutes';
-import enrollmentRouter from './enrollmentRoutes';
+import enrollmentRouter from '../modules/enrollment/router';
+import authRouter from '../modules/user/router';
 
-const router = Router();
+const appRouter = Router();
 
-// AUTH ->
+appRouter.use('/email', emailRouter);
+appRouter.use('/auth', authRouter);
+appRouter.use('/course', courseRouter);
+appRouter.use('/profile', profileRouter);
+appRouter.use('/enrollment', enrollmentRouter);
 
-router.use('/email', emailRouter);
-router.use('/user', userRouter);
-router.use('/course', courseRouter);
-router.use('/auth', authRouter);
-router.use('/profile', profileRouter);
-router.use('/enrollment', enrollmentRouter);
-
-export default router;
+export default appRouter;
