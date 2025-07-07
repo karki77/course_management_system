@@ -133,7 +133,7 @@ courseRouter.patch(
  *         description: Course deleted successfully
  */
 courseRouter.delete(
-  '/:courseId',
+  '/delete-course/:courseId',
   authMiddleware,
   roleMiddleware([UserRole.INSTRUCTOR]),
   paramValidator(paramsCourseSchema),
@@ -195,6 +195,7 @@ courseRouter.post(
 courseRouter.post(
   '/lesson-progress',
   authMiddleware,
+  roleMiddleware([UserRole.INSTRUCTOR, UserRole.STUDENT]),
   bodyValidator(lessonProgressSchema),
   courseController.LessonProgress.bind(courseController),
 );
